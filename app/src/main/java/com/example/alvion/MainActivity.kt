@@ -32,10 +32,10 @@ data class Message(val author: String, val body: String)
 @Composable
 fun MessageCard(msg: Message) {
     Row {
-        Image(
-            painter = painterResource(R.drawable.randomscreenshot),
-            contentDescription = "Contact profile picture"
-        )
+//        Image(
+//            painter = painterResource(R.drawable.randomscreenshot),
+//            contentDescription = "Contact profile picture"
+//        )
         Column {
             Text(text = msg.author)
             Text(text = msg.body)
@@ -46,5 +46,5 @@ fun MessageCard(msg: Message) {
 @Preview
 @Composable
 fun PreviewMessageCard(){
-    MessageCard(msg = Message("Tairq", "your mom is a bitch"))
+    MessageCard(msg = Message("Tairq", "testing testing testing"))
 }
