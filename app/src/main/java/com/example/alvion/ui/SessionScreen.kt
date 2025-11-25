@@ -117,9 +117,10 @@ fun SessionScreen(onEnd: () -> Unit) {
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(220.dp),
+                .height(550.dp),
             shape = RoundedCornerShape(16.dp)
-        ) {
+        )
+        {
             CameraPreviewBox(
                 modifier = Modifier.fillMaxSize(),
                 useFrontCamera = true
