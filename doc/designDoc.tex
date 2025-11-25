@@ -790,18 +790,28 @@ A working Android app on a Snapdragon phone that:
 \end{itemize}
 We intentionally avoid training from scratch; disciplined reuse of a Kaggle MobileNetV2 baseline and focused public datasets, combined with on-device tuning, are sufficient for the course deliverable.
 
-% ---------- 5.4 Broader Impacts ----------
+% ---------- 5.3 Broader Impacts ----------
 \section{Broader Impacts}\label{sec:impacts}
-This project is meant to help people \emph{today}, especially those driving older cars that do not have built-in driver monitoring. Because it runs entirely on a phone, it can also help outside the car—for example, night-shift workers or anyone at a desk who needs a gentle nudge to take a break when they are nodding off.
 
+This project has meaningful implications at multiple scales—individual, organizational, and societal. Because the system runs entirely on a smartphone and requires no specialized hardware, its potential reach extends from local communities to global populations who rely on older vehicles or long-hours work environments.
+
+\subsection*{Impact on Individuals}
 \begin{itemize}
-  \item \textbf{Safety for older cars.} A phone on the dash can provide simple drowsiness and distraction alerts without installing new hardware.
-  \item \textbf{Useful beyond driving.} The same eye-closure signal can prompt breaks for people working late or monitoring screens for long periods.
-  \item \textbf{Privacy by default.} All processing stays on the device. No frames are uploaded. Logging is off unless the user opts in, and even then we keep only coarse events.
-  \item \textbf{Clear and calm alerts.} Debounce and cooldown reduce false alarms and avoid “alarm fatigue.” Users can adjust sensitivity to fit their eyes and lighting.
-  \item \textbf{Fairness and visibility.} We check performance across lighting, skin tones, and eyewear, and we document known limits so users know what to expect.
-  \item \textbf{Battery and heat aware.} The app adapts its internal rate if the phone warms up, keeping the UI smooth while conserving power.
-  \item \textbf{Share what helps.} Where licenses allow, we will share preprocessing and evaluation scripts so others can reproduce results and improve them.
+    \item \textbf{Improved personal safety.} Drivers of older vehicles, who often lack built-in driver-monitoring systems, gain access to real-time drowsiness and distraction alerts that can reduce the risk of accidents.
+    \item \textbf{Health and well-being.} Outside of driving, individuals such as night-shift workers, office workers, or students benefit from fatigue detection that encourages healthier break habits and reduces burnout.
+    \item \textbf{Privacy protection.} All processing occurs on the device, ensuring individuals can use the tool without sacrificing personal data or video privacy.
+\end{itemize}
+
+\subsection*{Impact on Organizations}
+\begin{itemize}
+    \item \textbf{Workplace safety programs.} Companies with employees who drive regularly (delivery, logistics, transportation, field services) can adopt this tool as a low-cost safety enhancement without installing proprietary monitoring hardware.
+    \item \textbf{Productivity and risk reduction.} Fatigue-related incidents in the workplace cost organizations time and money; early warning signals can reduce errors and improve overall performance.
+\end{itemize}
+
+\subsection*{Impact on Society (Local and Global)}
+\begin{itemize}
+    \item \textbf{Public safety.} Fatigue-related driving accidents remain a global problem. A mobile-based solution can reach communities that lack access to modern car safety features, creating safer roads with minimal infrastructure cost.
+    \item \textbf{Accessibility and equity.} By leveraging widely available smartphone hardware, the tool lowers barriers to advanced safety technology for low-income users and regions where newer vehicles are less common.
 \end{itemize}
 
 
