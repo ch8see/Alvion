@@ -1247,7 +1247,7 @@ Team members had to learn on-device ML, Android camera pipelines, and model opti
 \textbf{Mitigation used:}
 \begin{itemize}
   \item Created small spikes: camera preview, inference stub, alert UI, then combined.
-  \item Adopted lightweight models first, with a clear upgrade path once stable.
+  \item Research Face Detection Model and used threshold-based rules to simplify initial logic.
 \end{itemize}
 
 \subsection{Tool and Platform Support}
@@ -1255,8 +1255,8 @@ Access to a Snapdragon test device and the Qualcomm AI tooling was limited. Some
 
 \textbf{Mitigation used:}
 \begin{itemize}
-  \item Built a desktop/mobile parity harness to test logic off-device.
-  \item Scheduled device time slots and recorded reproducible setup steps.
+  \item Used the Android Studio emulator to replicate mobile behavior.
+  \item Developed UI before backend logic.
 \end{itemize}
 
 \subsection{Applying Agile Practices}
@@ -1289,7 +1289,7 @@ Sprint cadence slipped when tasks depended on hardware or on a single person’s
 
 \subsection{Bias and Generalization}
 \textbf{Issue:} Current testing is too small to judge fairness across users.\\
-\textbf{Planned action:} Record anonymized event counts only, review by scenario rather than identity, and propose a larger study in the next phase.
+\textbf{Planned action:} Record anonymous data, check fairness by scenario, and run a bigger study later.
 
 \subsection{Tooling and Environment Drift}
 \textbf{Issue:} Mismatch between Android Studio, SDK versions, and model toolchains.\\
