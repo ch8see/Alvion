@@ -82,17 +82,34 @@ fun SessionScreen(onEnd: () -> Unit) {
 
     // ---- Looping MediaPlayer using the system notification tone (no raw/ file) ----
     val mediaPlayer: MediaPlayer = remember {
-        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build()
-            )
-            setDataSource(context, uri)
-            isLooping = true   // keep playing until we stop
-            prepare()          // prepare once up front
+        val uri: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+
+        if (uri == null) {
+            // If we can’t get any system sound, tell the user once
+            Toast.makeText(context, "No system notification sound found", Toast.LENGTH_SHORT).show()
+            MediaPlayer() // dummy, won't play
+        } else {
+            MediaPlayer().apply {
+                try {
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .build()
+                    )
+                    setDataSource(context, uri)
+                    isLooping = true   // keep playing until we stop
+                    prepare()          // prepare once up front
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(
+                        context,
+                        "Failed to prepare sound: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 
@@ -231,13 +248,30 @@ fun SessionScreen(onEnd: () -> Unit) {
                     AssistChip(
                         onClick = {
                             soundEnabled = true // visual only
+
                             try {
                                 if (!mediaPlayer.isPlaying) {
                                     mediaPlayer.seekTo(0)
                                     mediaPlayer.start()
+                                    Toast.makeText(context, "Playing sound…", Toast.LENGTH_SHORT)
+                                        .show()
+                                } else {
+                                    // already playing
+                                    Toast.makeText(
+                                        context,
+                                        "Sound already playing",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-                            } catch (_: IllegalStateException) {
+                            } catch (e: IllegalStateException) {
+                                e.printStackTrace()
+                                Toast.makeText(
+                                    context,
+                                    "Error starting sound: ${e.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
+
                             showSoundDialog = true
                         },
                         label = { Text("Sound") },
@@ -382,3 +416,4 @@ internal fun makeEmergencyCall(context: Context, emergencyNumber: String) {
         Toast.makeText(context, "Unable to open dialer", Toast.LENGTH_SHORT).show()
     }
 }
+
