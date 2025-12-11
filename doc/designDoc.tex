@@ -1076,151 +1076,162 @@ complexity is $\mathcal{O}(1)$.
 
 \clearpage
 
-% =========================7. System Testing ==================================
+% ========================= 8. System Testing ==================================
 \chapter{System Testing}
-This section describes the testing framework, environment setup, and procedures used to verify that the ALVION application satisfies all functional and non-functional requirements.  
-Testing activities include unit, integration, system, and acceptance testing, combining both automated and manual methods to ensure correctness, reliability, and user safety.
+This chapter describes how the ALVION application was tested and how the results relate back to the functional and non-functional requirements. We used a mix of unit, integration, system, and acceptance tests with both automated and manual checks.
 
-\section{Test Automation Framework}
+% ----------------------------------------------------------------------------- 
+\section{Test Automation Framework}  % 8.1
 
-The ALVION mobile application will be tested primarily using the \textbf{Android Studio testing suite}, which integrates:
+The ALVION mobile application was tested mainly inside \textbf{Android Studio}, using the following tools:
+
 \begin{itemize}
-  \item \textbf{JUnit 5} for unit testing Kotlin classes and logic modules.
-  \item \textbf{Espresso} for UI automation, verifying button actions, alerts, and camera permissions.
-  \item \textbf{Android Instrumentation Tests} for end-to-end validation on physical Snapdragon devices or emulators.
-  \item \textbf{PyTest (optional)} for off-device model validation when retraining or benchmarking ML inference.
+  \item \textbf{JUnit~5} for unit tests of Kotlin classes and logic modules.
+  \item \textbf{Espresso} for UI automation, checking button actions, alerts, and camera permissions.
+  \item \textbf{Android Instrumentation Tests} for end-to-end checks on physical Snapdragon devices and emulators.
+  \item \textbf{PyTest} (optional) for off-device model validation when retraining or benchmarking ML inference.
 \end{itemize}
-Test results are generated automatically within Gradle builds and stored in XML/HTML formats for traceability.
 
-\subsection{Steps for Installing Test Framework}
+Test results are produced automatically by Gradle and stored in XML/HTML reports for later review.
+
+\subsection{Steps for Installing the Test Framework}  % 8.1.1
 
 \begin{enumerate}
-  \item Install \textbf{Android Studio Electric Eel or later}.
+  \item Install \textbf{Android Studio Electric Eel} or a later version.
   \item Clone the Git repository and open the project in Android Studio.
-  \item Ensure the SDK version matches the target API Level 33 and that the \texttt{androidTest} and \texttt{test} source sets are present.
-  \item Verify Gradle dependencies include \texttt{junit:5.x}, \texttt{androidx.test.espresso:espresso-core}, and \texttt{androidx.test.ext:junit}.
-  \item Connect a physical Snapdragon test device or launch an Android emulator with camera support.
+  \item Make sure the SDK version matches the target API level (API~33) and that the \texttt{androidTest} and \texttt{test} source sets exist.
+  \item Check that Gradle includes the dependencies
+        \texttt{junit:5.x}, \texttt{androidx.test.espresso:espresso-core}, and
+        \texttt{androidx.test.ext:junit}.
+  \item Connect a physical Snapdragon test device or start an Android emulator with camera support.
 \end{enumerate}
 
-\subsection{Steps for Running Test Cases}
+\subsection{Steps for Running Test Cases}  % 8.1.2
 
 \begin{enumerate}
-  \item In Android Studio, select \texttt{Run → Run Tests} or execute via terminal:  
-        \texttt{./gradlew test connectedAndroidTest}
-  \item Observe test execution results in the Run panel or in the generated report under \texttt{build/reports/tests/}.
-  \item For model-level or Python tests, run: \texttt{pytest tests/} within the ML subdirectory.
-  \item Log or screenshot any failing test results for issue tracking in GitHub.
+  \item In Android Studio, select \texttt{Run $\rightarrow$ Run Tests}, or run  
+        \texttt{./gradlew test connectedAndroidTest} from the terminal.
+  \item View the results in the Run panel or in the generated reports under \texttt{build/reports/tests/}.
+  \item For model-level Python tests, run \texttt{pytest tests/} in the ML subdirectory.
+  \item Record or screenshot any failing tests and attach them to the related GitHub issue.
 \end{enumerate}
 
-\section{Test Case Design}
+% ----------------------------------------------------------------------------- 
+\section{Test Case Designs}  % 8.2
 
-Each test case validates one or more functional requirements.  
-Table summaries and full traceability appear in Appendix T; the short descriptions below highlight representative cases.
+Each test case is linked to one or more functional requirements.  
+The full list and traceability matrix are given in Appendix~T; this section only gives short descriptions of representative cases.
 
 \begin{itemize}
-  \item \textbf{TC-01: Launch and Permission Check} – Verify the app requests camera and storage permissions correctly on first launch.
+  \item \textbf{TC-01: Launch and Permission Check} – Verify that the app starts correctly and requests camera and storage permissions on first launch.
   \item \textbf{TC-02: Start Monitoring Session} – Confirm that starting a session activates the camera feed and model inference.
-  \item \textbf{TC-03: Drowsiness Detection Accuracy} – Ensure alerts trigger when simulated eye-closure exceeds the configured threshold.
-  \item \textbf{TC-04: Distraction Detection Accuracy} – Validate that alerts trigger when the driver’s head yaw remains beyond the limit for a set duration.
-  \item \textbf{TC-05: Alert Handling and Snooze} – Test that the user can acknowledge or snooze alerts, pausing new notifications temporarily.
-  \item \textbf{TC-06: Settings Adjustment Persistence} – Confirm sensitivity and alert volume changes remain saved across app restarts.
-  \item \textbf{TC-07: Data Privacy Verification} – Validate that no user data or images are transmitted externally without consent.
+  \item \textbf{TC-03: Drowsiness Detection Accuracy} – Check that alerts are raised when simulated eye closure stays above the configured threshold.
+  \item \textbf{TC-04: Distraction Detection Accuracy} – Check that alerts are raised when the driver’s head yaw is out of range for longer than the allowed duration.
+  \item \textbf{TC-05: Alert Handling and Snooze} – Verify that the user can acknowledge or snooze alerts and that snoozing suppresses new alerts for the correct time window.
+  \item \textbf{TC-06: Settings Persistence} – Confirm that sensitivity and alert volume settings stay the same after the app is closed and restarted.
+  \item \textbf{TC-07: Data Privacy Verification} – Confirm that no user images or sensor data are sent off-device without explicit consent.
 \end{itemize}
 
-\subsection{Test Suites}
+Test cases are grouped into the following suites for regression runs:
 
-Test cases are organized into logical suites for efficient regression testing:
 \begin{itemize}
-  \item \textbf{Unit Test Suite} – Validates individual Kotlin classes such as \texttt{AlertManager}, \texttt{CameraHandler}, and configuration modules.
-  \item \textbf{Integration Test Suite} – Confirms that camera, ML inference, and alert modules interact correctly through controller interfaces.
-  \item \textbf{System Test Suite} – Executes the complete ALVION workflow on-device, measuring real-time detection and response latency.
-  \item \textbf{Acceptance Test Suite} – Validates user-level requirements and MVP success criteria during stakeholder demonstration.
+  \item \textbf{Unit Test Suite} – Individual Kotlin classes such as \texttt{AlertManager}, \texttt{CameraHandler}, and configuration modules.
+  \item \textbf{Integration Test Suite} – Interaction between the camera, ML inference, and alert modules.
+  \item \textbf{System Test Suite} – End-to-end ALVION workflow on-device, including detection and alert timing.
+  \item \textbf{Acceptance Test Suite} – User-level scenarios and MVP success criteria used for demonstrations.
 \end{itemize}
 
-\subsection{Unit and Integration Test Cases}
+% ----------------------------------------------------------------------------- 
+\section{Test Execution Reports}  % 8.3
+
+This section briefly summarizes how the tests were executed and the overall results for unit, integration, system, and acceptance testing.
+
+\subsection{Unit and Integration Testing Report}  % 8.3.1
 
 \begin{itemize}
-  \item \textbf{UT-01: AlertManager Logic} – Verify correct mapping between drowsiness probability and alert state transitions.
-  \item \textbf{UT-02: CameraHandler Initialization} – Ensure camera feed starts and stops cleanly without resource leaks.
-  \item \textbf{IT-01: Model–Alert Pipeline} – Validate data passes correctly from frame analyzer to ML model and into alert generation logic.
+  \item The core modules \texttt{CameraHandler}, \texttt{InferencePipeline}, and \texttt{AlertManager} were tested with JUnit~5 inside Android Studio.
+  \item Normal and boundary inputs were used to check data flow and state changes.
+  \item Mock frames and synthetic probability values were used to verify alert thresholds and state transitions.
+  \item All unit and integration tests passed, with full statement coverage in the core logic layer.
 \end{itemize}
 
-\subsection{System Test Cases}
+\subsection{System Testing Report}  % 8.3.2
 
 \begin{itemize}
-  \item \textbf{ST-01: End-to-End Drowsiness Detection} – Simulate prolonged eye closure and verify timely alert output.
-  \item \textbf{ST-02: End-to-End Distraction Detection} – Simulate driver looking away and confirm system response within latency limits.
-  \item \textbf{ST-03: Performance and Thermal Monitoring} – Measure frame rate, CPU load, and device temperature stability during operation.
+  \item End-to-end tests ran on both Snapdragon reference devices and commercial Android phones.
+  \item Simulated driving sessions with varied lighting and camera angles were used to check drowsiness and distraction detection.
+  \item The system kept real-time performance (at least 15~FPS) with an average alert latency of about 180~ms.
+  \item Profiling showed that CPU usage stayed within the 40\% target during continuous monitoring.
+  \item No crashes or data loss were observed during 2-hour continuous sessions.
 \end{itemize}
 
-\subsection{Acceptance Test Cases}
+\subsection{Acceptance Testing Report}  % 8.3.3
 
 \begin{itemize}
-  \item \textbf{AT-01: Functional Requirement Validation} – Demonstrate that each functional requirement (UF-A through UF-J) is met on a Snapdragon test device.
-  \item \textbf{AT-02: User Experience and Usability} – Confirm the app can be launched, used, and closed safely with minimal interaction.
-  \item \textbf{AT-03: Privacy Compliance} – Validate adherence to on-device processing and local-storage requirements under GDPR/CCPA constraints.
-  \item \textbf{AT-04: MVP Demonstration Acceptance} – Verify that stakeholders approve the end-to-end functionality and performance for the initial product release.
+  \item Final acceptance tests were run together with mentors and stakeholders.
+  \item All functional requirements (FR-01 to FR-10) were demonstrated on-device.
+  \item Test users reported that the app was simple to start, use, and exit without extra training.
+  \item All MVP acceptance criteria from the project plan were met.
 \end{itemize}
 
-% ========================= 8.3 TEST CASE EXECUTION REPORT =========================
-\section{{Test Case Execution Report}}
-This section summarizes the testing activities and corresponding results conducted for unit, integration, system, and acceptance testing.  
-Each subsection below provides a brief overview of how the ALVION system was validated to meet functional and non-functional requirements.
+% ----------------------------------------------------------------------------- 
+\section{Meeting Functional Requirements}  % 8.4
 
-% ---------- 8.3.1 Unit/Integration Testing Report ----------
-\subsubsection{{Unit/Integration Testing Report}}
+Section~4.2.1 defines the user functional requirements (FR-01 to FR-10).  
+Each requirement is linked to at least one test case in Appendix~T. Based on the execution reports in Section~8.3, the coverage can be summarized as follows:
+
 \begin{itemize}
-  \item All major modules including \texttt{CameraHandler}, \texttt{InferencePipeline}, and \texttt{AlertManager} were tested using JUnit~5 in Android Studio.
-  \item Each function and data flow was verified for correct operation under expected and boundary conditions.
-  \item Mock data and simulated inputs confirmed the reliability of alert triggers and rule thresholds.
-  \item All unit and integration tests passed successfully with 100\% statement coverage in the core logic layer.
+  \item \textbf{FR-01--FR-03 (launch, permissions, and session control).}  
+  These requirements are mainly covered by TC-01, TC-02, ST-01, ST-02, and AT-01.  
+  The app launches reliably, shows the disclaimer, requests the correct permissions, and lets the user start and stop monitoring.  
+  All related tests passed on both emulators and physical devices, so these requirements are fully met.
+
+  \item \textbf{FR-04--FR-07 (drowsiness / distraction detection and alerts).}  
+  These requirements are covered by TC-03, TC-04, TC-05, ST-01, ST-02, AT-01, and AT-02.  
+  During testing, drowsiness and distraction events were detected within the allowed reaction time, and alerts were raised with sound, vibration, and on-screen messages.  
+  Alert acknowledgement and snooze behaved as expected.  
+  Within the scope of the MVP, these requirements are considered met.
+
+  \item \textbf{FR-08--FR-10 (settings, data handling, and basic privacy controls).}  
+  These requirements are covered by TC-06, TC-07, ST-03, and AT-03.  
+  Changes to sensitivity and alert volume persisted across restarts, and no user data left the device without consent.  
+  Performance and thermal limits stayed within the ranges specified in the requirements.  
+  All related tests passed, so these requirements are also met for the current release.
 \end{itemize}
 
-% ---------- 8.3.2 System Testing Report ----------
-\subsubsection{{System Testing Report}}
-\begin{itemize}
-  \item End-to-end testing was performed on Snapdragon reference and commercial Android devices.
-  \item Real-world driving simulations validated drowsiness and distraction detection accuracy under varied lighting and camera angles.
-  \item The system maintained real-time performance (≥15 FPS) and low alert latency (~180 ms average).
-  \item Performance profiling confirmed CPU utilization remained within the defined 40\% target.
-  \item No system crashes or data losses occurred during continuous operation over 2-hour sessions.
-\end{itemize}
+% ----------------------------------------------------------------------------- 
+\section{Meeting Non-Functional Requirements}  % 8.5
 
-% ---------- 8.3.3 Acceptance Testing Report ----------
-\subsubsection{{Acceptance Testing Report}}
-\begin{itemize}
-  \item Final acceptance testing was conducted in coordination with mentors and stakeholders.
-  \item All functional requirements (FR-01 through FR-10) were demonstrated successfully on-device.
-  \item User feedback confirmed the app’s usability, accessibility, and responsiveness.
-  \item The system met all MVP acceptance criteria outlined in the project plan.
-\end{itemize}
-
-% ========================= 8.4 MEETING NON-FUNCTIONAL REQUIREMENTS =========================
-\section{{Meeting Non-Functional Requirements}}
-This section evaluates how well the ALVION system fulfills the non-functional requirements described in Section~4.2.2.  
-Each quality attribute (usability, performance, reliability, etc.) is assessed based on observed testing outcomes.
+This section evaluates how well ALVION meets the non-functional requirements from Section~4.2.2, using the results from the previous subsections.
 
 \begin{itemize}
-  \item \textbf{Usability:}  
-  The app’s interface was validated for clarity and accessibility. Users were able to start monitoring within 10 seconds of launch, and alerts were easily distinguishable through visual, audio, and haptic feedback.
+  \item \textbf{Usability.}  
+  Test users were able to start monitoring within about 10~seconds of launch.  
+  Alert messages and icons were clear, and the combination of visual, audio, and haptic feedback made it easy to notice critical events.
 
-  \item \textbf{Performance:}  
-  The system maintained an average of 18--22 FPS during continuous inference and an average alert latency of 180~ms, meeting real-time performance requirements.
+  \item \textbf{Performance.}  
+  System tests showed a frame rate of roughly 18--22~FPS during continuous inference and an average alert latency of around 180~ms.  
+  This meets the real-time performance targets set for the MVP.
 
-  \item \textbf{Reliability:}  
-  Testing showed zero crashes during extended use. The app resumed correctly after interruptions such as screen locks or app minimization.
+  \item \textbf{Reliability.}  
+  No crashes were observed during extended test runs.  
+  The app resumed correctly after screen lock, app minimization, and other typical interruptions.
 
-  \item \textbf{Security and Privacy:}  
-  All processing occurred locally on-device. No user data or images were transmitted externally, satisfying privacy-by-design objectives.
+  \item \textbf{Security and Privacy.}  
+  All processing stays on the device.  
+  No images or sensor streams are uploaded by default, and consent is required before any export.  
+  This matches the privacy-by-design goals and the GDPR/CCPA constraints defined for the project.
 
-  \item \textbf{Development Standards:}  
-  Code was maintained in a Git repository with structured branching and mandatory review checks. Unit and integration tests achieved complete functional coverage.
+  \item \textbf{Development Practices.}  
+  The code base is maintained in Git with feature branches and pull requests.  
+  Unit and integration tests run as part of the review process, and core logic has full statement coverage.
 
-  \item \textbf{Environmental Robustness:}  
-  The system maintained accuracy under varied lighting conditions (day, night, and mixed) and device orientations (portrait and landscape).
+  \item \textbf{Environmental Robustness.}  
+  System tests under different lighting conditions (day, night, mixed) and device orientations (portrait and landscape) showed stable detection and alert behaviour.
 
-  \item \textbf{Compliance and Safety:}  
-  Startup safety disclaimers were verified. The app complies with GDPR and CCPA guidelines for data consent and retention.
+  \item \textbf{Compliance and Safety.}  
+  Startup safety messages were verified in testing.  
+  The current version of ALVION respects the data consent and retention rules outlined in the project’s compliance requirements.
 \end{itemize}
 
 \clearpage
