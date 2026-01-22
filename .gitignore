@@ -1,15 +1,29 @@
+# Built artifacts
+bin/
+gen/
+out/
+build/
+.gradle/
+app/build/
+
+# Kotlin / IDE
+.kotlin/
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+*.ipr
+*.iws
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+
+# Local configuration
 local.properties
+capture/
+
+# Secrets & Keys (Never push these!)
+*.jks
+*.keystore
+google-services.json
+
+# Temporary / Log files
+*.log
+.temp/
+.tmp/
