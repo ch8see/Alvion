@@ -1,12 +1,10 @@
-// HomeScreen.kt
-package com.example.alvion.ui
+package com.qualcomm.alvion.feature.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -18,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.alvion.ui.theme.ALVIONTheme
+import com.qualcomm.alvion.core.ui.theme.ALVIONTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +27,7 @@ fun HomeScreen(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar( // stable Material 3 top app bar
+            CenterAlignedTopAppBar(
                 title = { Text("ALVION") }
             )
         }
@@ -42,7 +40,6 @@ fun HomeScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Hero card
             ElevatedCard(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier.padding(20.dp),
@@ -70,7 +67,6 @@ fun HomeScreen(
                 }
             }
 
-            // Quick actions
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -93,7 +89,6 @@ fun HomeScreen(
                 }
             }
 
-            // Status / tips
             ElevatedCard(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -101,7 +96,7 @@ fun HomeScreen(
                 ) {
                     Text("Quick Tips", style = MaterialTheme.typography.titleMedium)
                     AssistChip(
-                        onClick = { /* hook up later */ },
+                        onClick = { },
                         label = { Text("Camera permission required") }
                     )
                     Text(
@@ -115,7 +110,6 @@ fun HomeScreen(
 
             Spacer(Modifier.height(8.dp))
 
-            // Footer
             Text(
                 "v0.1 • Phase 1 UI",
                 style = MaterialTheme.typography.labelMedium,

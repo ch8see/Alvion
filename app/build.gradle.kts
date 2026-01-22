@@ -5,15 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.alvion"
-    compileSdk {
-        version = release(36)
-    }
+    namespace = "com.qualcomm.alvion"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.alvion"
+        applicationId = "com.qualcomm.alvion"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -54,13 +52,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.camera.view)
 
-    // Unit tests
     testImplementation(libs.junit)
-
-    // ✅ Instrumented / UI tests (updated)
-    // Remove old:
-    // androidTestImplementation(libs.androidx.junit)
-    // androidTestImplementation(libs.androidx.espresso.core)
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -70,7 +62,6 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
-    // Debug-only tooling
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 

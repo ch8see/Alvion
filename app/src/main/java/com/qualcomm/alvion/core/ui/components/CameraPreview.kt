@@ -1,5 +1,4 @@
-package com.example.alvion.ui.theme
-
+package com.qualcomm.alvion.core.ui.components
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -32,7 +31,6 @@ fun CameraPreviewBox(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    // Check if we already have CAMERA permission
     var hasCameraPermission by remember {
         mutableStateOf(
             ContextCompat.checkSelfPermission(
@@ -42,14 +40,12 @@ fun CameraPreviewBox(
         )
     }
 
-    // Launcher to request CAMERA permission at runtime
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
         hasCameraPermission = granted
     }
 
-    // On first composition, request permission if not granted
     LaunchedEffect(Unit) {
         if (!hasCameraPermission) {
             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -57,14 +53,12 @@ fun CameraPreviewBox(
     }
 
     if (!hasCameraPermission) {
-        // Simple placeholder while permission is not granted
         Box(modifier = modifier, contentAlignment = Alignment.Center) {
             Text("Camera permission required")
         }
         return
     }
 
-    // We have permission: show a real CameraX PreviewView inside Compose
     AndroidView(
         modifier = modifier,
         factory = { ctx ->

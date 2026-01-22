@@ -1,4 +1,4 @@
-package com.example.alvion.ui.theme
+package com.qualcomm.alvion.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -39,7 +39,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun ALVIONTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Set to false for consistent branding colors
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {

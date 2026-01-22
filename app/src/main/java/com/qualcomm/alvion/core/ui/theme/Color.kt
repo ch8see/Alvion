@@ -1,4 +1,4 @@
-package com.example.alvion.ui.theme
+package com.qualcomm.alvion.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

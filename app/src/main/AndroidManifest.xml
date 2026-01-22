@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.alvion">
+    package="com.qualcomm.alvion">
 
     <!-- Emergency Call Permission (not required for ACTION_DIAL, but ok to keep) -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
