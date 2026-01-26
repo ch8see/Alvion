@@ -114,37 +114,6 @@ git push
 
 Then run `latexmk -c` to remove aux files and continue.
 
-## PR title & description template
-
-Use a clear PR title like:
-
-```
-docs: clarify architecture diagram and fix image paths
-```
-
-Example PR body:
-
-```
-What:
-- Fixed several image paths in `doc/designDoc.tex` to `doc/assets/`.
-- Converted the architecture PDF to a PNG and adjusted scaling so it fits the page.
-
-Why:
-- Paths were incorrect and caused build failures for other contributors.
-- Rasterized the large diagram to avoid layout issues when including a full-page PDF.
-
-How to test locally:
-1. Pull the branch.
-2. Run `cd doc && latexmk -pdf designDoc.tex`.
-3. Verify the generated PDF opens and the first page/cover looks correct.
-
-Checklist:
-- [ ] Build succeeds locally
-- [ ] No LaTeX auxiliary files committed
-- [ ] Images render and fit pages
-- [ ] PR description explains visible changes
-```
-
 ## Image conversion tips (PDF → PNG)
 
 If a large PDF diagram doesn't fit correctly or causes layout problems, convert it to a high-resolution PNG and include it with `\\includegraphics`.
