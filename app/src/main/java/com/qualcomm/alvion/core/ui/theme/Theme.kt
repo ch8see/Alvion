@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -19,21 +20,21 @@ private val DarkColorScheme = darkColorScheme(
     primary = BluePrimaryDark,
     secondary = BlueSecondaryDark,
     tertiary = AccentOrangeDark,
-    background = SurfaceDark,
-    surface = SurfaceDark,
+    background = Color.White,
+    surface = Color.White,
     onPrimary = TextDark,
     onSecondary = TextLight,
     onTertiary = TextLight,
-    onBackground = TextLight,
-    onSurface = TextLight
+    onBackground = TextDark,
+    onSurface = TextDark
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = BluePrimary,
     secondary = BlueSecondary,
     tertiary = AccentOrange,
-    background = SurfaceLight,
-    surface = SurfaceLight,
+    background = Color.White,
+    surface = Color.White,
     onPrimary = TextLight,
     onSecondary = TextLight,
     onTertiary = TextDark,
@@ -50,7 +51,6 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
 )
-
 
 @Composable
 fun ALVIONTheme(
@@ -73,4 +73,3 @@ fun ALVIONTheme(
         content = content
     )
 }
-
