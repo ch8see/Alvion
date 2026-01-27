@@ -1,4 +1,4 @@
-package com.example.alvion
+package com.qualcomm.alvion
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.alvion.ui.StartScreen
-import com.example.alvion.ui.SessionScreen
-import com.example.alvion.ui.theme.ALVIONTheme
+import com.qualcomm.alvion.core.ui.theme.ALVIONTheme
+import com.qualcomm.alvion.feature.start.StartScreen
+import com.qualcomm.alvion.feature.session.SessionScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

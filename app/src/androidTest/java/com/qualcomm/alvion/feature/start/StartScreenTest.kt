@@ -1,5 +1,4 @@
-// app/src/androidTest/java/com/example/alvion/ui/StartScreenTest.kt
-package com.example.alvion.ui
+package com.qualcomm.alvion.feature.start
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -9,6 +8,8 @@ import androidx.compose.ui.test.performClick
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+// Importing the actual StartScreen from the feature package
+import com.qualcomm.alvion.feature.start.StartScreen
 
 class StartScreenTest {
 
@@ -19,19 +20,16 @@ class StartScreenTest {
     fun startButton_isDisplayed_andCallsOnStart() {
         var started = false
 
-        // Set the StartScreen composable
         composeRule.setContent {
             StartScreen(onStart = { started = true })
         }
 
-        // Find the "Start Session" button by its text,
-        // ensure it's visible, then click it
         composeRule
             .onNodeWithText("Start Session")
             .assertIsDisplayed()
             .performClick()
 
-        // Verify that the callback was invoked
-        assertTrue("onStart should be called when Start Session is clicked", started)
+        // Using named arguments to fix the type mismatch
+        assertTrue(message = "onStart should be called when Start Session is clicked", condition = started)
     }
 }
