@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.qualcomm.alvion.core.ui.theme.ALVIONTheme
+import com.qualcomm.alvion.feature.intro.IntroScreen
 import com.qualcomm.alvion.feature.start.StartScreen
 import com.qualcomm.alvion.feature.session.SessionScreen
 
@@ -27,7 +28,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun AppNav() {
     val nav = rememberNavController()
-    NavHost(navController = nav, startDestination = "start") {
+    NavHost(navController = nav, startDestination = "intro") {
+        composable("intro") {
+            IntroScreen(onComplete = {
+                nav.navigate("start") {
+                    // Pop up to the intro screen and remove it from the backstack
+                    // so the user can't go back to the intro after getting started.
+                    popUpTo("intro") { inclusive = true }
+                }
+            })
+        }
         composable("start") {
             StartScreen(onStart = { nav.navigate("session") })
         }
