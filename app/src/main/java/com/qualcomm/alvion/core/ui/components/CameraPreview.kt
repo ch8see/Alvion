@@ -3,6 +3,7 @@ package com.qualcomm.alvion.core.ui.components
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -22,11 +23,16 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.google.mlkit.vision.face.Face
+import java.util.concurrent.Executors
 
 @Composable
 fun CameraPreviewBox(
     modifier: Modifier = Modifier,
-    useFrontCamera: Boolean = true
+    useFrontCamera: Boolean = true,
+    analyzer: ImageAnalysis.Analyzer? = null,
+    faces: List<Face> = emptyList(),
+    graphicOverlay: @Composable (List<Face>) -> Unit = {}
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -59,40 +65,60 @@ fun CameraPreviewBox(
         return
     }
 
-    AndroidView(
-        modifier = modifier,
-        factory = { ctx ->
-            val previewView = PreviewView(ctx).apply {
-                scaleType = PreviewView.ScaleType.FILL_CENTER
+    Box(modifier = modifier) {
+        AndroidView(
+            modifier = Modifier.matchParentSize(),
+            factory = { ctx ->
+                val previewView = PreviewView(ctx).apply {
+                    scaleType = PreviewView.ScaleType.FILL_CENTER
+                }
+
+                val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
+                cameraProviderFuture.addListener({
+                    val cameraProvider = cameraProviderFuture.get()
+
+                    val preview = Preview.Builder().build().also { p ->
+                        p.setSurfaceProvider(previewView.surfaceProvider)
+                    }
+
+                    val cameraSelector = if (useFrontCamera) {
+                        CameraSelector.DEFAULT_FRONT_CAMERA
+                    } else {
+                        CameraSelector.DEFAULT_BACK_CAMERA
+                    }
+
+                    val imageAnalysis = analyzer?.let {
+                        ImageAnalysis.Builder()
+                            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                            .build()
+                            .also { it.setAnalyzer(Executors.newSingleThreadExecutor(), analyzer) }
+                    }
+
+
+                    try {
+                        cameraProvider.unbindAll()
+                        if (imageAnalysis != null) {
+                            cameraProvider.bindToLifecycle(
+                                lifecycleOwner,
+                                cameraSelector,
+                                preview,
+                                imageAnalysis
+                            )
+                        } else {
+                            cameraProvider.bindToLifecycle(
+                                lifecycleOwner,
+                                cameraSelector,
+                                preview
+                            )
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }, ContextCompat.getMainExecutor(ctx))
+
+                previewView
             }
-
-            val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
-            cameraProviderFuture.addListener({
-                val cameraProvider = cameraProviderFuture.get()
-
-                val preview = Preview.Builder().build().also { p ->
-                    p.setSurfaceProvider(previewView.surfaceProvider)
-                }
-
-                val cameraSelector = if (useFrontCamera) {
-                    CameraSelector.DEFAULT_FRONT_CAMERA
-                } else {
-                    CameraSelector.DEFAULT_BACK_CAMERA
-                }
-
-                try {
-                    cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(
-                        lifecycleOwner,
-                        cameraSelector,
-                        preview
-                    )
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }, ContextCompat.getMainExecutor(ctx))
-
-            previewView
-        }
-    )
+        )
+        graphicOverlay(faces)
+    }
 }
