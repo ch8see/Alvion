@@ -1,0 +1,47 @@
+name: ALVION-CI
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # simply copy the repo on to the VM/runner
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      # setup kotlin
+      - name: Set up Kotlin
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "gradle"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build + Test
+        run: ./gradlew clean test
+
+    # keep test reports as artifacts
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            **/build/reports/tests/**
+            **/build/test-results/test/**
+
+
+
+
+
+
+
+
+
