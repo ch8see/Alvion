@@ -1,4 +1,4 @@
-name: testing-ci-pipeline
+name: ALVION-CI
 on:
   push:
     branches: ["main"]
