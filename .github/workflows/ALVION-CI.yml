@@ -24,6 +24,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Decode Google Services JSON
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
       - name: Build + Test
         run: ./gradlew clean test
 
@@ -36,12 +39,3 @@ jobs:
           path: |
             **/build/reports/tests/**
             **/build/test-results/test/**
-
-
-
-
-
-
-
-
-
