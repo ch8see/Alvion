@@ -8,10 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.qualcomm.alvion.core.ui.theme.ALVIONTheme
+import com.qualcomm.alvion.feature.auth.LoginScreen
 import com.qualcomm.alvion.feature.intro.IntroScreen
 import com.qualcomm.alvion.feature.start.StartScreen
 import com.qualcomm.alvion.feature.session.SessionScreen
+import com.qualcomm.alvion.feature.home.HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,18 +31,39 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun AppNav() {
     val nav = rememberNavController()
-    NavHost(navController = nav, startDestination = "intro") {
+    val auth = FirebaseAuth.getInstance()
+
+    // Start at login if not authenticated, otherwise go to home.
+    val startDest = if (auth.currentUser == null) "login" else "home"
+
+    NavHost(navController = nav, startDestination = startDest) {
+        composable("login") {
+            LoginScreen(onLoginSuccess = {
+                nav.navigate("intro") {
+                    popUpTo("login") { inclusive = true }
+                }
+            })
+        }
         composable("intro") {
             IntroScreen(onComplete = {
-                nav.navigate("start") {
-                    // Pop up to the intro screen and remove it from the backstack
-                    // so the user can't go back to the intro after getting started.
+                nav.navigate("home") {
                     popUpTo("intro") { inclusive = true }
                 }
             })
         }
         composable("start") {
-            StartScreen(onStart = { nav.navigate("session") })
+            StartScreen(onStart = { nav.navigate("home") })
+        }
+        composable("home") {
+            HomeScreen(
+                onStart = { nav.navigate("session") },
+                onSignOut = {
+                    auth.signOut()
+                    nav.navigate("login") {
+                        popUpTo("home") { inclusive = true }
+                    }
+                }
+            )
         }
         composable("session") {
             SessionScreen(onEnd = { nav.popBackStack() })

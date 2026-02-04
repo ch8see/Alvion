@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.qualcomm.alvion">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Emergency Call Permission (not required for ACTION_DIAL, but ok to keep) -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- Vibration permission for Vibrator API -->
