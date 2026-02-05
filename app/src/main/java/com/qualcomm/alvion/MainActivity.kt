@@ -11,10 +11,10 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.qualcomm.alvion.core.ui.theme.ALVIONTheme
 import com.qualcomm.alvion.feature.auth.LoginScreen
-import com.qualcomm.alvion.feature.intro.IntroScreen
-import com.qualcomm.alvion.feature.start.StartScreen
-import com.qualcomm.alvion.feature.session.SessionScreen
 import com.qualcomm.alvion.feature.home.HomeScreen
+import com.qualcomm.alvion.feature.intro.IntroScreen
+import com.qualcomm.alvion.feature.session.SessionScreen
+import com.qualcomm.alvion.feature.start.StartScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +62,7 @@ private fun AppNav() {
                     nav.navigate("login") {
                         popUpTo("home") { inclusive = true }
                     }
-                }
+                },
             )
         }
         composable("session") {

@@ -17,33 +17,36 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun StartScreen(onStart: () -> Unit) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary),
+        contentAlignment = Alignment.Center,
     ) {
         ElevatedButton(
             onClick = onStart,
-            modifier = Modifier
-                .size(220.dp)
-                .clip(CircleShape),
+            modifier =
+                Modifier
+                    .size(220.dp)
+                    .clip(CircleShape),
             shape = CircleShape,
-            colors = ButtonDefaults.elevatedButtonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            )
+            colors =
+                ButtonDefaults.elevatedButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(
                     Icons.Filled.PlayArrow,
                     contentDescription = null,
-                    modifier = Modifier.size(56.dp)
+                    modifier = Modifier.size(56.dp),
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
                     "Start Session",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }
