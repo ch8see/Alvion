@@ -6,7 +6,6 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,75 +32,79 @@ fun SessionScreen(onEnd: () -> Unit) {
     val context = LocalContext.current
     val emergencyNumber = "9513034883"
 
-    val mediaPlayer: MediaPlayer = remember {
-        val uri: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+    val mediaPlayer: MediaPlayer =
+        remember {
+            val uri: Uri? =
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                    ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
 
-        if (uri == null) {
-            MediaPlayer()
-        } else {
-            MediaPlayer().apply {
-                try {
-                    setAudioAttributes(
-                        AudioAttributes.Builder()
-                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .build()
-                    )
-                    setDataSource(context, uri)
-                    isLooping = false // Make sure the sound doesn't loop
-                    prepare()
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            if (uri == null) {
+                MediaPlayer()
+            } else {
+                MediaPlayer().apply {
+                    try {
+                        setAudioAttributes(
+                            AudioAttributes.Builder()
+                                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                .build(),
+                        )
+                        setDataSource(context, uri)
+                        isLooping = false // Make sure the sound doesn't loop
+                        prepare()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }
-    }
 
     var faces by remember { mutableStateOf<List<Face>>(emptyList()) }
 
-    val faceDetectionAnalyzer = remember {
-        FaceDetectionAnalyzer(
-            onFacesDetected = { detectedFaces ->
-                faces = detectedFaces
-            },
-            onDrowsy = {
-                if (soundEnabled) {
-                    if (!mediaPlayer.isPlaying) {
-                        mediaPlayer.start()
+    val faceDetectionAnalyzer =
+        remember {
+            FaceDetectionAnalyzer(
+                onFacesDetected = { detectedFaces ->
+                    faces = detectedFaces
+                },
+                onDrowsy = {
+                    if (soundEnabled) {
+                        if (!mediaPlayer.isPlaying) {
+                            mediaPlayer.start()
+                        }
                     }
-                }
-            },
-            onDistracted = {
-                if (soundEnabled) {
-                    if (!mediaPlayer.isPlaying) {
-                        mediaPlayer.start()
+                },
+                onDistracted = {
+                    if (soundEnabled) {
+                        if (!mediaPlayer.isPlaying) {
+                            mediaPlayer.start()
+                        }
                     }
-                }
-            }
-        )
-    }
-
+                },
+            )
+        }
 
     DisposableEffect(Unit) {
         onDispose {
             try {
                 if (mediaPlayer.isPlaying) mediaPlayer.stop()
-            } catch (_: IllegalStateException) {}
+            } catch (_: IllegalStateException) {
+            }
             mediaPlayer.release()
         }
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         ElevatedCard(
             modifier = Modifier.fillMaxWidth().weight(1f),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
         ) {
             CameraPreviewBox(
                 modifier = Modifier.fillMaxSize(),
@@ -110,13 +113,17 @@ fun SessionScreen(onEnd: () -> Unit) {
                 faces = faces, // Pass the faces to the CameraPreviewBox
                 graphicOverlay = { detectedFaces ->
                     GraphicOverlay(faces = detectedFaces)
-                }
+                },
             )
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
             ElevatedCard(modifier = Modifier.weight(1f), shape = RoundedCornerShape(12.dp)) {
-                Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
                     Icon(imageVector = Icons.Filled.Info, contentDescription = null)
                     Column {
                         Text("Status Indicator", style = MaterialTheme.typography.labelLarge)
@@ -128,9 +135,13 @@ fun SessionScreen(onEnd: () -> Unit) {
             ElevatedCard(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
-                onClick = { makeEmergencyCall(context, emergencyNumber) }
+                onClick = { makeEmergencyCall(context, emergencyNumber) },
             ) {
-                Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
                     Icon(imageVector = Icons.Filled.Phone, contentDescription = "Emergency Call")
                     Column {
                         Text("Emergency", style = MaterialTheme.typography.labelLarge)
@@ -149,7 +160,10 @@ fun SessionScreen(onEnd: () -> Unit) {
                         onClick = { soundEnabled = !soundEnabled },
                         label = { Text("Sound") },
                         leadingIcon = { Icon(Icons.Filled.VolumeUp, contentDescription = "Sound") },
-                        colors = AssistChipDefaults.assistChipColors(containerColor = if (soundEnabled) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant)
+                        colors =
+                            AssistChipDefaults.assistChipColors(
+                                containerColor = if (soundEnabled) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+                            ),
                     )
                 }
             }
@@ -163,11 +177,19 @@ fun SessionScreen(onEnd: () -> Unit) {
     }
 }
 
-internal fun makeEmergencyCall(context: Context, emergencyNumber: String) {
+internal fun makeEmergencyCall(
+    context: Context,
+    emergencyNumber: String,
+) {
     if (emergencyNumber.isBlank()) return
-    val intent = Intent(Intent.ACTION_DIAL).apply {
-        data = Uri.parse("tel:$emergencyNumber")
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    val intent =
+        Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:$emergencyNumber")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+    try {
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
-    try { context.startActivity(intent) } catch (e: Exception) { e.printStackTrace() }
 }

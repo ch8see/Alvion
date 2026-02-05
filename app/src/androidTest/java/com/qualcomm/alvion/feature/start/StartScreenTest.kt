@@ -9,10 +9,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 // Importing the actual StartScreen from the feature package
-import com.qualcomm.alvion.feature.start.StartScreen
 
 class StartScreenTest {
-
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 

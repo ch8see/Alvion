@@ -24,7 +24,7 @@ fun HomeScreen(
     onStart: () -> Unit = {},
     onSettings: () -> Unit = {},
     onSummary: () -> Unit = {},
-    onSignOut: () -> Unit = {}
+    onSignOut: () -> Unit = {},
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Home", "History", "Insights", "Profile")
@@ -33,7 +33,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(tabs[selectedTab]) }
+                title = { Text(tabs[selectedTab]) },
             )
         },
         bottomBar = {
@@ -43,11 +43,11 @@ fun HomeScreen(
                         selected = selectedTab == index,
                         onClick = { selectedTab = index },
                         label = { Text(label) },
-                        icon = { Icon(icons[index], contentDescription = label) }
+                        icon = { Icon(icons[index], contentDescription = label) },
                     )
                 }
             }
-        }
+        },
     ) { inner ->
         Box(modifier = Modifier.padding(inner).fillMaxSize()) {
             when (selectedTab) {
@@ -61,33 +61,38 @@ fun HomeScreen(
 }
 
 @Composable
-private fun MainHomeTab(onStart: () -> Unit, onSettings: () -> Unit, onSummary: () -> Unit) {
+private fun MainHomeTab(
+    onStart: () -> Unit,
+    onSettings: () -> Unit,
+    onSummary: () -> Unit,
+) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         ElevatedCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     "Driver Monitoring",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Text(
                     "Detect drowsiness & distraction with a clean, simple workflow.",
                     style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Button(
                     onClick = onStart,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(Icons.Filled.PlayArrow, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
@@ -98,7 +103,7 @@ private fun MainHomeTab(onStart: () -> Unit, onSettings: () -> Unit, onSummary: 
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             OutlinedButton(onClick = onSettings, modifier = Modifier.weight(1f)) {
                 Icon(Icons.Filled.Settings, contentDescription = null)
@@ -115,15 +120,15 @@ private fun MainHomeTab(onStart: () -> Unit, onSettings: () -> Unit, onSummary: 
         ElevatedCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text("Quick Tips", style = MaterialTheme.typography.titleMedium)
                 AssistChip(onClick = { }, label = { Text("Camera permission required") })
                 Text(
                     "Run a simulation first if the camera pipeline isn’t ready. " +
-                    "Use Settings to adjust sensitivity and feature toggles.",
+                        "Use Settings to adjust sensitivity and feature toggles.",
                     style = MaterialTheme.typography.bodyMedium,
-                    lineHeight = 20.sp
+                    lineHeight = 20.sp,
                 )
             }
         }
@@ -136,17 +141,22 @@ private fun ProfileTab(onSignOut: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize().padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Icon(Icons.Default.AccountCircle, contentDescription = null, modifier = Modifier.size(100.dp), tint = MaterialTheme.colorScheme.primary)
+        Icon(
+            Icons.Default.AccountCircle,
+            contentDescription = null,
+            modifier = Modifier.size(100.dp),
+            tint = MaterialTheme.colorScheme.primary,
+        )
         Text(user?.email ?: "User Email", style = MaterialTheme.typography.titleMedium)
-        
+
         Spacer(modifier = Modifier.weight(1f))
-        
+
         Button(
             onClick = onSignOut,
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
         ) {
             Text("Sign Out")
         }

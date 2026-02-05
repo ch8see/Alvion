@@ -16,60 +16,65 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-private val DarkColorScheme = darkColorScheme(
-    primary = BluePrimaryDark,
-    secondary = BlueSecondaryDark,
-    tertiary = AccentOrangeDark,
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = TextDark,
-    onSecondary = TextLight,
-    onTertiary = TextLight,
-    onBackground = TextDark,
-    onSurface = TextDark
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = BluePrimary,
-    secondary = BlueSecondary,
-    tertiary = AccentOrange,
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = TextLight,
-    onSecondary = TextLight,
-    onTertiary = TextDark,
-    onBackground = TextDark,
-    onSurface = TextDark
-)
-
-val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+private val DarkColorScheme =
+    darkColorScheme(
+        primary = BluePrimaryDark,
+        secondary = BlueSecondaryDark,
+        tertiary = AccentOrangeDark,
+        background = Color.White,
+        surface = Color.White,
+        onPrimary = TextDark,
+        onSecondary = TextLight,
+        onTertiary = TextLight,
+        onBackground = TextDark,
+        onSurface = TextDark,
     )
-)
+
+private val LightColorScheme =
+    lightColorScheme(
+        primary = BluePrimary,
+        secondary = BlueSecondary,
+        tertiary = AccentOrange,
+        background = Color.White,
+        surface = Color.White,
+        onPrimary = TextLight,
+        onSecondary = TextLight,
+        onTertiary = TextDark,
+        onBackground = TextDark,
+        onSurface = TextDark,
+    )
+
+val Typography =
+    Typography(
+        bodyLarge =
+            TextStyle(
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                letterSpacing = 0.5.sp,
+            ),
+    )
 
 @Composable
 fun ALVIONTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    val colorScheme =
+        when {
+            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                val context = LocalContext.current
+                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            }
+            darkTheme -> DarkColorScheme
+            else -> LightColorScheme
         }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
 
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

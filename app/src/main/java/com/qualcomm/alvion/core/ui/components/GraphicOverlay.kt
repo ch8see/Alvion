@@ -19,7 +19,7 @@ fun GraphicOverlay(faces: List<Face>) {
                 color = Color.Red,
                 topLeft = Offset(bounds.left.toFloat(), bounds.top.toFloat()),
                 size = Size(bounds.width().toFloat(), bounds.height().toFloat()),
-                style = Stroke(width = 2f)
+                style = Stroke(width = 2f),
             )
         }
     }
