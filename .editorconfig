@@ -1,0 +1,25 @@
+root = true
+
+[*.kt]
+ktlint_standard_function-naming = disabled
+ktlint_standard_property-naming = disabled
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_max-line-length = disabled
+ktlint_standard_comment-wrapping = disabled
+ktlint_standard_discouraged-comment-location = disabled
+ktlint_standard_discouraged-comment-location = disabled
+ktlint_standard_if-else-wrapping = disabled
+
+
+
+[*.kts]
+ktlint_standard_function-naming = disabled
+ktlint_standard_property-naming = disabled
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_max-line-length = disabled
+ktlint_standard_comment-wrapping = disabled
+ktlint_standard_discouraged-comment-location = disabled
+ktlint_standard_discouraged-comment-location = disabled
+ktlint_standard_if-else-wrapping = disabled
+
+

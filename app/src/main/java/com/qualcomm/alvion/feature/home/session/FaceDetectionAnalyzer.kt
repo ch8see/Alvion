@@ -10,16 +10,16 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 class FaceDetectionAnalyzer(
     private val onFacesDetected: (List<Face>) -> Unit,
     private val onDrowsy: () -> Unit,
-    private val onDistracted: () -> Unit
+    private val onDistracted: () -> Unit,
 ) : ImageAnalysis.Analyzer {
-
     private var drowsinessCounter = 0
     private var distractionCounter = 0
 
-    private val highAccuracyOpts = FaceDetectorOptions.Builder()
-        .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
-        .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
-        .build()
+    private val highAccuracyOpts =
+        FaceDetectorOptions.Builder()
+            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
+            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+            .build()
 
     private val detector = FaceDetection.getClient(highAccuracyOpts)
 
@@ -67,7 +67,7 @@ class FaceDetectionAnalyzer(
                 .addOnFailureListener { e ->
                     e.printStackTrace()
                 }
-                .addOnCompleteListener { 
+                .addOnCompleteListener {
                     imageProxy.close()
                 }
         }

@@ -37,6 +37,12 @@ For a deep dive into the architecture, design decisions, and how to build the La
 - **Camera:** CameraX (Core, View, Lifecycle)
 - **Inference:** On-device processing (Privacy Focused)
 
+## ✅ Formatting Code Check / Code Formatting
+```bash
+   ./gradlew ktlintCheck
+   ./gradlew ktlintFormat
+
+   ```
 ---
 
 ## ⚖ License
