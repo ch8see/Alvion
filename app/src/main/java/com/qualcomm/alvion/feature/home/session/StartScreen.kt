@@ -1,4 +1,4 @@
-package com.qualcomm.alvion.feature.start
+package com.qualcomm.alvion.feature.home.session
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package com.qualcomm.alvion.feature.facedetection
+package com.qualcomm.alvion.feature.home.session
 
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy

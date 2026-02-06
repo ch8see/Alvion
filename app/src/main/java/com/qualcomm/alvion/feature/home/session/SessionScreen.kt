@@ -1,4 +1,4 @@
-package com.qualcomm.alvion.feature.session
+package com.qualcomm.alvion.feature.home.session
 
 import android.content.Context
 import android.content.Intent
@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.google.mlkit.vision.face.Face
 import com.qualcomm.alvion.core.ui.components.CameraPreviewBox
 import com.qualcomm.alvion.core.ui.components.GraphicOverlay
-import com.qualcomm.alvion.feature.facedetection.FaceDetectionAnalyzer
 
 @Composable
 fun SessionScreen(onEnd: () -> Unit) {
@@ -50,7 +49,7 @@ fun SessionScreen(onEnd: () -> Unit) {
                                 .build(),
                         )
                         setDataSource(context, uri)
-                        isLooping = false // Make sure the sound doesn't loop
+                        isLooping = false
                         prepare()
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -110,7 +109,7 @@ fun SessionScreen(onEnd: () -> Unit) {
                 modifier = Modifier.fillMaxSize(),
                 useFrontCamera = true,
                 analyzer = faceDetectionAnalyzer,
-                faces = faces, // Pass the faces to the CameraPreviewBox
+                faces = faces,
                 graphicOverlay = { detectedFaces ->
                     GraphicOverlay(faces = detectedFaces)
                 },

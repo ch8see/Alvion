@@ -11,12 +11,12 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.qualcomm.alvion.core.ui.theme.ALVIONTheme
 import com.qualcomm.alvion.feature.auth.LoginScreen
-import com.qualcomm.alvion.feature.home.HomeScreen
+import com.qualcomm.alvion.feature.home.session.SessionScreen
+import com.qualcomm.alvion.feature.home.session.StartScreen
 import com.qualcomm.alvion.feature.intro.IntroScreen
-import com.qualcomm.alvion.feature.session.SessionScreen
-import com.qualcomm.alvion.feature.start.StartScreen
+import com.qualcomm.alvion.feature.main.MainScreen
 
-class MainActivity : ComponentActivity() {
+class RootActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -55,7 +55,7 @@ private fun AppNav() {
             StartScreen(onStart = { nav.navigate("home") })
         }
         composable("home") {
-            HomeScreen(
+            MainScreen(
                 onStart = { nav.navigate("session") },
                 onSignOut = {
                     auth.signOut()
