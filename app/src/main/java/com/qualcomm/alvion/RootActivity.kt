@@ -11,8 +11,6 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.qualcomm.alvion.core.ui.theme.ALVIONTheme
 import com.qualcomm.alvion.feature.auth.LoginScreen
-import com.qualcomm.alvion.feature.home.session.SessionScreen
-import com.qualcomm.alvion.feature.home.session.StartScreen
 import com.qualcomm.alvion.feature.intro.IntroScreen
 import com.qualcomm.alvion.feature.shell.AppShell
 
@@ -51,12 +49,8 @@ private fun AppNav() {
                 }
             })
         }
-        composable("start") {
-            StartScreen(onStart = { nav.navigate("home") })
-        }
         composable("home") {
             AppShell(
-                onStart = { nav.navigate("session") },
                 onSignOut = {
                     auth.signOut()
                     nav.navigate("login") {
@@ -64,9 +58,6 @@ private fun AppNav() {
                     }
                 },
             )
-        }
-        composable("session") {
-            SessionScreen(onEnd = { nav.popBackStack() })
         }
     }
 }

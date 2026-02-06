@@ -18,7 +18,6 @@ import com.qualcomm.alvion.feature.profile.ProfileTab
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppShell(
-    onStart: () -> Unit = {},
     onSettings: () -> Unit = {},
     onSummary: () -> Unit = {},
     onSignOut: () -> Unit = {},
@@ -34,7 +33,6 @@ fun AppShell(
             Icons.Default.Person,
         )
 
-    // Your chosen blue (yes, it's a real blue)
     val selectedBlue = Color(0xFF2563EB)
 
     Scaffold(
@@ -80,7 +78,7 @@ fun AppShell(
     ) { inner ->
         Box(modifier = Modifier.padding(inner).fillMaxSize()) {
             when (selectedTab) {
-                0 -> HomeTab(onStart, onSettings, onSummary)
+                0 -> HomeTab(onSettings, onSummary)
                 1 -> PlaceholderTab("Activity History")
                 2 -> PlaceholderTab("Driving Insights")
                 3 -> ProfileTab(onSignOut)
