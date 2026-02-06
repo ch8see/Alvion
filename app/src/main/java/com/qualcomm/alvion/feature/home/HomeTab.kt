@@ -20,34 +20,35 @@ import androidx.compose.ui.unit.sp
 fun HomeTab(
     onStart: () -> Unit,
     onSettings: () -> Unit,
-    onSummary: () -> Unit
+    onSummary: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         ElevatedCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     "Driver Monitoring",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Text(
                     "Detect drowsiness & distraction with a clean, simple workflow.",
                     style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Button(
                     onClick = onStart,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(Icons.Filled.PlayArrow, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
@@ -58,7 +59,7 @@ fun HomeTab(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             OutlinedButton(onClick = onSettings, modifier = Modifier.weight(1f)) {
                 Icon(Icons.Filled.Settings, contentDescription = null)
@@ -75,15 +76,15 @@ fun HomeTab(
         ElevatedCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text("Quick Tips", style = MaterialTheme.typography.titleMedium)
                 AssistChip(onClick = { }, label = { Text("Camera permission required") })
                 Text(
                     "Run a simulation first if the camera pipeline isn’t ready. " +
-                    "Use Settings to adjust sensitivity and feature toggles.",
+                        "Use Settings to adjust sensitivity and feature toggles.",
                     style = MaterialTheme.typography.bodyMedium,
-                    lineHeight = 20.sp
+                    lineHeight = 20.sp,
                 )
             }
         }
