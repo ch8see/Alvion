@@ -14,7 +14,7 @@ import com.qualcomm.alvion.feature.auth.LoginScreen
 import com.qualcomm.alvion.feature.home.session.SessionScreen
 import com.qualcomm.alvion.feature.home.session.StartScreen
 import com.qualcomm.alvion.feature.intro.IntroScreen
-import com.qualcomm.alvion.feature.main.MainScreen
+import com.qualcomm.alvion.feature.shell.AppShell
 
 class RootActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ private fun AppNav() {
             StartScreen(onStart = { nav.navigate("home") })
         }
         composable("home") {
-            MainScreen(
+            AppShell(
                 onStart = { nav.navigate("session") },
                 onSignOut = {
                     auth.signOut()

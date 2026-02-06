@@ -1,4 +1,4 @@
-package com.qualcomm.alvion.feature.main
+package com.qualcomm.alvion.feature.shell
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -17,7 +17,7 @@ import com.qualcomm.alvion.feature.profile.ProfileTab
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(
+fun AppShell(
     onStart: () -> Unit = {},
     onSettings: () -> Unit = {},
     onSummary: () -> Unit = {},
