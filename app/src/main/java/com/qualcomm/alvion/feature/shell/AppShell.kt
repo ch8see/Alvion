@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.qualcomm.alvion.feature.home.HomeTab
 import com.qualcomm.alvion.feature.profile.ProfileTab
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppShell(
     onSettings: () -> Unit = {},
@@ -36,42 +35,26 @@ fun AppShell(
     val selectedBlue = Color(0xFF2563EB)
 
     Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(tabs[selectedTab]) },
-                colors =
-                    TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                    ),
-            )
-        },
         bottomBar = {
-            Column {
-                HorizontalDivider(
-                    thickness = 0.5.dp,
-                    color = Color.LightGray.copy(alpha = 0.3f),
-                )
-
-                NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    tonalElevation = 0.dp,
-                ) {
-                    tabs.forEachIndexed { index, label ->
-                        NavigationBarItem(
-                            selected = selectedTab == index,
-                            onClick = { selectedTab = index },
-                            label = { Text(label) },
-                            icon = { Icon(icons[index], contentDescription = label) },
-                            colors =
-                                NavigationBarItemDefaults.colors(
-                                    indicatorColor = Color.Transparent,
-                                    selectedIconColor = selectedBlue,
-                                    selectedTextColor = selectedBlue,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                ),
-                        )
-                    }
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.background,
+                tonalElevation = 0.dp,
+            ) {
+                tabs.forEachIndexed { index, label ->
+                    NavigationBarItem(
+                        selected = selectedTab == index,
+                        onClick = { selectedTab = index },
+                        label = { Text(label) },
+                        icon = { Icon(icons[index], contentDescription = label) },
+                        colors =
+                            NavigationBarItemDefaults.colors(
+                                indicatorColor = Color.Transparent,
+                                selectedIconColor = selectedBlue,
+                                selectedTextColor = selectedBlue,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            ),
+                    )
                 }
             }
         },
