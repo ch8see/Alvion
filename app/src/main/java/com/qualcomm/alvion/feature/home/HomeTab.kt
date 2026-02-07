@@ -30,9 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +42,6 @@ import com.qualcomm.alvion.feature.home.components.CameraPreviewBox
 import com.qualcomm.alvion.feature.home.components.GraphicOverlay
 import com.qualcomm.alvion.feature.home.util.FaceDetectionAnalyzer
 import kotlinx.coroutines.delay
-import kotlin.math.max
 
 @Composable
 fun HomeTab(
@@ -85,38 +84,43 @@ fun HomeTab(
         }
     }
 
-    val mediaPlayer = remember {
-        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-            ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-        MediaPlayer().apply {
-            try {
-                setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build())
-                setDataSource(context, uri!!)
-                prepare()
-            } catch (e: Exception) { e.printStackTrace() }
-        }
-    }
-
-    val faceDetectionAnalyzer = remember {
-        FaceDetectionAnalyzer(
-            onFacesDetected = { faces = it },
-            onDrowsy = {
-                warnings += 1
-                aiMessage = "Drowsiness detected. Cognitive check required!"
-                if (soundEnabled && !mediaPlayer.isPlaying) mediaPlayer.start()
-            },
-            onDistracted = {
-                warnings += 1
-                aiMessage = "Please stay focused on the road."
-                if (soundEnabled && !mediaPlayer.isPlaying) mediaPlayer.start()
+    val mediaPlayer =
+        remember {
+            val uri =
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                    ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+            MediaPlayer().apply {
+                try {
+                    setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build())
+                    setDataSource(context, uri!!)
+                    prepare()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
-        )
-    }
+        }
+
+    val faceDetectionAnalyzer =
+        remember {
+            FaceDetectionAnalyzer(
+                onFacesDetected = { faces = it },
+                onDrowsy = {
+                    warnings += 1
+                    aiMessage = "Drowsiness detected. Cognitive check required!"
+                    if (soundEnabled && !mediaPlayer.isPlaying) mediaPlayer.start()
+                },
+                onDistracted = {
+                    warnings += 1
+                    aiMessage = "Please stay focused on the road."
+                    if (soundEnabled && !mediaPlayer.isPlaying) mediaPlayer.start()
+                },
+            )
+        }
 
     Box(modifier = Modifier.fillMaxSize()) {
         // --- SHARED PREMIUM BACKGROUND ---
         Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
-        
+
         Blob(
             modifier = Modifier.align(Alignment.TopStart).offset((-140).dp, (-140).dp),
             size = 380.dp,
@@ -134,11 +138,12 @@ fun HomeTab(
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp, bottom = 32.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             // --- HEADER ---
@@ -149,13 +154,14 @@ fun HomeTab(
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                     Text(
                         text = "ALVION",
-                        style = TextStyle(
-                            brush = Brush.horizontalGradient(listOf(primaryBlue, secondaryCyan)),
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Black
-                        )
+                        style =
+                            TextStyle(
+                                brush = Brush.horizontalGradient(listOf(primaryBlue, secondaryCyan)),
+                                fontSize = 28.sp,
+                                fontWeight = FontWeight.Black,
+                            ),
                     )
-                    
+
                     if (isSessionActive) {
                         Spacer(Modifier.width(12.dp))
                         LiveIndicator()
@@ -164,40 +170,45 @@ fun HomeTab(
 
                 IconButton(
                     onClick = { soundEnabled = !soundEnabled },
-                    modifier = Modifier.clip(CircleShape).background(if (soundEnabled) primaryBlue.copy(0.1f) else Color.Transparent)
+                    modifier = Modifier.clip(CircleShape).background(if (soundEnabled) primaryBlue.copy(0.1f) else Color.Transparent),
                 ) {
                     Icon(
                         imageVector = if (soundEnabled) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
                         contentDescription = null,
-                        tint = if (soundEnabled) primaryBlue else MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = if (soundEnabled) primaryBlue else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
 
             // --- CAMERA CARD / STANDBY CONTENT ---
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateContentSize()
-                    .border(
-                        width = if (isSessionActive) 2.dp else 0.5.dp,
-                        brush = Brush.linearGradient(listOf(primaryBlue.copy(0.5f), secondaryCyan.copy(0.5f))),
-                        shape = RoundedCornerShape(24.dp)
-                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .animateContentSize()
+                        .border(
+                            width = if (isSessionActive) 2.dp else 0.5.dp,
+                            brush = Brush.linearGradient(listOf(primaryBlue.copy(0.5f), secondaryCyan.copy(0.5f))),
+                            shape = RoundedCornerShape(24.dp),
+                        ),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(containerColor = surfaceLight),
-                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(if (isSessionActive) 450.dp else 220.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(
-                                if (isSessionActive) MaterialTheme.colorScheme.surfaceVariant.copy(0.3f)
-                                else Color.White.copy(alpha = 0.1f) // Glass effect when inactive
-                            )
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(if (isSessionActive) 450.dp else 220.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(
+                                    if (isSessionActive) {
+                                        MaterialTheme.colorScheme.surfaceVariant.copy(0.3f)
+                                    } else {
+                                        Color.White.copy(alpha = 0.1f) // Glass effect when inactive
+                                    },
+                                ),
                     ) {
                         if (isSessionActive) {
                             Box(modifier = Modifier.fillMaxSize()) {
@@ -207,16 +218,17 @@ fun HomeTab(
                                     faces = faces,
                                     graphicOverlay = { GraphicOverlay(faces = it) },
                                 )
-                                
+
                                 // Floating End Button inside Camera View
                                 SmallFloatingActionButton(
                                     onClick = { isSessionActive = false },
-                                    modifier = Modifier
-                                        .align(Alignment.TopEnd)
-                                        .padding(12.dp),
+                                    modifier =
+                                        Modifier
+                                            .align(Alignment.TopEnd)
+                                            .padding(12.dp),
                                     containerColor = Color.Red.copy(alpha = 0.7f),
                                     contentColor = Color.White,
-                                    shape = CircleShape
+                                    shape = CircleShape,
                                 ) {
                                     Icon(Icons.Default.Close, contentDescription = "End Trip", modifier = Modifier.size(20.dp))
                                 }
@@ -226,7 +238,7 @@ fun HomeTab(
                             Column(
                                 modifier = Modifier.fillMaxSize().padding(16.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                                verticalArrangement = Arrangement.Center,
                             ) {
                                 LogoSpotlight(logoSize = 80.dp)
                                 Spacer(Modifier.height(12.dp))
@@ -234,7 +246,7 @@ fun HomeTab(
                                     text = "Ready for your journey?",
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
@@ -242,7 +254,7 @@ fun HomeTab(
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center,
-                                    modifier = Modifier.padding(horizontal = 8.dp)
+                                    modifier = Modifier.padding(horizontal = 8.dp),
                                 )
                             }
                         }
@@ -255,7 +267,7 @@ fun HomeTab(
                                 onClick = { isSessionActive = true },
                                 modifier = Modifier.fillMaxSize(),
                                 shape = RoundedCornerShape(16.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = primaryBlue)
+                                colors = ButtonDefaults.buttonColors(containerColor = primaryBlue),
                             ) {
                                 Icon(Icons.Default.PlayArrow, null)
                                 Spacer(Modifier.width(8.dp))
@@ -269,18 +281,18 @@ fun HomeTab(
                                         modifier = Modifier.fillMaxSize(),
                                         color = Color(0xFFFEF2F2),
                                         shape = RoundedCornerShape(16.dp),
-                                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFEF4444).copy(0.3f))
+                                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFEF4444).copy(0.3f)),
                                     ) {
                                         Row(
                                             modifier = Modifier.padding(horizontal = 16.dp),
                                             verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.Center
+                                            horizontalArrangement = Arrangement.Center,
                                         ) {
                                             Icon(
                                                 imageVector = Icons.Default.Warning,
                                                 contentDescription = null,
                                                 tint = Color(0xFFEF4444),
-                                                modifier = Modifier.size(20.dp)
+                                                modifier = Modifier.size(20.dp),
                                             )
                                             Spacer(Modifier.width(12.dp))
                                             Text(
@@ -288,7 +300,7 @@ fun HomeTab(
                                                 style = MaterialTheme.typography.bodyMedium,
                                                 color = Color(0xFFEF4444),
                                                 fontWeight = FontWeight.ExtraBold,
-                                                textAlign = TextAlign.Center
+                                                textAlign = TextAlign.Center,
                                             )
                                         }
                                     }
@@ -296,12 +308,12 @@ fun HomeTab(
                                     Surface(
                                         modifier = Modifier.fillMaxSize(),
                                         color = primaryBlue.copy(alpha = 0.05f),
-                                        shape = RoundedCornerShape(16.dp)
+                                        shape = RoundedCornerShape(16.dp),
                                     ) {
                                         Row(
                                             modifier = Modifier.fillMaxSize(),
                                             verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.Center
+                                            horizontalArrangement = Arrangement.Center,
                                         ) {
                                             Icon(Icons.Default.Security, null, Modifier.size(16.dp), tint = primaryBlue.copy(0.6f))
                                             Spacer(Modifier.width(8.dp))
@@ -309,7 +321,7 @@ fun HomeTab(
                                                 "System Monitoring Active",
                                                 style = MaterialTheme.typography.bodySmall,
                                                 color = primaryBlue.copy(0.7f),
-                                                fontWeight = FontWeight.Medium
+                                                fontWeight = FontWeight.Medium,
                                             )
                                         }
                                     }
@@ -328,14 +340,14 @@ fun HomeTab(
                         value = if (warnings == 0) "Optimal" else if (warnings < 3) "Caution" else "Low",
                         icon = Icons.Default.Visibility,
                         color = if (warnings == 0) Color(0xFF10B981) else if (warnings < 3) Color(0xFFF59E0B) else Color(0xFFEF4444),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     MetricCardModern(
                         label = "Duration",
                         value = formatHMS(elapsedSeconds),
                         icon = Icons.Default.Timer,
                         color = primaryBlue,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -344,11 +356,11 @@ fun HomeTab(
                         value = "$speedKmh km/h",
                         icon = Icons.Default.Speed,
                         color = primaryBlue,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     EmergencyCardModern(
                         onCall = { makeEmergencyCall(context, "9513034883") },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -363,10 +375,11 @@ private fun Blob(
     color: Color,
 ) {
     Box(
-        modifier = modifier
-            .size(size)
-            .blur(80.dp)
-            .background(color, CircleShape),
+        modifier =
+            modifier
+                .size(size)
+                .blur(80.dp)
+                .background(color, CircleShape),
     )
 }
 
@@ -376,15 +389,16 @@ private fun LogoSpotlight(logoSize: Dp) {
     val glowScale by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 1.4f,
-        animationSpec = infiniteRepeatable(tween(2000, easing = LinearOutSlowInEasing), RepeatMode.Reverse)
+        animationSpec = infiniteRepeatable(tween(2000, easing = LinearOutSlowInEasing), RepeatMode.Reverse),
     )
-    
+
     Box(contentAlignment = Alignment.Center) {
         Box(
-            modifier = Modifier
-                .size(logoSize * glowScale)
-                .blur(40.dp)
-                .background(Color(0xFF2563EB).copy(alpha = 0.15f), CircleShape),
+            modifier =
+                Modifier
+                    .size(logoSize * glowScale)
+                    .blur(40.dp)
+                    .background(Color(0xFF2563EB).copy(alpha = 0.15f), CircleShape),
         )
         Image(
             painter = painterResource(id = R.drawable.alvion_logo),
@@ -395,11 +409,17 @@ private fun LogoSpotlight(logoSize: Dp) {
 }
 
 @Composable
-fun MetricCardModern(label: String, value: String, icon: ImageVector, color: Color, modifier: Modifier) {
+fun MetricCardModern(
+    label: String,
+    value: String,
+    icon: ImageVector,
+    color: Color,
+    modifier: Modifier,
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)),
     ) {
         Row(Modifier.padding(16.dp).height(IntrinsicSize.Min)) {
             Box(Modifier.fillMaxHeight().width(4.dp).clip(CircleShape).background(color))
@@ -418,12 +438,15 @@ fun MetricCardModern(label: String, value: String, icon: ImageVector, color: Col
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmergencyCardModern(onCall: () -> Unit, modifier: Modifier) {
+fun EmergencyCardModern(
+    onCall: () -> Unit,
+    modifier: Modifier,
+) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF2F2).copy(0.9f)),
-        onClick = onCall
+        onClick = onCall,
     ) {
         Column(Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -440,8 +463,9 @@ fun EmergencyCardModern(onCall: () -> Unit, modifier: Modifier) {
 fun LiveIndicator() {
     val infiniteTransition = rememberInfiniteTransition()
     val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.4f, targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(800), RepeatMode.Reverse)
+        initialValue = 0.4f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(800), RepeatMode.Reverse),
     )
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(Modifier.size(8.dp).clip(CircleShape).background(Color.Red.copy(alpha = alpha)))
@@ -452,7 +476,10 @@ fun LiveIndicator() {
 
 private fun formatHMS(s: Int): String = "%02d:%02d:%02d".format(s / 3600, (s % 3600) / 60, s % 60)
 
-internal fun makeEmergencyCall(context: Context, number: String) {
+internal fun makeEmergencyCall(
+    context: Context,
+    number: String,
+) {
     try {
         context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     } catch (e: Exception) {
