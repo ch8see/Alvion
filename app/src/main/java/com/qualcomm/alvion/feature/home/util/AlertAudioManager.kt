@@ -27,9 +27,8 @@ class AlertAudioManager(
             .setAudioAttributes(
                 AudioAttributes
                     .Builder()
-                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
                     .build(),
             ).build()
 
