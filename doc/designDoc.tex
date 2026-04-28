@@ -130,65 +130,23 @@ The system analyzes live video to extract visual cues related to fatigue and ina
 This document outlines the project’s objectives, assumptions, and boundaries so developers, mentors, and faculty can stay aligned as the system evolves from concept to implementation. It describes the architecture, component responsibilities, and design decisions with an emphasis on building something practical within an academic timeline and extensible for future teams.
 
 % ========================= DOC INFO =========================
-\chapter{Document Information}
+\chapter{Report Revision History}
 
-\section{Report Revision History}
-
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{6pt}
-
-\begin{longtable}{|p{2cm}|p{3cm}|p{7.8cm}|p{3cm}|}
-    \hline
-    \textbf{Version} & \textbf{Date} & \textbf{Description} & \textbf{Author} \\
-    \hline
-    \endfirsthead
-
-    \hline
-    \textbf{Version} & \textbf{Date} & \textbf{Description} & \textbf{Author} \\
-    \hline
-    \endhead
-
-    \hline
-    \endfoot
-
-    \hline
-    \endlastfoot
-
-    1.0 & Oct 13, 2025 &
-    Initial draft submitted. Report outline aligned to capstone guidelines; 200--300 word abstract finalized; Introduction completed (Purpose, Background, Scope, Intended Audience, Project Description). Scope and constraints defined for on-device Snapdragon prototype. Document meta-setup added (revision history and approval tables). &
-    Team 9 \\
-    \hline
-
-    1.5 & Oct 31, 2025 &
-    Revised structural and behavioral design placeholders per faculty feedback; added preliminary UML comments, ERD rationale, and UI mockups for Version~2.0 preparation. Corrected terminology in diagrams, added reviewer annotations, and aligned architecture descriptions with grading criteria. Updated formatting, captions, and figure explanations for clarity and consistency. &
-    Team 9 \\
-    \hline
-
-    2.0 & Dec 1, 2025 &
-    Completed full capstone design document. Expanded all Requirements; finalized Architecture, Structural, and Behavioral Designs (MVC diagram, class diagrams, ERD, sequence and state diagrams); added UI mockups; completed Exploratory Studies, System Implementation, and System Testing sections including test framework setup and test-case definitions. Prepared new appendices (Appendix~T, Appendix~TE) for formal test cases. &
-    Team 9 \\
-    \hline
-
-    2.5 & Dec 8, 2025 &
-    Addressed instructor comments on context/scope diagrams, user--use-case cross-references, non-functional requirement grouping, and algorithm complexity; polished figures and layout. &
-    Team 9 \\
-    \hline
-
-    3.0 & Feb 28, 2026 &
-    Revised report to reflect updated user requirements and system development changes; confirmed system designs documented in Section~6 and added/updated most test case designs and execution reports in Section~8; revised Sections~1--5, 7, 9, and all appendices to align with the latest agile iteration; incorporated changed/new user requirements into refined system requirements and updated system design. &
-    Team 9 \\
-    \hline
-
-    3.5 & Mar 20, 2026 &
-    Revised report based on instructor feedback from Version 3.0. Added a missing Requirements Traceability description in Section 4.3 to explicitly map user requirements (UF-A–UF-J) to system components and test cases. Introduced new evaluation sections (8.4 and 8.5) to clearly demonstrate how functional and non-functional requirements are satisfied. Refined Section 1.3 to better define system scope and boundaries (on-device processing, no cloud/vehicle integration), and updated Section 2.3 to improve alignment between user requirements, use cases, and system behavior. Clarified problem framing and constraints in Sections 3.5–3.6, and strengthened consistency between system design and implementation (Section 7.5) as well as testing traceability (Section 8). &
-    Team 9 \\
-    \hline
-
-    4.0 & Apr 27, 2026 &
-    Revised report to address Version~4.0 requirements. Updated Section~5.3 to explain the potential local and global impact of the capstone project on individuals, organizations, and society. Ensured all system models (ER diagrams and UML diagrams) in Section~6 conform to standard UML notations and practices as specified in the CapStone system. Revised Sections~4, 6, 7, and~8 to reflect all newly added or changed user requirements, system designs, and implementation details, ensuring requirements, system designs, and system implementation are consistently documented throughout the report. Updated Section~6.1 to refine the system architecture design so that all key components and their relations are clearly and accurately illustrated. Summarized all major changes in the Report Revision History. &
-    Team 9 \\
-    \hline
-\end{longtable}
+\begin{center}
+\begin{tabular}{p{1.8cm} p{2.6cm} p{10.6cm}}
+\toprule
+\textbf{Version} & \textbf{Date} & \textbf{Description of Changes} \\
+\midrule
+1.5 & Nov 25, 2025 & Initial draft submitted. Revised structural and behavioral design placeholders per faculty feedback; added preliminary UML comments, ERD rationale, and UI mockups. Corrected terminology in diagrams and aligned architecture descriptions with grading criteria. \\[6pt]
+2.0 & Dec 2, 2025  & Completed full capstone design document. Expanded all Requirements; finalized Architecture, Structural, and Behavioral Designs (MVC diagram, class diagrams, ERD, sequence and state diagrams); added UI mockups; completed Exploratory Studies, System Implementation, and System Testing sections. \\[6pt]
+2.5 & Dec 11, 2025 & Addressed instructor comments on context/scope diagrams, user--use-case cross-references, non-functional requirement grouping, and algorithm complexity; polished figures and layout. \\[6pt]
+3.0 & Feb 28, 2026 & Revised report to reflect updated user requirements and system development changes; confirmed system designs in Section~6; added/updated test case designs and execution reports; incorporated changed/new user requirements into refined system requirements and updated system design. \\[6pt]
+3.5 & Mar 20, 2026 & Revised based on instructor feedback. Added Requirements Traceability (Section~4.3) mapping UF-A--UF-J to components and test cases. Introduced Sections~8.4 and~8.5 for functional/non-functional requirement evaluation. Refined scope, use-case alignment, and system consistency. \\[6pt]
+4.0 & Apr 27, 2026 & Change-management revision. Corrected detection thresholds (drowsiness 1200\,ms, distraction 4000\,ms/2000\,ms). Added new requirements UF-K, SF-11--SF-15. Updated architecture, ERD, UI, and algorithm sections to document TFLite sunglasses detection, Firestore trip history, GPS speed, phone orientation monitoring, and presence check. Fixed structural gaps to conform to capstone report guidelines. \\[6pt]
+5.0 & --- & Pending --- reserved for future revisions. \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \clearpage
 
@@ -385,6 +343,37 @@ This section provides short descriptions of the user functional requirements ide
 
 \end{enumerate}
 
+% ---------- 4.1.5 User Non-functional Requirements ----------
+\subsection{Non-functional Requirements}
+The following non-functional requirements capture quality and constraint expectations from the driver's perspective. Full descriptions are provided in Appendix~R.
+
+\subsubsection{Product: Usability Requirements}
+The driver must be able to start a monitoring session in under two taps. Alerts must be clear, well-timed, and non-distracting.
+
+\subsubsection{Product: Performance Requirements}
+The system must respond in real time ($\leq$200\,ms alert latency) and maintain smooth frame analysis without perceptible lag.
+
+\subsubsection{Product: Availability/Reliability/Security}
+Core monitoring must remain stable for a full driving session ($\geq$60 minutes). User credentials must be securely managed and not exposed.
+
+\subsubsection{Organizational: Development Requirements}
+The system shall be built on standard Android tools (Kotlin, Jetpack Compose) to ensure maintainability by future development teams.
+
+\subsubsection{Organizational: Operational Requirements}
+Core detection must function without an active internet connection. GPS and history features may require connectivity.
+
+\subsubsection{Organizational: Environmental Requirements}
+The app must operate reliably under varied in-car lighting (day, night, overcast) and across different mounting angles.
+
+\subsubsection{External: Legislative Requirements on Safety/Security}
+The system shall comply with mobile privacy best practices by keeping facial data on-device and not storing biometric identifiers.
+
+\subsubsection{External: Cultural and Social Requirements}
+The system should function equitably across drivers of diverse skin tones and facial structures as supported by ML Kit.
+
+\subsubsection{External: Interoperability Requirements}
+The application targets Android SDK 24 minimum, ensuring broad device compatibility without requiring proprietary hardware.
+
 % ========================= 4. SYSTEM REQUIREMENTS =========================
 \section{\textcolor{qcRed}{System Requirements}}
 
@@ -474,38 +463,60 @@ The ALVION application manages data related to user identity, real-time facial a
 \subsection{Non-functional Requirements}
 This section defines the technical constraints and quality standards the ALVION system must meet. These requirements serve as the benchmarks for system testing and performance evaluation.
 
-\subsubsection{Product: Usability and Safety}
+\subsubsection{Product: Usability Requirements}
 \begin{itemize}
     \item \textbf{SP-01-01} — The interface shall allow a driver to initiate monitoring in under two taps to ensure minimal distraction during vehicle setup.
     \item \textbf{SP-02-01} — The system shall maintain hands-free operation; no manual input shall be required or accepted while a monitoring session is active.
-    \item \textbf{SP-03-01} — Visual, auditory, and haptic alerts shall be synchronized within $\pm$50\,ms to provide a clear, unified warning to the driver.
     \item \textbf{SP-04-01} — The application shall display a safety disclaimer upon launch that must be acknowledged before the driver can access monitoring features.
 \end{itemize}
 
-\subsubsection{Product: Performance and Efficiency}
+\subsubsection{Product: Performance Requirements}
 \begin{itemize}
     \item \textbf{SP-05-01} — The inference pipeline shall maintain a minimum of 15 FPS and an alert latency of $\leq$200\,ms on supported Snapdragon devices.
     \item \textbf{SP-05-02} — Average CPU utilization shall remain below 40\% by utilizing the Android Neural Networks API (NNAPI) for ML Kit hardware acceleration.
     \item \textbf{SP-07-01} — The system shall include thermal management logic that reduces inference frequency if the device temperature exceeds safe operating limits.
 \end{itemize}
 
-\subsubsection{Product: Reliability and Privacy}
+\subsubsection{Product: Availability, Reliability, and Security}
 \begin{itemize}
+    \item \textbf{SP-03-01} — Visual, auditory, and haptic alerts shall be synchronized within $\pm$50\,ms to provide a clear, unified warning to the driver.
     \item \textbf{SP-08-01} — The application shall remain operational for at least 60 minutes of continuous monitoring without crash or significant performance degradation.
-    \item \textbf{SP-09-01} — In the event of a camera obstruction or ML failure, the system shall provide a "Tracking Lost" / eye-occlusion notification within 3 seconds of continuous landmark loss, using a grace period to prevent false triggers from momentary frame drops.
+    \item \textbf{SP-09-01} — In the event of a camera obstruction or ML failure, the system shall provide a "Tracking Lost" notification within 3 seconds of continuous landmark loss.
     \item \textbf{SP-10-01} — All facial analysis shall be performed locally. No raw images or video data shall be transmitted externally or stored permanently.
 \end{itemize}
 
-\subsubsection{Organizational and External Constraints}
+\subsubsection{Organizational: Development Requirements}
 \begin{itemize}
     \item \textbf{SO-01-01} — The project shall be implemented using Kotlin and Jetpack Compose, targeting Android SDK 33 (Android 13) or higher.
+\end{itemize}
+
+\subsubsection{Organizational: Operational Requirements}
+\begin{itemize}
     \item \textbf{SO-09-01} — Core detection and alerting features must function without an active internet connection (strictly offline monitoring).
+\end{itemize}
+
+\subsubsection{Organizational: Environmental Requirements}
+\begin{itemize}
+    \item The system shall operate across typical automotive lighting environments, including low-light night driving and high-glare daytime conditions.
+\end{itemize}
+
+\subsubsection{External: Legislative Requirements on Safety/Security}
+\begin{itemize}
     \item \textbf{SE-01-01} — The application shall comply with mobile safety standards by disabling configuration menus while the vehicle is detected to be in motion.
+\end{itemize}
+
+\subsubsection{External: Cultural and Social Requirements}
+\begin{itemize}
     \item \textbf{SE-03-01} — The system shall be validated for consistent landmark detection across varied skin tones and common eyewear (glasses).
 \end{itemize}
 
+\subsubsection{External: Interoperability Requirements}
+\begin{itemize}
+    \item The system shall integrate with Firebase Authentication and Firestore using standard Google Play Services APIs, without dependency on proprietary device-specific SDKs.
+\end{itemize}
+
 % ---------- 4.3 Requirements Trace Table ----------
-\subsection{Requirements Traceability}
+\section{Requirements Trace Table}
 
 A Requirements Traceability Table is provided in Appendix R to ensure that all user requirements are systematically mapped to system functionality, design components, and testing procedures.
 
@@ -1234,21 +1245,7 @@ While horizontal distraction (yaw) is well-handled, the system currently fails t
 % ---------- 10.1 Instructions for System Development ----------
 \section{Instructions for System Development}
 
-\subsection{Repository Layout}
-The ALVION project is organized as a modern Android Gradle project with a focus on modular feature development:
-\begin{itemize}
-    \item \texttt{app/}: The primary Android application module (Kotlin).
-    \begin{itemize}
-        \item \texttt{src/main/java/.../core/}: Shared UI themes and core components.
-        \item \texttt{src/main/java/.../feature/}: Feature-specific code (Auth, Home, Profile, Intro).
-        \item \texttt{src/test/java/}: Unit tests for safety logic (e.g., \texttt{FaceLogicTest.kt}).
-    \end{itemize}
-    \item \texttt{doc/}: Technical documentation, design assets, and LaTeX source files.
-    \item \texttt{.github/workflows/}: CI/CD configuration via \texttt{ALVION-CI.yml}.
-    \item \texttt{gradle/}: Contains the Gradle wrapper and \texttt{libs.versions.toml} for dependency management.
-\end{itemize}
-
-\subsection{Prerequisites}
+\subsection{How to Set Up Development Environment}
 To contribute to ALVION development, the following environment is required:
 \begin{itemize}
     \item \textbf{IDE:} Android Studio Koala (2024.1.1) or newer.
@@ -1258,61 +1255,53 @@ To contribute to ALVION development, the following environment is required:
     \item \textbf{Firebase:} Access to the \texttt{alvion-ai} project console to obtain the \texttt{google-services.json} file.
 \end{itemize}
 
-\subsection{Clone and First Build}
-\begin{verbatim}
-git clone https://github.com/alvion-ai/Alvion.git
-cd Alvion
-# Ensure google-services.json is placed in app/
-./gradlew clean assembleDebug
-\end{verbatim}
-
-\subsection{CI/CD and Quality Gates}
-Development follows a strict PR-based workflow enforced by the \texttt{ALVION-CI} pipeline:
-\begin{itemize}
-    \item \textbf{Static Analysis:} Run \texttt{./gradlew ktlintCheck} and \texttt{./gradlew lintDebug} to verify code style and Android best practices.
-    \item \textbf{Logic Verification:} Run \texttt{./gradlew testDebugUnitTest} to execute the \texttt{FaceLogicTest} suite.
-    \item \textbf{Pull Requests:} All merges to \texttt{main} require a passing CI build and a successful Copilot/peer review.
-\end{itemize}
-
-% ---------- 10.2 How to Set Up Development Environment ----------
-\section{How to Set Up Development Environment}
+Setup steps:
 \begin{enumerate}
     \item Install Android Studio Koala+ and configure SDK 35.
-    \item Clone the repository from \texttt{https://github.com/alvion-ai/Alvion.git}.
+    \item Clone the repository: \texttt{git clone https://github.com/alvion-ai/Alvion.git}
+    \item Place the \texttt{google-services.json} file in the \texttt{app/} directory.
     \item In Android Studio, go to \texttt{File -> Project Structure} and ensure JDK 17 is selected.
-    \item Enable the "Developer Debug" mode in the app settings to print real-time \texttt{eyeScoreEma} and \texttt{yawDelta} values to Logcat for threshold debugging.
+    \item Run \texttt{./gradlew clean assembleDebug} to verify the build.
 \end{enumerate}
 
-% ---------- 10.3 Notes on System Further Extension ----------
-\section{Notes on System Further Extension}
-The following areas are identified for immediate further development to improve system robustness:
+\subsection{Notes on System Further Extension}
+The following areas are identified for further development to improve system robustness:
 \begin{itemize}
-    \item \textbf{Vertical Distraction (Pitch):} Update \texttt{FaceStateEvaluator.evaluate()} to incorporate \texttt{headEulerAngleX} checks. This will allow the system to detect when the user is looking up or down (e.g., at a sun visor or floor console).
-    \item \textbf{Recalibration State Management:} Refine the reset logic in \texttt{startCalibration()} to ensure that stale "RunningStats" from previous sessions are fully purged, preventing threshold drift.
-    \item \textbf{Persistent Alert History:} Implement a Firestore-backed repository to save \texttt{AlertEvent} records (type, timestamp, duration) so users can track their fatigue trends over multiple days.
-    \item \textbf{Cognitive Fallback Mode:} Develop a voice-activated prompt that triggers if the camera loses landmark tracking for >5 seconds, ensuring safety continues even in blind-spot conditions.
+    \item \textbf{Vertical Distraction (Pitch):} Update \texttt{FaceStateEvaluator.evaluate()} to incorporate \texttt{headEulerAngleX} checks to detect looking up or down (e.g., at a sun visor or floor console).
+    \item \textbf{Recalibration State Management:} Refine the reset logic in \texttt{startCalibration()} to ensure stale \texttt{RunningStats} from previous sessions are fully purged, preventing threshold drift.
+    \item \textbf{Cognitive Fallback Mode:} Develop a voice-activated prompt that triggers if the camera loses landmark tracking for more than 5 seconds.
+    \item \textbf{CI/CD Extensions:} Run \texttt{./gradlew ktlintCheck} and \texttt{./gradlew testDebugUnitTest} in any extended CI pipeline to guard against regressions.
 \end{itemize}
 
-% ---------- 10.4 Instructions for System Deployment ----------
+% ---------- 10.2 Instructions for System Deployment ----------
 \section{Instructions for System Deployment}
+
+\subsection{Platform Requirements}
+\begin{itemize}
+    \item Android 13 (API 33) or higher.
+    \item Front-facing camera with autofocus support.
+    \item Google Play Services (for Firebase and Fused Location Provider).
+    \item Minimum 3 GB RAM recommended for sustained ML inference.
+\end{itemize}
+
 \subsection{System Installation}
 \begin{enumerate}
     \item Build the release APK via \texttt{./gradlew assembleRelease}.
-    \item Deploy the APK to the target device via ADB or a secure download link.
-    \item Ensure "Unknown Sources" is enabled if installing directly from the APK file.
+    \item Deploy the APK to the target device via ADB: \texttt{adb install app-release.apk}.
+    \item Alternatively, distribute through a secure download link; enable "Install Unknown Apps" in device settings if sideloading.
+    \item On first launch, grant Camera, Location, and Notification permissions when prompted.
 \end{enumerate}
 
-% ---------- 10.5 Instructions for System End Users ----------
+% ---------- 10.3 Instructions for System End Users ----------
 \section{Instructions for System End Users}
-\subsection{Quick Start}
 \begin{enumerate}
-    \item \textbf{Login:} Authenticate using your ALVION account.
-    \item \textbf{Calibration:} Follow the on-screen prompts to look "Forward", "Left", and "Right". \textit{Note: The system will use Mirror Symmetry to assist if you only calibrate one side.}
-    \item \textbf{Monitor:} Tap "Start Monitoring". Ensure the phone is mounted at eye level.
+    \item \textbf{Login:} Authenticate using your ALVION account (email/password via Firebase).
+    \item \textbf{Calibration:} Follow the on-screen prompts to look "Forward", "Left", and "Right". The system uses mirror symmetry to assist if only one side is calibrated.
+    \item \textbf{Monitor:} Tap "Start Monitoring". Ensure the phone is mounted at eye level facing the driver.
+    \item \textbf{Alerts:} If drowsiness or distraction is detected, an audible alert and vibration will trigger. Acknowledge by returning your gaze forward.
+    \item \textbf{History:} After ending a session, tap the History tab to review trip details and detection events.
+    \item \textbf{Privacy:} All facial analysis is performed locally. No video or face-prints are saved; only anonymized alert counts are synced to your profile.
 \end{enumerate}
-
-\subsection{Privacy}
-ALVION processes all facial video frames in volatile memory. No video or identifiable face-prints are saved to the device or the cloud; only anonymized alert counts are synced to your profile history.
 
 \clearpage
 
