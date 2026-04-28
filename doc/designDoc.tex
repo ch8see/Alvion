@@ -644,21 +644,24 @@ A successful implementation on the Snapdragon target device is defined by:
 
 The ALVION project demonstrates the feasibility of bringing advanced safety features to a wider demographic without the need for high-cost, integrated vehicle hardware. By leveraging commodity smartphone sensors and on-device ML, the project creates meaningful impacts in road safety and mobile AI application design.
 
-\subsection*{Impact on Drivers}
+\subsection*{Impact on Individuals (Drivers)}
 \begin{itemize}
     \item \textbf{Safety for Legacy Vehicles.} The most immediate impact is on drivers of older vehicles that lack built-in Driver Monitoring Systems (DMS). ALVION provides these users with a low-cost alternative to expensive retrofit hardware, offering real-time alerts that can prevent accidents caused by fatigue or distraction.
+    \item \textbf{Empowerment through Awareness.} Because the system provides immediate feedback and a personal "Trip History," it encourages drivers to recognize their own fatigue patterns. This empowers individuals to make informed decisions about when to take breaks, fostering long-term safer driving habits.
     \item \textbf{Low-Barrier Awareness.} Because the system requires only a standard Android device, it encourages safer driving habits through immediate feedback, helping drivers recognize their own fatigue patterns before they become a critical danger.
 \end{itemize}
 
-\subsection*{Impact on Technical Development}
+\subsection*{Impact on Organizations}
 \begin{itemize}
-    \item \textbf{Proof-of-Concept for On-Device AI.} ALVION serves as a practical demonstration of running complex, real-time vision pipelines (ML Kit and CameraX) on Snapdragon hardware. This provides a template for other developers looking to build safety-critical applications that must remain responsive without relying on cloud connectivity.
+    \item \textbf{Scalable Fleet Safety.} For organizations such as delivery services or ride-sharing platforms, ALVION offers a software-defined safety solution that can be deployed across a fleet without hardware installation costs. This allows organizations to improve safety standards and reduce liability with minimal capital expenditure.
+    \item \textbf{Technical Template for Developers.} The project serves as a proof-of-concept for running complex, real-time vision pipelines (ML Kit and CameraX) on Snapdragon hardware. It provides a template for organizations looking to build responsive, safety-critical applications that must operate reliably at the "edge" without constant cloud connectivity.
     \item \textbf{Resource-Efficient Safety.} The project proves that sophisticated safety signals—like yaw delta and eyelid closure—can be computed with minimal battery and thermal impact, setting a baseline for what is achievable in modern edge-based AI.
 \end{itemize}
 
-\subsection*{Impact on Public Safety and Accessibility}
+\subsection*{Impact on Society}
 \begin{itemize}
-    \item \textbf{Road Safety Democratization.} High-end safety technology is often locked behind luxury vehicle tiers. By developing a mobile-first solution, this project contributes to a more equitable landscape where road safety tools are accessible to anyone with a smartphone, potentially reducing the frequency of fatigue-related collisions globally.
+    \item \textbf{Road Safety Democratization.} High-end safety technology is often locked behind luxury vehicle tiers. ALVION contributes to a more equitable landscape where road safety tools are accessible to anyone with a smartphone, potentially reducing the global frequency of fatigue-related collisions.
+    \item \textbf{Privacy-First Safety Standards.} By processing all facial data locally and only storing anonymized metadata in Firestore, ALVION sets a societal benchmark for "Privacy by Design." It proves that public safety can be improved without compromising individual civil liberties or creating large-scale biometric databases.
     \item \textbf{Infrastructure Independence.} Unlike systems that require continuous cloud processing or dedicated vehicle sensors, ALVION operates entirely independently. This makes it a viable safety tool in areas with poor network coverage or for users who prioritize offline, autonomous operation.
 \end{itemize}
 
