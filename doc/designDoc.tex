@@ -673,20 +673,21 @@ The ALVION project demonstrates the feasibility of bringing advanced safety feat
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{assets/NewARCdesign.png}  % -might need to change this mvc design
+    \includegraphics[width=.75\textwidth]{assets/MVCArchFinal.png}  % -might need to change this mvc design
     \caption{Architectural Design (MVC Pattern).}
     \label{fig:mvc-arch}
 \end{figure}
 
 \subsection{Architecture Overview}\label{subsec:arch-overview}
-\noindent\textbf{What the diagram shows.}
-The ALVION system is organized using the \textbf{Model-View-Controller (MVC)} pattern to ensure a clean separation between the real-time vision pipeline and the user interface.
+
+\noindent\textbf{What the diagram shows.} The ALVION system is organized using the \textbf{Model-View-Controller (MVC)} pattern to ensure a clean separation between the real-time vision pipeline and the user interface.
 
 \begin{itemize}
-    \item \textbf{Views (Jetpack Compose):} These include the \texttt{Authentication}, \texttt{Home/Preview}, \texttt{History}, and \texttt{Profile/Settings} screens. They are responsible for rendering the live camera feed, displaying visual alert overlays, showing trip history, and capturing user input for calibration.
-    \item \textbf{Controllers (Analysis Pipeline):} The \texttt{FaceDetectionAnalyzer} acts as the primary controller. It coordinates the data flow between the \textbf{CameraX [2]} frame stream and the \textbf{ML Kit [1]} inference engine. It also routes every 3rd frame through the \texttt{SunglassesClassifier} (via \texttt{FaceCropper}) for occlusion detection. It ensures that frames are processed asynchronously to maintain a responsive UI.
-    \item \textbf{Model (Safety Engine):} The \texttt{FaceStateEvaluator} serves as the core "brain" of the system. It maintains the internal state of the driver (Normal, Drowsy, Distracted, or Eye-Occluded/Sunglasses). It stores the \textbf{Calibration Baselines} (Yaw and Eye thresholds) and applies heuristic rules—such as the Mirror Symmetry logic, EMA smoothing, face-proximity guard, and presence/liveness check—to trigger alerts.
-    \item \textbf{Supporting Components:} \texttt{HistoryRepository} and \texttt{HistoryViewModel} manage persistence of completed trips to Firebase Firestore. \texttt{rememberCurrentSpeedKmh} (Fused Location Provider) streams real-time GPS speed. \texttt{rememberPhoneUpsideDown} (accelerometer) detects device inversion.
+    \item \textbf{View (Jetpack Compose):} The \texttt{LoginScreen}, \texttt{IntroScreen}, \texttt{HomeTab}, \texttt{HistoryScreen}, and \texttt{ProfileScreen} are hosted via \texttt{AppShell} and routed by \texttt{RootActivity} based on Firebase Auth state. Views are responsible for rendering the camera feed, displaying alert banners, showing trip history, and capturing calibration input.
+
+    \item \textbf{Controller (Orchestration Layer):} \texttt{RootActivity} manages top-level navigation. \texttt{FaceDetectionAnalyzer} coordinates the CameraX frame stream, ML Kit inference, and per-frame sunglasses detection via \texttt{FaceCropper}. \texttt{AlertAudioManager} triggers low-latency audio alerts via \texttt{SoundPool}. \texttt{HistoryViewModel} and \texttt{SettingsViewModel} manage trip data and user preference lifecycles, exposing \texttt{StateFlow} streams to the View layer.
+
+    \item \textbf{Model (Safety Engine and Data):} \texttt{FaceStateEvaluator} is the core safety engine, maintaining driver state (\textit{Normal}, \textit{Drowsy}, \textit{Distracted}, \textit{Eye-Occluded}) using EMA smoothing, calibration baselines, and heuristic rules. It fires callbacks (\texttt{onDrowsy}, \texttt{onDistracted}, \texttt{onEyeOccluded}) to the View layer. \texttt{MlKitFaceProcessor} handles face landmark detection, \texttt{SunglassesClassifier} runs a TFLite binary classifier for occlusion detection, and \texttt{FaceCropper} converts YUV camera frames to RGB bitmaps for model input. \texttt{HistoryRepository} persists trips to Firebase Firestore, \texttt{SettingsRepository} manages preferences via Jetpack \texttt{DataStore}, \texttt{SpeedTracker} streams GPS speed, and \texttt{PhoneUpsideDownDetector} detects device inversion via the accelerometer.
 \end{itemize}
 
 \noindent\textbf{How data moves.}
@@ -755,22 +756,22 @@ Before monitoring begins, the driver is guided through an onboarding sequence th
     \centering
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/intro1.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB1.jpg}
         \caption*{Intro 1}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/Intro2.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB2.jpg}
         \caption*{Intro 2}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/Intro3.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB3.jpg}
         \caption*{Intro 3}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/Intro4.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB4.jpg}
         \caption*{Intro 4}
     \end{minipage}
     \caption{Onboarding sequence explaining the ALVION safety features.}
@@ -780,12 +781,12 @@ Before monitoring begins, the driver is guided through an onboarding sequence th
     \centering
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{assets/UI/signIn.png}
+        \includegraphics[width=0.7\textwidth]{assets/UI/AlvionSignIn.jpg}
         \caption{Sign In Screen}
     \end{minipage}
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{assets/UI/signUp.png}
+        \includegraphics[width=0.7\textwidth]{assets/UI/AlvionSignup.jpg}
         \caption{Sign Up Screen}
     \end{minipage}
 \end{figure}
@@ -798,7 +799,7 @@ The dashboard provides a central hub for starting sessions and managing the user
     \centering
     \begin{minipage}{0.32\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/main.png}
+        \includegraphics[width=\textwidth]{assets/UI/Home.jpg}
         \caption{Main Dashboard}
     \end{minipage}
     \begin{minipage}{0.32\textwidth}
@@ -808,7 +809,7 @@ The dashboard provides a central hub for starting sessions and managing the user
     \end{minipage}
     \begin{minipage}{0.32\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/profile.png}
+        \includegraphics[width=\textwidth]{assets/UI/Profile.jpg}
         \caption{User Profile}
     \end{minipage}
     \caption{Core application screens for monitoring and profile management.}
