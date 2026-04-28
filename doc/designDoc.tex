@@ -1354,4 +1354,238 @@ We thank \textbf{Qualcomm} and the ALVION-AI organization for the resources and 
 \addcontentsline{toc}{section}{Appendix TE: Test Execution Report}
 \includepdf[pages=-, fitpaper=true]{assets/CSU-SM-CSE-39-2026-SE-001-Team-009-AllInOne (3).pdf}
 
+% ========================= APPENDIX PM =========================
+\clearpage
+\section*{Appendix PM: Project Management}
+\addcontentsline{toc}{section}{Appendix PM: Project Management}
+
+This appendix provides evidence of the team's project management process throughout the ALVION capstone project. The evidence includes GitHub issue tracking, pull request records, branch-based development, task labels, individual contribution records, CI/CD work, documentation updates, testing tasks, and implementation history.
+
+The purpose of this appendix is to show that the team followed an organized development process across the full project lifecycle. Work was not only completed at the end of the project; it was planned, assigned, reviewed, tested, revised, and documented across multiple project phases.
+
+\subsection*{PM.1 Project Management Overview}
+
+The ALVION team used GitHub as the primary platform for project management, version control, and development coordination. GitHub Issues were used to define tasks, track feature requests, document bugs, organize testing work, and manage report/documentation updates. GitHub Pull Requests were used to review and merge implementation changes, documentation updates, CI/CD improvements, and bug fixes.
+
+The team organized work using issue labels such as \textit{new feature}, \textit{enhancement}, \textit{bug}, \textit{documentation}, \textit{test}, and \textit{refactor}. These labels helped separate implementation tasks from testing, documentation, debugging, and architecture improvement work. This made it easier for team members to understand the purpose and status of each task.
+
+The repository also included a documented collaboration workflow for the report and documentation folder. This workflow instructed contributors to work on feature branches, build the LaTeX report locally, clean auxiliary files before committing, push branches, and open pull requests with clear summaries and checklists. This process helped reduce broken builds, accidental commits of generated files, and unclear changes.
+
+Overall, the project management process supported task allocation, progress tracking, code review, documentation review, and quality control. The following sections provide screenshots and repository records that demonstrate how these practices were used throughout the ALVION project.
+
+\subsection*{PM.2 Development Workflow and Collaboration Process}
+
+The team maintained a documented workflow for collaborating on the ALVION report and repository. This workflow explained how contributors should create feature branches, update the design document, add or revise assets, build the LaTeX report locally, clean generated auxiliary files, commit only intended source changes, push branches, and open pull requests.
+
+This process helped prevent direct edits to the main branch and encouraged each contributor to isolate their work in a separate branch. It also required contributors to verify that the report could build before opening a pull request. This reduced the chance of broken LaTeX output, missing images, incorrect references, or unnecessary build artifacts being merged into the repository.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{assets/pm_doc_readme_overview.png}
+    \caption{Repository documentation showing the team's collaboration and build workflow for the report folder.}
+    \label{fig:pm-doc-readme-overview}
+\end{figure}
+
+Figure~\ref{fig:pm-doc-readme-overview} shows the team's documented workflow for working on the report. The guide instructs contributors to use feature branches, update \texttt{designDoc.tex} or files in \texttt{doc/assets/}, build locally with \texttt{latexmk}, clean auxiliary files, and open pull requests with summaries and checklists.
+
+The workflow also supported review and accountability. Pull requests were expected to include a clear summary and checklist so reviewers could understand the purpose of the change, confirm that the correct files were updated, and verify that the document or code still worked as expected.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{assets/pm_doc_readme_checklist.png}
+    \caption{Repository documentation showing the checklist used before opening a pull request.}
+    \label{fig:pm-doc-readme-checklist}
+\end{figure}
+
+Figure~\ref{fig:pm-doc-readme-checklist} shows the checklist used before opening a pull request. The checklist required contributors to branch from an up-to-date main branch, test changes locally, run the LaTeX build, clean auxiliary files, commit source or asset changes with a clear message, and push the branch before opening a pull request.
+
+\subsection*{PM.3 GitHub Issue Tracking Evidence}
+
+GitHub Issues were used as a primary task management tool throughout the ALVION project. The issue tracker allowed the team to create work items, categorize them with labels, associate them with contributors, track discussion, and close tasks after completion. This gave the team a visible record of planned work, active work, completed work, bugs, documentation tasks, testing tasks, and feature development.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_issues_overview.png}
+    \caption{GitHub closed issue overview showing 42 closed issues, 5 open issues, labels, authors, dates, and task activity across the project.}
+    \label{fig:pm-issues-overview}
+\end{figure}
+
+Figure~\ref{fig:pm-issues-overview} shows the repository's closed issue tracker. The screenshot includes issue labels such as \textit{new feature}, \textit{enhancement}, and \textit{documentation}, along with issue authors, close dates, comments, and linked development activity. This demonstrates that the team tracked work items in GitHub rather than relying only on informal communication.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_issues_implementation.png}
+    \caption{GitHub issues showing implementation, bug-fixing, refactoring, authentication, CI pipeline, and UI development tasks.}
+    \label{fig:pm-issues-implementation}
+\end{figure}
+
+Figure~\ref{fig:pm-issues-implementation} shows issue records from active implementation phases. These issues include face detection bug fixes, application architecture refactoring, sign-in and sign-up implementation, CI pipeline improvements, camera issues, and UI redesign. This evidence shows that the team tracked technical implementation work, defects, and process improvements through GitHub Issues.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_issues_late_stage.png}
+    \caption{GitHub issues showing later-stage feature work, deployment work, profile work, testing work, and AI robustness improvements.}
+    \label{fig:pm-issues-late-stage}
+\end{figure}
+
+Figure~\ref{fig:pm-issues-late-stage} shows later-stage issue tracking. The issues include real-time GPS speed tracking, Qualcomm facial attribute detection, profile page creation, eye occlusion handling, Firebase App Distribution deployment, diagnostic overlays, profile settings, unit test cases, user history, and multi-angle face detection. This demonstrates that the team continued using project management records through the later phases of development.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_issues_open_items.png}
+    \caption{GitHub open issue list showing remaining work items and unresolved bugs tracked by the team.}
+    \label{fig:pm-issues-open-items}
+\end{figure}
+
+Figure~\ref{fig:pm-issues-open-items} shows the open issue list near the end of the project. These open issues include remaining documentation updates, audio behavior fixes, upward gaze detection, emergency contact updates, and night-time handling. This shows that the team tracked both completed tasks and remaining work, which is important for project status visibility.
+
+Overall, the issue tracker provides evidence of project management across multiple categories of work. The team used issues to organize feature development, bug resolution, documentation, testing, refactoring, CI/CD improvements, and unresolved follow-up tasks throughout the project lifecycle.
+
+\subsection*{PM.4 Task Allocation and Individual Contributions}
+
+The repository history provides evidence of individual task allocation through pull request authorship, issue authorship, branch names, review requests, issue references, and merged implementation records. While some tasks were discussed and completed collaboratively, the GitHub records show clear ownership patterns for major work areas.
+
+\begin{longtable}{|p{3cm}|p{5cm}|p{6cm}|}
+\hline
+\textbf{Team Member} & \textbf{Primary Contribution Areas} & \textbf{Repository Evidence} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Team Member} & \textbf{Primary Contribution Areas} & \textbf{Repository Evidence} \\
+\hline
+\endhead
+
+Thanh Dat Vu &
+Onboarding UI, Firebase authentication, app architecture refactoring, Home dashboard redesign, calibration and diagnostic overlay improvements, CI/CD deployment, final UI redesign, and report updates. &
+Pull requests show work on the onboarding intro screen, Firebase Auth, architecture refactor, Home UI redesign, diagnostic overlay/contextual alerts, Firebase App Distribution deployment, revised UI, and Report V4 documentation. \\
+\hline
+
+Tariq Elamin &
+Repository setup, early UI updates, UI testing, vibration alerts, face-detection unit testing, profile page work, and GPS speed tracking. &
+Pull requests show work on branch protection, icon/color updates, UI test cases, vibration feature, face analyzer unit-test refactor, additional face-detection unit tests, profile page creation, and live GPS speed tracking. \\
+\hline
+
+Salman Shekh &
+Core facial detection implementation, profile/settings features, and history-related development. &
+Pull requests and issue records show work on the ML Kit facial detection pipeline, profile settings, and history/profile feature development. \\
+\hline
+
+Chase Tanner &
+Audio alert fixes, issue tracking, documentation-related tasks, and review participation. &
+Repository records show audio-related bug fixes, documentation issues, and participation in review/requested-review workflows. \\
+\hline
+
+\end{longtable}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_contributions_thanh.png}
+    \caption{GitHub pull request records filtered by Thanh Dat Vu, showing ownership of UI, architecture, authentication, CI/CD, and documentation work.}
+    \label{fig:pm-contributions-thanh}
+\end{figure}
+
+Figure~\ref{fig:pm-contributions-thanh} shows repository records for Thanh Dat Vu's contributions. The pull request history provides evidence of ownership across major implementation and documentation areas, including onboarding, authentication, app architecture, Home UI, diagnostic overlays, deployment, and report updates.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_contributions_tariq.png}
+    \caption{GitHub pull request records filtered by Tariq Elamin, showing ownership of testing, profile, GPS speed tracking, alert, and repository setup work.}
+    \label{fig:pm-contributions-tariq}
+\end{figure}
+
+Figure~\ref{fig:pm-contributions-tariq} shows repository records for Tariq Elamin's contributions. The pull request history provides evidence of work on early repository setup, UI updates, testing, vibration alerts, face-detection unit tests, profile page implementation, and GPS speed tracking.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_contributions_salman.png}
+    \caption{GitHub pull request records filtered by Salman Shekh, showing ownership of facial detection, profile/settings, and history-related development work.}
+    \label{fig:pm-contributions-salman}
+\end{figure}
+
+Figure~\ref{fig:pm-contributions-salman} shows repository records for Salman Shekh's contributions. The records provide evidence of work related to the facial detection MVP, profile settings, and history/profile feature development.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_contributions_chase.png}
+    \caption{GitHub records filtered by Chase Tanner, showing issue ownership, audio-related fixes, documentation work, and review participation.}
+    \label{fig:pm-contributions-chase}
+\end{figure}
+
+Figure~\ref{fig:pm-contributions-chase} shows repository records for Chase Tanner's contributions. The records provide evidence of issue ownership, audio-related bug tracking or fixes, documentation-related work, and participation in the team's GitHub workflow.
+
+Overall, these contribution records show that the team divided work across members and maintained visible ownership of tasks. The records support both task allocation and individual contribution tracking, which are required project management artifacts.
+
+\subsection*{PM.5 Pull Request Review and Branch Workflow}
+
+GitHub Pull Requests were used to manage review and merging of project changes. Contributors worked on separate branches and opened pull requests to describe the purpose of their changes, identify the type of work completed, document testing performed, and provide checklists before merging. This helped the team review changes before they entered the main branch.
+
+Pull requests also provided accountability because each record showed the author, branch name, merge status, changed files, commits, checks, and testing notes. This made it possible to trace implementation work back to contributors and verify that major changes were reviewed before becoming part of the main project.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_pr_merged_workflow.png}
+    \caption{Merged GitHub pull request showing branch-based development, merge status, commits, checks, and changed files.}
+    \label{fig:pm-pr-merged-workflow}
+\end{figure}
+
+Figure~\ref{fig:pm-pr-merged-workflow} shows PR \#80 for the CD pipeline. The record shows that the work was completed on a separate feature branch, \texttt{feat/thanh/cd-firebase-distribution}, and then merged into \texttt{main}. It also shows the number of commits, checks, changed files, and code additions/deletions. This supports the team's use of branch-based development and pull request review instead of direct untracked changes to the main branch.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_pr_checklist_testing.png}
+    \caption{Pull request description showing summary, implementation details, type of change, and testing evidence.}
+    \label{fig:pm-pr-checklist-testing}
+\end{figure}
+
+Figure~\ref{fig:pm-pr-checklist-testing} shows the pull request body for the CD pipeline work. The PR description explains what was implemented, including the verification job, deployment job, automated versioning, dependency caching, Firebase App Distribution integration, and repository secret configuration. The testing section records end-to-end CD verification, Firebase receipt, static analysis checks, and artifact upload verification.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_pr_cd_evidence.png}
+    \caption{Pull request checklist and deployment evidence showing completed review checklist items and Firebase App Distribution setup.}
+    \label{fig:pm-pr-cd-evidence}
+\end{figure}
+
+Figure~\ref{fig:pm-pr-cd-evidence} shows the checklist and deployment evidence associated with the CD pipeline pull request. The checklist records that the contributor followed style guidelines, performed a self-review, commented the code, updated documentation, and confirmed no new warnings. The Firebase App Distribution screenshot provides additional evidence that the deployment workflow supported tester distribution.
+
+Overall, the pull request records show that the team used a branch-based workflow with review checkpoints, testing notes, and documented verification before merging. This helped manage technical risk, improve code quality, document decisions, and maintain a clear history of project contributions.
+
+\subsection*{PM.6 CI/CD and Testing Management Evidence}
+
+The ALVION team used GitHub Actions to support automated quality control during development. The CI/CD workflow helped verify that changes could be checked, built, and prepared for deployment before becoming part of the main project. This provided an additional project management record because workflow runs showed when automated checks were triggered, whether they passed or failed, and which changes required follow-up.
+
+The team also used CI/CD improvements as tracked project tasks. GitHub Issues and Pull Requests included work related to CI pipeline setup, linting, build verification, unit testing, artifact generation, and Firebase App Distribution. These records show that testing and deployment were managed as part of the project process rather than treated as informal final steps.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_actions_successful_run.png}
+    \caption{GitHub Actions workflow list showing automated CI/CD runs used to verify project changes.}
+    \label{fig:pm-actions-workflow-runs}
+\end{figure}
+
+Figure~\ref{fig:pm-actions-workflow-runs} shows the GitHub Actions workflow history for the repository. The workflow list provides evidence that automated checks were run throughout development. This helped the team monitor build health, identify failing changes, and maintain visibility into the status of the codebase.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{assets/pm_actions_workflow_runs.png}
+    \caption{Successful GitHub Actions workflow run showing automated verification steps such as build, lint, test, or deployment checks.}
+    \label{fig:pm-actions-successful-run}
+\end{figure}
+
+Figure~\ref{fig:pm-actions-successful-run} shows a detailed successful workflow run. The run demonstrates that the team used automated verification steps as part of the development process. These checks helped reduce the risk of merging broken code and provided repeatable evidence that project changes were validated.
+
+Overall, the CI/CD evidence shows that the team managed quality control through automated workflows. Combined with issue tracking and pull request review, GitHub Actions helped the team maintain a structured process for testing, building, and deploying the ALVION application.
+
+\subsection*{PM.7 Project Management Summary}
+
+The evidence in Appendix PM shows that the ALVION team followed a structured project management process throughout the capstone project. GitHub Issues were used to create and track tasks, classify work using labels, document bugs, manage feature requests, and record remaining open items. This provided a visible record of project progress across documentation, implementation, testing, refactoring, and deployment work.
+
+The pull request records show that the team used a branch-based workflow instead of making direct untracked changes to the main branch. Pull requests documented the purpose of each change, the type of work completed, testing performed, checklist items, commits, changed files, and merge status. This supported review, accountability, and traceability across major project changes.
+
+The contribution records show that work was divided across team members. Individual contributors owned different areas of the project, including UI/UX development, authentication, facial detection, calibration logic, profile and history features, documentation, testing, CI/CD, GPS speed tracking, and audio alert fixes. This demonstrates both task allocation and individual contribution tracking.
+
+The CI/CD records show that the team used automated workflows to support quality control. GitHub Actions helped verify changes through automated checks such as build, lint, testing, and deployment-related steps. This reduced the risk of merging broken changes and provided repeatable evidence that the project was actively maintained.
+
+Overall, the project management evidence demonstrates that the team planned, assigned, reviewed, tested, and completed work across the full project lifecycle. The records included in this appendix support the highest rubric level because they provide detailed project management evidence from GitHub Issues, Pull Requests, contribution records, workflow documentation, CI/CD checks, and remaining open-task tracking.
 \end{document}
