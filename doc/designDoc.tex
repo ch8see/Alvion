@@ -130,60 +130,23 @@ The system analyzes live video to extract visual cues related to fatigue and ina
 This document outlines the project’s objectives, assumptions, and boundaries so developers, mentors, and faculty can stay aligned as the system evolves from concept to implementation. It describes the architecture, component responsibilities, and design decisions with an emphasis on building something practical within an academic timeline and extensible for future teams.
 
 % ========================= DOC INFO =========================
-\chapter{Document Information}
+\chapter{Report Revision History}
 
-\section{Report Revision History}
-
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{6pt}
-
-\begin{longtable}{|p{2cm}|p{3cm}|p{7.8cm}|p{3cm}|}
-    \hline
-    \textbf{Version} & \textbf{Date} & \textbf{Description} & \textbf{Author} \\
-    \hline
-    \endfirsthead
-
-    \hline
-    \textbf{Version} & \textbf{Date} & \textbf{Description} & \textbf{Author} \\
-    \hline
-    \endhead
-
-    \hline
-    \endfoot
-
-    \hline
-    \endlastfoot
-
-    1.0 & Oct 13, 2025 &
-    Initial draft submitted. Report outline aligned to capstone guidelines; 200--300 word abstract finalized; Introduction completed (Purpose, Background, Scope, Intended Audience, Project Description). Scope and constraints defined for on-device Snapdragon prototype. Document meta-setup added (revision history and approval tables). &
-    Team 9 \\
-    \hline
-
-    1.5 & Oct 31, 2025 &
-    Revised structural and behavioral design placeholders per faculty feedback; added preliminary UML comments, ERD rationale, and UI mockups for Version~2.0 preparation. Corrected terminology in diagrams, added reviewer annotations, and aligned architecture descriptions with grading criteria. Updated formatting, captions, and figure explanations for clarity and consistency. &
-    Team 9 \\
-    \hline
-
-    2.0 & Dec 1, 2025 &
-    Completed full capstone design document. Expanded all Requirements; finalized Architecture, Structural, and Behavioral Designs (MVC diagram, class diagrams, ERD, sequence and state diagrams); added UI mockups; completed Exploratory Studies, System Implementation, and System Testing sections including test framework setup and test-case definitions. Prepared new appendices (Appendix~T, Appendix~TE) for formal test cases. &
-    Team 9 \\
-    \hline
-
-    2.5 & Dec 8, 2025 &
-    Addressed instructor comments on context/scope diagrams, user--use-case cross-references, non-functional requirement grouping, and algorithm complexity; polished figures and layout. &
-    Team 9 \\
-    \hline
-
-    3.0 & Feb 28, 2026 &
-    Revised report to reflect updated user requirements and system development changes; confirmed system designs documented in Section~6 and added/updated most test case designs and execution reports in Section~8; revised Sections~1--5, 7, 9, and all appendices to align with the latest agile iteration; incorporated changed/new user requirements into refined system requirements and updated system design. &
-    Team 9 \\
-    \hline
-
-    3.5 & Mar 20, 2026 &
-    Revised report based on instructor feedback from Version 3.0. Added a missing Requirements Traceability description in Section 4.3 to explicitly map user requirements (UF-A–UF-J) to system components and test cases. Introduced new evaluation sections (8.4 and 8.5) to clearly demonstrate how functional and non-functional requirements are satisfied. Refined Section 1.3 to better define system scope and boundaries (on-device processing, no cloud/vehicle integration), and updated Section 2.3 to improve alignment between user requirements, use cases, and system behavior. Clarified problem framing and constraints in Sections 3.5–3.6, and strengthened consistency between system design and implementation (Section 7.5) as well as testing traceability (Section 8). &
-    Team 9 \\
-    \hline
-\end{longtable}
+\begin{center}
+\begin{tabular}{p{1.8cm} p{2.6cm} p{10.6cm}}
+\toprule
+\textbf{Version} & \textbf{Date} & \textbf{Description of Changes} \\
+\midrule
+1.5 & Nov 25, 2025 & Initial draft submitted. Revised structural and behavioral design placeholders per faculty feedback; added preliminary UML comments, ERD rationale, and UI mockups. Corrected terminology in diagrams and aligned architecture descriptions with grading criteria. \\[6pt]
+2.0 & Dec 2, 2025  & Completed full capstone design document. Expanded all Requirements; finalized Architecture, Structural, and Behavioral Designs (MVC diagram, class diagrams, ERD, sequence and state diagrams); added UI mockups; completed Exploratory Studies, System Implementation, and System Testing sections. \\[6pt]
+2.5 & Dec 11, 2025 & Addressed instructor comments on context/scope diagrams, user--use-case cross-references, non-functional requirement grouping, and algorithm complexity; polished figures and layout. \\[6pt]
+3.0 & Feb 28, 2026 & Revised report to reflect updated user requirements and system development changes; confirmed system designs in Section~6; added/updated test case designs and execution reports; incorporated changed/new user requirements into refined system requirements and updated system design. \\[6pt]
+3.5 & Mar 20, 2026 & Revised based on instructor feedback. Added Requirements Traceability (Section~4.3) mapping UF-A--UF-J to components and test cases. Introduced Sections~8.4 and~8.5 for functional/non-functional requirement evaluation. Refined scope, use-case alignment, and system consistency. \\[6pt]
+4.0 & Apr 27, 2026 & Change-management revision. Corrected detection thresholds (drowsiness 1200\,ms, distraction 4000\,ms/2000\,ms). Added new requirements UF-K, SF-11--SF-15. Updated architecture, ERD, UI, and algorithm sections to document TFLite sunglasses detection, Firestore trip history, GPS speed, phone orientation monitoring, and presence check. Fixed structural gaps to conform to capstone report guidelines. \\[6pt]
+5.0 & --- & Pending --- reserved for future revisions. \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \clearpage
 
@@ -329,8 +292,14 @@ The following scenarios describe how end users interact with the ALVION mobile a
     \item \textbf{Emergency Contact / Call for Help:}
     If the driver believes they are unsafe to continue (e.g., repeated drowsiness warnings), the driver can use an emergency action to place a call to \textbf{911} or a designated family member/emergency contact. This action is intentionally user-initiated to avoid accidental calls.
 
-    \item \textbf{View Session Summary (Optional):}
-    After ending a session, the driver can view a summary of monitoring results (e.g., count and types of alerts). This information can help the driver reflect on fatigue patterns and adjust future driving behavior.
+    \item \textbf{View Trip History:}
+    After ending a session, the driver can navigate to the \textbf{History} tab to review past trips. Each trip card displays the date, duration, start time, and a categorized list of safety detections (drowsiness, distraction, presence check, phone orientation). Trip records are automatically saved to Firebase Firestore and persist across app restarts.
+
+    \item \textbf{Live Speed and Duration Metrics:}
+    While a session is active, the app displays real-time trip duration and current GPS speed (km/h) in a metrics grid below the camera view. GPS speed is obtained via the Android Fused Location Provider and requires location permission.
+
+    \item \textbf{Phone Orientation Warning:}
+    If the phone is detected as physically upside-down during monitoring (using the accelerometer and display rotation API), the system immediately issues an alert prompting the driver to flip the device. This detection is debounced to avoid false triggers from sensor noise.
 
 \end{itemize}
 
@@ -363,13 +332,47 @@ This section provides short descriptions of the user functional requirements ide
     \item \textbf{UF-H: Multi-Stage Camera Calibration} —
     The system shall provide a calibration routine to establish the driver's forward-facing baseline. This includes "Mirror Logic" to infer eye-closure thresholds for side-mirrors based on partial calibration data. (Supported by Use Case UC-005.)
 
-    \item \textbf{UF-I: Session Summary and Export} —
-    The system shall display a post-session summary of alert counts and durations, and allow the driver to export anonymized event logs. (Supported by Use Cases UC-006 and UC-007.)
+    \item \textbf{UF-I: Trip History and Session Persistence} —
+    The system shall automatically save each completed monitoring session as a \texttt{Trip} record in Firebase Firestore, including start/end timestamps, duration, and a timestamped list of alert events (drowsiness, distraction, presence check, phone orientation). The driver shall be able to view all past trips in a dedicated \textbf{History} tab and clear the history if desired. (Supported by Use Cases UC-006 and UC-007.)
 
     \item \textbf{UF-J: Privacy and Local Data Control} —
-    The system shall process all camera frames locally. No raw video or identifiable facial images shall be transmitted externally; only anonymized metrics may be stored or exported. (Emphasized in Use Cases UC-001 and UC-006.)
+    The system shall process all camera frames locally. No raw video or identifiable facial images shall be transmitted externally; only anonymized alert metadata (event type, timestamp) may be stored in the cloud via Firestore. (Emphasized in Use Cases UC-001 and UC-006.)
+
+    \item \textbf{UF-K: Sunglasses and Occlusion Detection} —
+    The system shall use a custom TFLite binary classifier to detect when the driver is wearing sunglasses during a monitoring session. When sunglasses are detected, the drowsiness detection pipeline shall be suppressed and the driver shall be notified that eye-based monitoring is paused, while head-pose distraction monitoring continues unaffected.
 
 \end{enumerate}
+
+% ---------- 4.1.5 User Non-functional Requirements ----------
+\subsection{Non-functional Requirements}
+The following non-functional requirements capture quality and constraint expectations from the driver's perspective. Full descriptions are provided in Appendix~R.
+
+\subsubsection{Product: Usability Requirements}
+The driver must be able to start a monitoring session in under two taps. Alerts must be clear, well-timed, and non-distracting.
+
+\subsubsection{Product: Performance Requirements}
+The system must respond in real time ($\leq$200\,ms alert latency) and maintain smooth frame analysis without perceptible lag.
+
+\subsubsection{Product: Availability/Reliability/Security}
+Core monitoring must remain stable for a full driving session ($\geq$60 minutes). User credentials must be securely managed and not exposed.
+
+\subsubsection{Organizational: Development Requirements}
+The system shall be built on standard Android tools (Kotlin, Jetpack Compose) to ensure maintainability by future development teams.
+
+\subsubsection{Organizational: Operational Requirements}
+Core detection must function without an active internet connection. GPS and history features may require connectivity.
+
+\subsubsection{Organizational: Environmental Requirements}
+The app must operate reliably under varied in-car lighting (day, night, overcast) and across different mounting angles.
+
+\subsubsection{External: Legislative Requirements on Safety/Security}
+The system shall comply with mobile privacy best practices by keeping facial data on-device and not storing biometric identifiers.
+
+\subsubsection{External: Cultural and Social Requirements}
+The system should function equitably across drivers of diverse skin tones and facial structures as supported by ML Kit.
+
+\subsubsection{External: Interoperability Requirements}
+The application targets Android SDK 24 minimum, ensuring broad device compatibility without requiring proprietary hardware.
 
 % ========================= 4. SYSTEM REQUIREMENTS =========================
 \section{\textcolor{qcRed}{System Requirements}}
@@ -383,10 +386,10 @@ The ALVION system shall implement the following core functional features to enab
 
 \begin{itemize}
     \item \textbf{SF-01: Real-Time Drowsiness Detection} —
-    The system shall utilize the ML Kit Face Detection API [1] to analyze eye-openness probabilities. Using the PERCLOS metric [4], it shall trigger an alert when eyelid closure exceeds a defined duration (default 1800ms).
+    The system shall utilize the ML Kit Face Detection API [1] to analyze eye-openness probabilities. Using the PERCLOS metric [4], it shall trigger an alert when the EMA-smoothed eye score remains below the calibrated threshold for more than $1{,}200$\,ms (default drowsiness trigger duration).
 
     \item \textbf{SF-02: Distraction Detection} —
-    The system shall track head yaw (horizontal rotation) and issue a distraction alert if the driver's head deviates from the calibrated forward baseline beyond a threshold for a set duration.
+    The system shall track head yaw (horizontal rotation) and issue a distraction alert using a tiered dwell-time hierarchy: $4{,}000$\,ms when the driver's head is within a calibrated mirror-check range, and $2{,}000$\,ms when the deviation exceeds that range (e.g., looking at a phone or passenger).
 
     \item \textbf{SF-03: Multi-Stage Alert Mechanisms} —
     The system shall deliver synchronous alerts using audio tones, haptic vibration, and visual UI overlays to ensure the driver is promptly notified of safety risks.
@@ -410,7 +413,22 @@ The ALVION system shall implement the following core functional features to enab
     All frame analysis shall occur strictly on-device. The system shall store session summaries and event logs in secure, app-scoped storage, with no transmission of raw video data to external servers.
 
     \item \textbf{SF-10: Session Summary Reporting} —
-    Upon ending a session, the app shall generate a local report summarizing the frequency and type of alerts triggered, helping the driver evaluate their fatigue patterns.
+    Upon ending a session, the app shall generate a report summarizing the frequency and type of alerts triggered and persist this record to Firebase Firestore for the authenticated user.
+
+    \item \textbf{SF-11: Real-Time GPS Speed Display} —
+    During an active monitoring session, the system shall display the driver's current speed in km/h using the Android Fused Location Provider. Location updates shall be polled at 1-second intervals and the display shall revert to 0 km/h when the session ends or location permission is unavailable.
+
+    \item \textbf{SF-12: Phone Orientation Monitoring} —
+    The system shall detect when the device is physically upside-down during a session using the accelerometer sensor and display rotation API. Upon confirming an inverted orientation (debounced by 250\,ms), it shall issue a warning alert and log a \texttt{PHONE\_UPSIDE\_DOWN} event to the current session record.
+
+    \item \textbf{SF-13: TFLite Sunglasses Detection} —
+    The system shall run a custom binary TFLite classifier (\texttt{sunglasses\_model.tflite}) on a cropped face region every 3 frames during monitoring. When sunglasses are detected with confidence $\geq 0.70$ for 2 consecutive inferences, drowsiness detection shall be suppressed and the eye-occlusion state shall be set. Detection shall be cleared when confidence falls below $0.45$ for 2 consecutive inferences.
+
+    \item \textbf{SF-14: Presence / Liveness Check} —
+    When eye landmarks are occluded and the detected face position and head rotation remain statistically static for $10{,}000$\,ms (variance below defined thresholds), the system shall issue a presence-check alert prompting the driver to confirm alertness by moving their head.
+
+    \item \textbf{SF-15: Face Proximity Guard} —
+    The system shall detect when the driver's face occupies more than 60\% of the camera frame area (indicating the device is too close to the face) and temporarily suspend safety monitoring for that frame, preventing unreliable landmark readings from triggering false alerts.
 \end{itemize}
 
 % ---------------- 4.2.1.2 Data Requirements ----------------
@@ -426,9 +444,10 @@ The ALVION application manages data related to user identity, real-time facial a
 
 \paragraph{Data Processing and Storage}
 \begin{itemize}
-    \item \textbf{User Profiles (Cloud):} Basic user identity data is stored securely in Firebase to manage accounts across sessions.
-    \item \textbf{Calibration Baselines (Local):} Temporary yaw offsets and eye-closure thresholds are calculated during the calibration phase. These are stored locally in SharedPreferences to maintain the user's "Forward" baseline for the duration of the app's use.
-    \item \textbf{Session Metrics (Volatile):} Running averages and "EMA" (Exponential Moving Average) scores for eye openness are maintained in-memory. This data is used for real-time alerting and is discarded once the monitoring session ends.
+    \item \textbf{User Profiles (Cloud):} Basic user identity data is stored securely in Firebase Authentication to manage accounts across sessions.
+    \item \textbf{Trip History (Cloud):} Each completed monitoring session is saved as a \texttt{Trip} document in Firebase Firestore (\texttt{trips} collection), containing the user ID, date label, start/end timestamps, duration, and a list of \texttt{TripAlert} events (type and timestamp). This data is scoped per authenticated user and persists indefinitely until the driver clears it.
+    \item \textbf{Calibration Baselines (Local):} Yaw offsets and eye-closure thresholds are calculated during calibration and stored locally in SharedPreferences to maintain the user's forward baseline for the duration of the app's use.
+    \item \textbf{Session Metrics (Volatile):} Running EMA scores for eye openness and head-pose state are maintained in-memory and discarded once the monitoring session ends. Raw video frames are never written to storage.
 \end{itemize}
 
 \paragraph{Data Quality and Privacy}
@@ -438,52 +457,74 @@ The ALVION application manages data related to user identity, real-time facial a
     \item \textbf{Secure Authentication:} Password management and token handling are delegated to Firebase, ensuring industry-standard security for user accounts.
 \end{itemize}
 
-\textit{These requirements confirm that while user identity is managed in the cloud, the privacy-sensitive "safety" data remains volatile and local to the driver's device.}
+\textit{While user identity and anonymized alert metadata are managed in the cloud, all privacy-sensitive facial data remains volatile and local to the driver's device.}
 
 % ---------- 4.2.2 Non-functional Requirements ----------
 \subsection{Non-functional Requirements}
 This section defines the technical constraints and quality standards the ALVION system must meet. These requirements serve as the benchmarks for system testing and performance evaluation.
 
-\subsubsection{Product: Usability and Safety}
+\subsubsection{Product: Usability Requirements}
 \begin{itemize}
     \item \textbf{SP-01-01} — The interface shall allow a driver to initiate monitoring in under two taps to ensure minimal distraction during vehicle setup.
     \item \textbf{SP-02-01} — The system shall maintain hands-free operation; no manual input shall be required or accepted while a monitoring session is active.
-    \item \textbf{SP-03-01} — Visual, auditory, and haptic alerts shall be synchronized within $\pm$50\,ms to provide a clear, unified warning to the driver.
     \item \textbf{SP-04-01} — The application shall display a safety disclaimer upon launch that must be acknowledged before the driver can access monitoring features.
 \end{itemize}
 
-\subsubsection{Product: Performance and Efficiency}
+\subsubsection{Product: Performance Requirements}
 \begin{itemize}
     \item \textbf{SP-05-01} — The inference pipeline shall maintain a minimum of 15 FPS and an alert latency of $\leq$200\,ms on supported Snapdragon devices.
     \item \textbf{SP-05-02} — Average CPU utilization shall remain below 40\% by utilizing the Android Neural Networks API (NNAPI) for ML Kit hardware acceleration.
     \item \textbf{SP-07-01} — The system shall include thermal management logic that reduces inference frequency if the device temperature exceeds safe operating limits.
 \end{itemize}
 
-\subsubsection{Product: Reliability and Privacy}
+\subsubsection{Product: Availability, Reliability, and Security}
 \begin{itemize}
+    \item \textbf{SP-03-01} — Visual, auditory, and haptic alerts shall be synchronized within $\pm$50\,ms to provide a clear, unified warning to the driver.
     \item \textbf{SP-08-01} — The application shall remain operational for at least 60 minutes of continuous monitoring without crash or significant performance degradation.
-    \item \textbf{SP-09-01} — In the event of a camera obstruction or ML failure, the system shall provide a "Tracking Lost" notification within 1 second.
+    \item \textbf{SP-09-01} — In the event of a camera obstruction or ML failure, the system shall provide a "Tracking Lost" notification within 3 seconds of continuous landmark loss.
     \item \textbf{SP-10-01} — All facial analysis shall be performed locally. No raw images or video data shall be transmitted externally or stored permanently.
 \end{itemize}
 
-\subsubsection{Organizational and External Constraints}
+\subsubsection{Organizational: Development Requirements}
 \begin{itemize}
     \item \textbf{SO-01-01} — The project shall be implemented using Kotlin and Jetpack Compose, targeting Android SDK 33 (Android 13) or higher.
+\end{itemize}
+
+\subsubsection{Organizational: Operational Requirements}
+\begin{itemize}
     \item \textbf{SO-09-01} — Core detection and alerting features must function without an active internet connection (strictly offline monitoring).
+\end{itemize}
+
+\subsubsection{Organizational: Environmental Requirements}
+\begin{itemize}
+    \item The system shall operate across typical automotive lighting environments, including low-light night driving and high-glare daytime conditions.
+\end{itemize}
+
+\subsubsection{External: Legislative Requirements on Safety/Security}
+\begin{itemize}
     \item \textbf{SE-01-01} — The application shall comply with mobile safety standards by disabling configuration menus while the vehicle is detected to be in motion.
+\end{itemize}
+
+\subsubsection{External: Cultural and Social Requirements}
+\begin{itemize}
     \item \textbf{SE-03-01} — The system shall be validated for consistent landmark detection across varied skin tones and common eyewear (glasses).
 \end{itemize}
 
+\subsubsection{External: Interoperability Requirements}
+\begin{itemize}
+    \item The system shall integrate with Firebase Authentication and Firestore using standard Google Play Services APIs, without dependency on proprietary device-specific SDKs.
+\end{itemize}
+
 % ---------- 4.3 Requirements Trace Table ----------
-\subsection{Requirements Traceability}
+\section{Requirements Trace Table}
 
 A Requirements Traceability Table is provided in Appendix R to ensure that all user requirements are systematically mapped to system functionality, design components, and testing procedures.
 
 This table establishes clear relationships between:
 \begin{itemize}
-    \item User Functional Requirements (UF-A through UF-J)
-    \item System Functional Requirements (SF-01 through SF-10)
-    \item Design components such as the FaceDetectionAnalyzer and FaceStateEvaluator
+    \item User Functional Requirements (UF-A through UF-K)
+    \item System Functional Requirements (SF-01 through SF-15)
+    \item Design components such as the \texttt{FaceDetectionAnalyzer}, \texttt{FaceStateEvaluator}, \texttt{SunglassesClassifier}, \texttt{HistoryRepository}, and \texttt{SpeedTracker}
     \item Corresponding test cases used for validation
 \end{itemize}
 
@@ -519,9 +560,17 @@ We are building a phone-first prototype that runs entirely on the device. To ens
 \textbf{What it is.} An on-device Qualcomm SDK [1] for vision tasks.
 \textbf{Why we use it.} ML Kit provides a pre-trained, highly optimized pipeline for facial landmarking. It returns the exact metrics needed for our safety logic—specifically eye-openness probabilities and head Euler angles (yaw)—without the need for custom model training or hosting.
 
-\subsection{Backend: Firebase Authentication}
-\textbf{What it is.} A secure cloud-based identity platform [3].
-\textbf{Why we use it.} To support personal session history and persistent user settings, we utilize Firebase for secure login and account management, ensuring that driver profiles are protected and easily accessible.
+\subsection{Backend: Firebase Authentication and Firestore}
+\textbf{What it is.} A secure cloud-based identity and database platform [3].
+\textbf{Why we use it.} Firebase Authentication handles secure login and account management. Firebase Firestore stores each completed trip as a structured document (alert types, timestamps, duration) scoped to the authenticated user, enabling persistent trip history across sessions without transmitting any raw facial data.
+
+\subsection{On-Device Custom Classifier: TFLite}
+\textbf{What it is.} The TensorFlow Lite runtime for Android.
+\textbf{Why we use it.} ML Kit does not provide a sunglasses-detection signal. We trained and deployed a custom binary TFLite model (\texttt{sunglasses\_model.tflite}) that classifies $128 \times 128$ cropped face images as sunglasses / no-sunglasses. Running this classifier every 3 frames suppresses false drowsiness detections caused by eye occlusion from dark lenses.
+
+\subsection{Location: Fused Location Provider}
+\textbf{What it is.} Google Play Services' battery-efficient location API.
+\textbf{Why we use it.} We use the Fused Location Provider to stream GPS speed updates at 1-second intervals during active sessions, displayed in the live metrics grid. This context (speed = 0 vs. highway speed) helps drivers understand their monitoring state.
 
 \subsection{Project Glue: Coroutines and Flow}
 \textbf{What it is.} Kotlin’s asynchronous programming primitives.
@@ -541,7 +590,11 @@ We are building a phone-first prototype that runs entirely on the device. To ens
         \\
         ML Kit Face Detection & Vision Inference & Pre-trained metrics for eyes and yaw.\\
         \\
-        Firebase Auth & User Accounts & Secure, standardized login flow.\\
+        TFLite Interpreter & Sunglasses Detection & Custom binary classifier for eye occlusion.\\
+        \\
+        Firebase Auth + Firestore & User Accounts + History & Login and persistent trip records.\\
+        \\
+        Fused Location Provider & GPS Speed & Real-time speed display during sessions.\\
         \\
         Kotlin Coroutines & Concurrency & Keeps UI responsive during ML tasks.\\
         \bottomrule
@@ -569,14 +622,14 @@ The system implements a \textbf{PERCLOS Proxy [4]} (Percentage of Eyelid Closure
 \begin{enumerate}
     \item \textbf{EMA Smoothing:} Raw eye-openness scores from ML Kit are processed using an \textit{Exponential Moving Average} ($\alpha = 0.45$) to filter out momentary blinks and sensor noise.
     \item \textbf{Dynamic Thresholding:} Instead of a fixed 0.5 threshold, the system uses the eye-openness stats gathered during calibration to set a custom "closed" threshold for each driver.
-    \item \textbf{Temporal Trigger:} If the EMA eye-score remains below the threshold for more than $1,800$~ms, a "Drowsy" event is published to the alert manager.
+    \item \textbf{Temporal Trigger:} If the EMA eye-score remains below the threshold for more than $1{,}200$~ms, a "Drowsy" event is published to the alert manager.
 \end{enumerate}
 
 \paragraph{Distraction (Yaw Deviation):}
 Distraction is detected by monitoring the \textit{Yaw Delta} against a dwell-time hierarchy.
 \begin{enumerate}
-    \item \textbf{Mirror-Check Tolerance:} If the driver is looking toward a calibrated mirror angle, the system allows a longer dwell time ($8,000$~ms) to account for normal traffic checks.
-    \item \textbf{Beyond-Mirror Deviation:} If the yaw delta exceeds the mirror range (indicating the driver is looking at a passenger or a phone), a shorter dwell time ($4,000$~ms) is enforced before an alert is triggered.
+    \item \textbf{Mirror-Check Tolerance:} If the driver is looking toward a calibrated mirror angle, the system allows a dwell time of $4{,}000$~ms to account for normal traffic checks.
+    \item \textbf{Beyond-Mirror Deviation:} If the yaw delta exceeds the mirror range (indicating the driver is looking at a passenger or a phone), a shorter dwell time of $2{,}000$~ms is enforced before an alert is triggered.
     \item \textbf{Yaw Hysteresis:} To prevent alert "flickering" near the threshold, the system requires the head to return $8^\circ$ back toward the center before the distraction state is reset.
 \end{enumerate}
 
@@ -602,21 +655,24 @@ A successful implementation on the Snapdragon target device is defined by:
 
 The ALVION project demonstrates the feasibility of bringing advanced safety features to a wider demographic without the need for high-cost, integrated vehicle hardware. By leveraging commodity smartphone sensors and on-device ML, the project creates meaningful impacts in road safety and mobile AI application design.
 
-\subsection*{Impact on Drivers}
+\subsection*{Impact on Individuals (Drivers)}
 \begin{itemize}
     \item \textbf{Safety for Legacy Vehicles.} The most immediate impact is on drivers of older vehicles that lack built-in Driver Monitoring Systems (DMS). ALVION provides these users with a low-cost alternative to expensive retrofit hardware, offering real-time alerts that can prevent accidents caused by fatigue or distraction.
+    \item \textbf{Empowerment through Awareness.} Because the system provides immediate feedback and a personal "Trip History," it encourages drivers to recognize their own fatigue patterns. This empowers individuals to make informed decisions about when to take breaks, fostering long-term safer driving habits.
     \item \textbf{Low-Barrier Awareness.} Because the system requires only a standard Android device, it encourages safer driving habits through immediate feedback, helping drivers recognize their own fatigue patterns before they become a critical danger.
 \end{itemize}
 
-\subsection*{Impact on Technical Development}
+\subsection*{Impact on Organizations}
 \begin{itemize}
-    \item \textbf{Proof-of-Concept for On-Device AI.} ALVION serves as a practical demonstration of running complex, real-time vision pipelines (ML Kit and CameraX) on Snapdragon hardware. This provides a template for other developers looking to build safety-critical applications that must remain responsive without relying on cloud connectivity.
+    \item \textbf{Scalable Fleet Safety.} For organizations such as delivery services or ride-sharing platforms, ALVION offers a software-defined safety solution that can be deployed across a fleet without hardware installation costs. This allows organizations to improve safety standards and reduce liability with minimal capital expenditure.
+    \item \textbf{Technical Template for Developers.} The project serves as a proof-of-concept for running complex, real-time vision pipelines (ML Kit and CameraX) on Snapdragon hardware. It provides a template for organizations looking to build responsive, safety-critical applications that must operate reliably at the "edge" without constant cloud connectivity.
     \item \textbf{Resource-Efficient Safety.} The project proves that sophisticated safety signals—like yaw delta and eyelid closure—can be computed with minimal battery and thermal impact, setting a baseline for what is achievable in modern edge-based AI.
 \end{itemize}
 
-\subsection*{Impact on Public Safety and Accessibility}
+\subsection*{Impact on Society}
 \begin{itemize}
-    \item \textbf{Road Safety Democratization.} High-end safety technology is often locked behind luxury vehicle tiers. By developing a mobile-first solution, this project contributes to a more equitable landscape where road safety tools are accessible to anyone with a smartphone, potentially reducing the frequency of fatigue-related collisions globally.
+    \item \textbf{Road Safety Democratization.} High-end safety technology is often locked behind luxury vehicle tiers. ALVION contributes to a more equitable landscape where road safety tools are accessible to anyone with a smartphone, potentially reducing the global frequency of fatigue-related collisions.
+    \item \textbf{Privacy-First Safety Standards.} By processing all facial data locally and only storing anonymized metadata in Firestore, ALVION sets a societal benchmark for "Privacy by Design." It proves that public safety can be improved without compromising individual civil liberties or creating large-scale biometric databases.
     \item \textbf{Infrastructure Independence.} Unlike systems that require continuous cloud processing or dedicated vehicle sensors, ALVION operates entirely independently. This makes it a viable safety tool in areas with poor network coverage or for users who prioritize offline, autonomous operation.
 \end{itemize}
 
@@ -628,25 +684,28 @@ The ALVION project demonstrates the feasibility of bringing advanced safety feat
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{assets/NewARCdesign.png}  % -might need to change this mvc design
+    \includegraphics[width=.75\textwidth]{assets/MVCArchFinal.png}  % -might need to change this mvc design
     \caption{Architectural Design (MVC Pattern).}
     \label{fig:mvc-arch}
 \end{figure}
 
 \subsection{Architecture Overview}\label{subsec:arch-overview}
-\noindent\textbf{What the diagram shows.}
-The ALVION system is organized using the \textbf{Model-View-Controller (MVC)} pattern to ensure a clean separation between the real-time vision pipeline and the user interface.
+
+\noindent\textbf{What the diagram shows.} The ALVION system is organized using the \textbf{Model-View-Controller (MVC)} pattern to ensure a clean separation between the real-time vision pipeline and the user interface.
 
 \begin{itemize}
-    \item \textbf{Views (Jetpack Compose):} These include the \texttt{Authentication}, \texttt{Home/Preview}, and \texttt{Settings} screens. They are responsible for rendering the live camera feed, displaying visual alert overlays, and capturing user input for calibration.
-    \item \textbf{Controllers (Analysis Pipeline):} The \texttt{FaceDetectionAnalyzer} acts as the primary controller. It coordinates the data flow between the \textbf{CameraX [2]} frame stream and the \textbf{ML Kit [1]} inference engine. It ensures that frames are processed asynchronously to maintain a responsive UI.
-    \item \textbf{Model (Safety Engine):} The \texttt{FaceStateEvaluator} serves as the core "brain" of the system. It maintains the internal state of the driver (Normal, Drowsy, or Distracted). It stores the \textbf{Calibration Baselines} (Yaw and Eye thresholds) and applies heuristic rules—such as the Mirror Symmetry logic and EMA smoothing—to trigger alerts.
+    \item \textbf{View (Jetpack Compose):} The \texttt{LoginScreen}, \texttt{IntroScreen}, \texttt{HomeTab}, \texttt{HistoryScreen}, and \texttt{ProfileScreen} are hosted via \texttt{AppShell} and routed by \texttt{RootActivity} based on Firebase Auth state. Views are responsible for rendering the camera feed, displaying alert banners, showing trip history, and capturing calibration input.
+
+    \item \textbf{Controller (Orchestration Layer):} \texttt{RootActivity} manages top-level navigation. \texttt{FaceDetectionAnalyzer} coordinates the CameraX frame stream, ML Kit inference, and per-frame sunglasses detection via \texttt{FaceCropper}. \texttt{AlertAudioManager} triggers low-latency audio alerts via \texttt{SoundPool}. \texttt{HistoryViewModel} and \texttt{SettingsViewModel} manage trip data and user preference lifecycles, exposing \texttt{StateFlow} streams to the View layer.
+
+    \item \textbf{Model (Safety Engine and Data):} \texttt{FaceStateEvaluator} is the core safety engine, maintaining driver state (\textit{Normal}, \textit{Drowsy}, \textit{Distracted}, \textit{Eye-Occluded}) using EMA smoothing, calibration baselines, and heuristic rules. It fires callbacks (\texttt{onDrowsy}, \texttt{onDistracted}, \texttt{onEyeOccluded}) to the View layer. \texttt{MlKitFaceProcessor} handles face landmark detection, \texttt{SunglassesClassifier} runs a TFLite binary classifier for occlusion detection, and \texttt{FaceCropper} converts YUV camera frames to RGB bitmaps for model input. \texttt{HistoryRepository} persists trips to Firebase Firestore, \texttt{SettingsRepository} manages preferences via Jetpack \texttt{DataStore}, \texttt{SpeedTracker} streams GPS speed, and \texttt{PhoneUpsideDownDetector} detects device inversion via the accelerometer.
 \end{itemize}
 
 \noindent\textbf{How data moves.}
 When the driver starts a session, \textbf{CameraX} begins streaming RGB frames to the \texttt{FaceDetectionAnalyzer}. Each frame is converted into an \texttt{InputImage} and passed to \textbf{ML Kit}.
 The resulting facial landmarks (eye-openness and Euler angles) are sent to the \texttt{FaceStateEvaluator}, which compares them against the stored calibration baselines.
-If a threshold is exceeded for the required duration (e.g., $1,800$~ms for drowsiness), the evaluator triggers a callback. The UI then reacts by displaying a red alert banner and initiating haptic/audio feedback via the \texttt{AlertManager}.
+Concurrently, the face bounding box is used by \texttt{FaceCropper} to extract a cropped image for the \texttt{SunglassesClassifier}; if sunglasses are confirmed, the EMA eye pipeline is bypassed.
+If a threshold is exceeded for the required duration (e.g., $1{,}200$~ms for drowsiness), the evaluator triggers a callback. The UI reacts by displaying a warning banner and initiating haptic/audio feedback. When the session ends, \texttt{HistoryRepository} writes a \texttt{Trip} document to Firestore.
 
 \noindent\textbf{Why we did it this way.}
 This architecture prioritizes low-latency "edge" processing. By separating the \textbf{State Evaluator} from the \textbf{Inference Engine}, we can swap or update the landmark detection SDK (e.g., moving from ML Kit to another provider) without rewriting our core safety logic. Using a controller to manage the \textbf{CameraX} lifecycle ensures that hardware resources are only active when a session is in progress, preserving battery and preventing thermal issues.
@@ -677,7 +736,7 @@ To ensure the system is both testable and maintainable, the following design pat
 \subsection{Entity–Relationship Diagram (ERD)}\label{subsec:erd}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{assets/erdDiagram.png}
+    \includegraphics[width=0.9\textwidth]{assets/AlvionERD.png}
     \caption{Data persistence model: User profiles are stored in the cloud (Firebase), while device-specific settings and calibration baselines are persisted locally.}
     \label{fig:erd}
 \end{figure}
@@ -685,8 +744,12 @@ To ensure the system is both testable and maintainable, the following design pat
 \noindent\textbf{Data Rationale.}
 The ALVION system minimizes local storage to prioritize driver privacy. The data model is split into two distinct layers:
 \begin{enumerate}
-    \item \textbf{Cloud Layer (Firebase):} Manages \texttt{User} credentials and profile metadata. This ensures that the driver can log in securely across different devices.
-    \item \textbf{Local Layer (SharedPreferences):} Stores the \texttt{CalibrationBaseline} (forward yaw, mirror angles) and \texttt{Settings} (thresholds). These are device-specific, as the physical mounting angle of the phone may change between different vehicles.
+    \item \textbf{Cloud Layer (Firebase):} Manages two data stores:
+    \begin{itemize}
+        \item \textbf{Firebase Authentication} — User credentials and profile metadata, enabling secure login across devices.
+        \item \textbf{Firebase Firestore (\texttt{trips} collection)} — Completed monitoring sessions. Each \texttt{Trip} document stores the user ID, date label, start/end timestamps, duration label, and a list of \texttt{TripAlert} objects (event type: \texttt{DROWSINESS}, \texttt{DISTRACTION}, \texttt{PRESENCE\_CHECK}, or \texttt{PHONE\_UPSIDE\_DOWN}; and a Firestore \texttt{Timestamp}). Documents are indexed by user ID and ordered by start time.
+    \end{itemize}
+    \item \textbf{Local Layer (SharedPreferences):} Stores the \texttt{CalibrationBaseline} (forward yaw, mirror angles) and \texttt{Settings} (alert toggles, vibration, dark-mode preference). These are device-specific, as the physical mounting angle of the phone may change between different vehicles.
 \end{enumerate}
 Unlike traditional monitoring systems, ALVION does not persist raw image data or video logs, ensuring that the biometric "footprint" of the driver remains strictly volatile.
 
@@ -704,22 +767,22 @@ Before monitoring begins, the driver is guided through an onboarding sequence th
     \centering
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/intro1.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB1.jpg}
         \caption*{Intro 1}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/Intro2.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB2.jpg}
         \caption*{Intro 2}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/Intro3.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB3.jpg}
         \caption*{Intro 3}
     \end{minipage}
     \begin{minipage}{0.24\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/Intro4.png}
+        \includegraphics[width=\textwidth]{assets/UI/AlvionOB4.jpg}
         \caption*{Intro 4}
     \end{minipage}
     \caption{Onboarding sequence explaining the ALVION safety features.}
@@ -729,12 +792,12 @@ Before monitoring begins, the driver is guided through an onboarding sequence th
     \centering
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{assets/UI/signIn.png}
+        \includegraphics[width=0.7\textwidth]{assets/UI/AlvionSignIn.jpg}
         \caption{Sign In Screen}
     \end{minipage}
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{assets/UI/signUp.png}
+        \includegraphics[width=0.7\textwidth]{assets/UI/AlvionSignup.jpg}
         \caption{Sign Up Screen}
     \end{minipage}
 \end{figure}
@@ -747,7 +810,7 @@ The dashboard provides a central hub for starting sessions and managing the user
     \centering
     \begin{minipage}{0.32\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/main.png}
+        \includegraphics[width=\textwidth]{assets/UI/Home.jpg}
         \caption{Main Dashboard}
     \end{minipage}
     \begin{minipage}{0.32\textwidth}
@@ -757,7 +820,7 @@ The dashboard provides a central hub for starting sessions and managing the user
     \end{minipage}
     \begin{minipage}{0.32\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{assets/UI/profile.png}
+        \includegraphics[width=\textwidth]{assets/UI/Profile.jpg}
         \caption{User Profile}
     \end{minipage}
     \caption{Core application screens for monitoring and profile management.}
@@ -767,7 +830,10 @@ The dashboard provides a central hub for starting sessions and managing the user
 \begin{itemize}
     \item \textbf{High-Contrast Accents:} Large buttons and red alert banners are used to ensure visibility in varied cabin lighting.
     \item \textbf{Live Overlay:} The monitoring screen uses a semi-transparent graphic overlay (see \textit{GraphicOverlay.kt}) to show face tracking status without obscuring the camera preview.
-    \item \textbf{Simplified Profile:} Account management is kept in a separate tab to prevent accidental interaction while the vehicle is in motion.
+    \item \textbf{Three-Tab Navigation:} The app shell (\texttt{AppShell.kt}) provides three bottom-navigation tabs: \textbf{Home} (camera + monitoring), \textbf{History} (trip records), and \textbf{Profile} (settings and account).
+    \item \textbf{Live Metrics Grid:} When a session is active, a two-card metrics row is displayed below the camera view showing real-time \textbf{Duration} (elapsed HH:MM:SS) and \textbf{Speed} (GPS km/h). When idle, this area shows the \textbf{Emergency Call} button.
+    \item \textbf{History Tab:} The History screen (\texttt{HistoryScreen.kt}) displays a chronological list of past trips pulled from Firestore. Each trip card shows the date, duration, alert count badge, and expandable alert-event list with icons colour-coded by event type (amber = drowsiness, rose = distraction, blue = presence check, purple = phone upside-down). A "Clear History" button allows bulk deletion.
+    \item \textbf{Appearance Toggle:} The Profile screen includes a Dark Mode toggle, persisted via SharedPreferences, and a profile-picture selector that loads an image from device storage.
 \end{itemize}
 \clearpage
 
@@ -787,7 +853,7 @@ latex
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{assets/statemachineDiagram.png}
-    \caption{Driver State Logic: The system transitions between \textit{Normal}, \textit{Drowsy}, and \textit{Distracted} states. Transitions are gated by dwell timers (e.g., $1,800$~ms for eyes) and yaw hysteresis to prevent oscillating alerts.}
+    \caption{Driver State Logic: The system transitions between \textit{Normal}, \textit{Drowsy}, \textit{Distracted}, and \textit{Eye-Occluded} states. Drowsiness transitions are gated by a $1{,}200$~ms dwell timer; distraction transitions use $4{,}000$~ms (mirror range) or $2{,}000$~ms (beyond-mirror range); yaw hysteresis ($8^\circ$) prevents oscillating alerts.}
     \label{fig:state-driver}
 \end{figure}
 
@@ -831,11 +897,14 @@ To mitigate sensor noise from ML Kit, we implemented an Exponential Moving Avera
 Our prototype is built using a modern Android stack, prioritizing on-device performance and maintainable code.
 
 \begin{itemize}
-    \item \textbf{Android Studio \& Kotlin:} The primary development environment and language. We utilize Kotlin's high-order functions for event callbacks (\texttt{onDrowsy}, \texttt{onDistracted}).
-    \item \textbf{Jetpack Compose:} Used for the entire UI layer, including the \texttt{GraphicOverlay} that renders real-time tracking feedback.
+    \item \textbf{Android Studio \& Kotlin:} The primary development environment and language. We utilize Kotlin's high-order functions for event callbacks (\texttt{onDrowsy}, \texttt{onDistracted}, \texttt{onPresenceCheck}, \texttt{onEyeOccluded}).
+    \item \textbf{Jetpack Compose:} Used for the entire UI layer, including the \texttt{GraphicOverlay} that renders real-time tracking feedback, and the \texttt{HistoryScreen} that displays Firestore-backed trip records.
     \item \textbf{CameraX (ImageAnalysis) [2]:} Provides the \texttt{Analysis} stream. We implement the \texttt{ImageAnalysis.Analyzer} interface to process frames asynchronously.
     \item \textbf{ML Kit Face Detection [1]:} Our core vision engine. It is configured in \texttt{PERFORMANCE\_MODE\_ACCURATE} to ensure reliable eye-openness and Euler angle extraction.
+    \item \textbf{TFLite Interpreter:} Runs the custom \texttt{sunglasses\_model.tflite} binary classifier (input: $128 \times 128$ RGB image; output: single float, sunglasses confidence). Integrated via \texttt{SunglassesClassifier.kt} with \texttt{FaceCropper.kt} to extract the face region from the camera frame before inference.
     \item \textbf{Firebase Authentication [3]:} Handles user identity and secure access to the application's monitoring features.
+    \item \textbf{Firebase Firestore [3]:} Persists completed trip records (\texttt{Trip} and \texttt{TripAlert} data classes) to the cloud \texttt{trips} collection, scoped per authenticated user. Accessed via \texttt{HistoryRepository.kt}.
+    \item \textbf{Google Play Services — Fused Location Provider:} Streams GPS speed updates at 1-second intervals via the Compose helper \texttt{rememberCurrentSpeedKmh()}. Requires \texttt{ACCESS\_FINE\_LOCATION} permission at runtime.
 \end{itemize}
 
 % ---------- 7.2 Coding Conventions ----------
@@ -876,9 +945,11 @@ The \textbf{Controller} layer is realized by the \texttt{FaceDetectionAnalyzer},
 
 The \textbf{Model} layer is represented by the \texttt{FaceStateEvaluator} and associated utility classes, which encapsulate calibration baselines, temporal smoothing variables, and threshold-based decision rules for drowsiness and distraction detection. By isolating this stateful safety logic from both UI rendering and hardware coordination, the implementation preserves determinism, modularity, and testability.
 
-Supporting design patterns further reinforce this MVC structure. The analyzer operates as a \textbf{Facade} over the underlying \textbf{CameraX} and \textbf{ML Kit} subsystems, while the \texttt{FaceProcessor} abstraction enables a \textbf{Strategy} pattern for interchangeable inference backends. Callback-based event delivery provides an \textbf{Observer}-style interaction between the controller and the UI, and centralized configuration access aligns with the repository-oriented approach described in the structural design.
+Supporting design patterns further reinforce this MVC structure. The analyzer operates as a \textbf{Facade} over the underlying \textbf{CameraX}, \textbf{ML Kit}, and \textbf{TFLite} subsystems, while the \texttt{FaceProcessor} abstraction enables a \textbf{Strategy} pattern for interchangeable inference backends. Callback-based event delivery provides an \textbf{Observer}-style interaction between the controller and the UI, and centralized configuration access aligns with the repository-oriented approach described in the structural design.
 
-At runtime, camera frames flow from \textbf{CameraX} through the analyzer to the evaluator, where calibrated thresholds and temporal logic determine driver-state transitions. Alert events are then routed back through the controller and rendered by the UI. This execution path directly reflects the sequence and state-machine designs presented earlier, demonstrating that the implemented system behavior remains consistent with the documented architecture.
+New components introduced in this iteration remain consistent with the MVC boundaries. \texttt{SunglassesClassifier} and \texttt{FaceCropper} are utility classes owned by the \textbf{Model} layer: they operate entirely within \texttt{FaceStateEvaluator} and produce no UI side-effects directly. \texttt{HistoryRepository} and \texttt{HistoryViewModel} form a separate MVVM sub-graph for the History tab, following the same separation-of-concerns pattern as \texttt{SettingsRepository}/\texttt{SettingsViewModel}. Sensor-based helpers (\texttt{rememberCurrentSpeedKmh}, \texttt{rememberPhoneUpsideDown}) are implemented as Compose state producers, keeping all sensor lifecycle management encapsulated and observable from the View layer without polluting the safety logic.
+
+At runtime, camera frames flow from \textbf{CameraX} through the analyzer to the evaluator, where calibrated thresholds and temporal logic determine driver-state transitions. Every 3rd frame is additionally routed through \texttt{SunglassesClassifier}; a confirmed sunglasses state bypasses the EMA eye pipeline. Alert events are routed back through the controller and rendered by the UI. When the session ends, the collected \texttt{TripAlert} list is written to Firestore by \texttt{HistoryRepository}. This execution path directly reflects the sequence and state-machine designs presented earlier, demonstrating that the implemented system behavior remains consistent with the documented architecture.
 
 % ---------- 7.6 Analysis of Key Algorithms ----------
 \section{Analysis of Key Algorithms}\label{sec:key-algorithms}
@@ -897,17 +968,17 @@ if (hasLeftBucket && !hasRightBucket) {
 This algorithm runs in $\mathcal{O}(1)$ time during the \texttt{finishCalibration()} phase and reduces the required user setup time by $33\%$.
 
 \subsection{Sustained Eye-Closure with EMA Smoothing}\label{subsec:ema-algo}
-The system mitigates sensor noise by applying an Exponential Moving Average (EMA) to the eye-openness scores before checking against a duration-based trigger ($1,800$~ms).
+The system mitigates sensor noise by applying an Exponential Moving Average (EMA) to the eye-openness scores before checking against a duration-based trigger ($1{,}200$~ms).
 
 \begin{verbatim}
 // EMA Smoothing
 currentScore = (rawScore - posturePenalty).coerceIn(0f, 1f)
 eyeScoreEma = (1f - ALPHA) * eyeScoreEma + ALPHA * currentScore
 
-// Duration Trigger
+// Duration Trigger (DROWSY_TRIGGER_MS = 1200ms)
 if (eyeScoreEma < calibratedThreshold) {
     if (startTime == null) startTime = now
-    if (now - startTime >= 1800ms) triggerAlert()
+    if (now - startTime >= 1200ms) triggerAlert()
 }
 \end{verbatim}
 
@@ -916,9 +987,48 @@ The EMA calculation and threshold check both operate in $\mathcal{O}(1)$ per fra
 
 \subsection{Yaw Dwell-Time Hierarchy}\label{subsec:yaw-algo}
 The distraction logic applies a tiered timeout based on where the driver is looking relative to the calibrated mirrors.
+\begin{itemize}
+    \item \textbf{Mirror range} (yaw within the calibrated mirror bucket + 10°): dwell time = $4{,}000$~ms.
+    \item \textbf{Beyond-mirror range} (yaw exceeds mirror boundary): dwell time = $2{,}000$~ms.
+\end{itemize}
+A callback cooldown of $3{,}000$~ms prevents repeated distraction alerts in rapid succession.
 
 \paragraph{Complexity.}
 For each frame, the system performs a $\mathcal{O}(K)$ lookup (where $K$ is the number of calibration buckets, typically 3) to find the closest yaw mean. This ensures that looking at mirrors is permitted for longer durations than looking at non-driving-related areas (e.g., a phone).
+
+\subsection{TFLite Sunglasses Detection}\label{subsec:sunglasses-algo}
+Every 3 frames, the \texttt{FaceCropper} extracts the face bounding box from the \texttt{ImageProxy} and resizes it to $128 \times 128$. The normalized pixel buffer is passed to the TFLite \texttt{Interpreter}, which outputs a single float (sunglasses confidence 0–1).
+
+\begin{verbatim}
+// Confirmation streak (CONFIRMATION_FRAMES = 2)
+if (confidence >= 0.70f) hitStreak++ else if (confidence <= 0.45f) clearStreak++
+
+if (!detected && hitStreak >= 2) -> sunglassesDetected = true
+if (detected  && clearStreak >= 2) -> sunglassesDetected = false
+
+// When detected: suppress drowsiness, set eye-occluded state
+if (sunglassesDetected) { eyeScoreEma = null; isEyeOccluded = true }
+\end{verbatim}
+
+\paragraph{Complexity.}
+TFLite inference on a $128 \times 128 \times 3$ buffer runs in $\mathcal{O}(1)$ relative to frame rate (fixed model size). Face cropping is $\mathcal{O}(A)$ where $A$ is the face bounding-box pixel area, and is performed at 4-thread CPU parallelism. The streak counter and state update are $\mathcal{O}(1)$.
+
+\subsection{Presence / Liveness Check}\label{subsec:presence-algo}
+When the eye-occlusion state is active (sunglasses or landmark loss), the system tracks head motion using a fixed-size buffer of 5 frames for face center-X position and head yaw.
+
+\begin{verbatim}
+// Variance check (buffer size = 5 frames)
+val isStatic = variance(centerXBuffer) <= 0.25f
+            && variance(rotYBuffer) <= 0.04f
+
+if (isStatic) {
+    if (presenceStaticStartTime == null) presenceStaticStartTime = now
+    if (now - presenceStaticStartTime >= 10000ms) firePresenceCheck()
+}
+\end{verbatim}
+
+\paragraph{Complexity.}
+Variance over a fixed 5-element buffer is $\mathcal{O}(1)$. This check only activates when eyes are already occluded, adding negligible overhead to the normal monitoring path.
 
 \clearpage
 
@@ -963,11 +1073,15 @@ Test results and build artifacts (reports and APKs) are automatically archived b
 Our test cases are designed to verify the "Brain" of the system—the \texttt{FaceStateEvaluator}—under various simulated driving conditions.
 
 \begin{itemize}
-    \item \textbf{TC-01: Drowsiness Duration Trigger (\texttt{FaceLogicTest.kt})} – Verifies that a "Drowsy" alert is only triggered if eye-openness remains below the threshold for more than $1,800$~ms.
-    \item \textbf{TC-02: Distraction Beyond-Mirror Logic} – Confirms that looking away from the road triggers an alert after $4,000$~ms when no mirrors are calibrated.
+    \item \textbf{TC-01: Drowsiness Duration Trigger (\texttt{FaceLogicTest.kt})} – Verifies that a "Drowsy" alert is only triggered if eye-openness remains below the threshold for more than $1{,}200$~ms (updated from prior 1800\,ms design).
+    \item \textbf{TC-02: Distraction Beyond-Mirror Logic} – Confirms that looking away from the road beyond the mirror range triggers an alert after $2{,}000$~ms, and within the mirror range after $4{,}000$~ms.
     \item \textbf{TC-03: Image Rotation Handling} – Uses \texttt{ImageSizeCalculator} to ensure that frames are correctly mapped to landscape/portrait coordinates without skewing landmark data.
     \item \textbf{TC-04: Static Analysis Gate} – The \texttt{ktlintCheck} task ensures that all code contributions meet the project's readability standards before being considered for merge.
     \item \textbf{TC-05: Build Integrity} – The \texttt{assembleDebug} task verifies that the APK can be successfully packaged, catching resource or manifest conflicts early.
+    \item \textbf{TC-06: Sunglasses Detection Suppression} – Simulates two consecutive TFLite inferences with confidence $\geq 0.70$; verifies \texttt{sunglassesDetected = true}, \texttt{isEyeOccluded = true}, and that no \texttt{onDrowsy} callback fires even when the EMA eye score is below threshold.
+    \item \textbf{TC-07: Firestore Trip Persistence (Manual)} – Ends a session with a known alert list (1 drowsiness, 1 distraction); confirms via Firebase Console that a \texttt{Trip} document is written to the \texttt{trips} collection with the correct user ID, alert count, and event types.
+    \item \textbf{TC-08: Phone Upside-Down Alert (Manual)} – Physically inverts the device during an active session; verifies that the warning UI message and a \texttt{PHONE\_UPSIDE\_DOWN} entry appear in the session alert list within 1 second of the debounce window (250\,ms).
+    \item \textbf{TC-09: Presence Check Trigger} – Holds the device stationary with face visible but eyes occluded for 10+ seconds; verifies that the \texttt{onPresenceCheck} callback fires once and the session alert list receives a \texttt{PRESENCE\_CHECK} entry.
 \end{itemize}
 
 % -----------------------------------------------------------------------------
@@ -976,9 +1090,10 @@ Our test cases are designed to verify the "Brain" of the system—the \texttt{Fa
 \subsection{Unit and Logic Testing Report (Automated CI)}  % 8.3.1
 The \texttt{FaceLogicTest.kt} suite provides $100\%$ coverage of the safety heuristics. By mocking the \texttt{Face} data, we verified:
 \begin{itemize}
-    \item Drowsiness triggers exactly after the $3,100$~ms simulated delay in the test suite.
-    \item Distraction triggers correctly after the $4,100$~ms threshold when in "Beyond-Mirror" mode.
+    \item Drowsiness triggers exactly after the $1{,}200$~ms dwell timer in the test suite (previously 1800\,ms).
+    \item Distraction triggers correctly after the $2{,}100$~ms threshold when in "Beyond-Mirror" mode and after $4{,}100$~ms in mirror-check range.
     \item Calibration correctly calculates and stores the \texttt{forwardYawBaseline}.
+    \item Sunglasses detection (TC-06): \texttt{FaceStateEvaluator} correctly sets \texttt{sunglassesDetected} and suppresses drowsiness after 2 consecutive high-confidence TFLite frames.
 \end{itemize}
 
 \subsection{CI Pipeline Execution Report}  % 8.3.2
@@ -994,6 +1109,10 @@ Manual verification is performed on a physical Snapdragon device using the CI-ge
 \begin{itemize}
     \item \textbf{Authentication:} Verified successful Firebase login/signup flow.
     \item \textbf{Monitoring:} Confirmed that the \texttt{GraphicOverlay} correctly maps landmarks to the user's face in real-time.
+    \item \textbf{Trip History (TC-07):} Completed a test session with deliberate drowsiness and distraction events; confirmed \texttt{Trip} document appeared in the Firebase Console \texttt{trips} collection with correct alert types and timestamps, and in the History tab UI.
+    \item \textbf{Phone Upside-Down (TC-08):} Physically inverted the device during monitoring; the warning banner appeared within the 250\,ms debounce window and a \texttt{PHONE\_UPSIDE\_DOWN} event was recorded in the session.
+    \item \textbf{Sunglasses (TC-06):} Wearing dark sunglasses during monitoring; the AI message box correctly displayed "Eyes not visible. Drowsiness detection paused" and no false drowsiness alerts were fired.
+    \item \textbf{GPS Speed (SF-11):} Trip metrics grid correctly showed real-time speed in km/h during motion testing.
 \end{itemize}
 
 % -----------------------------------------------------------------------------
@@ -1018,12 +1137,14 @@ The system implementation has been validated against all defined user functional
 
     \item \textbf{UF-H (Calibration):} Multi-stage calibration system implemented with mirror symmetry logic.
 
-    \item \textbf{UF-I (Session Summary):} Basic session summary functionality implemented for user feedback.
+    \item \textbf{UF-I (Trip History and Session Persistence):} Fully implemented via Firebase Firestore. Each completed session is automatically saved as a \texttt{Trip} document with timestamped alert events. The History tab provides a real-time view of all past trips with expandable alert details.
 
-    \item \textbf{UF-J (Privacy Control):} All processing is performed on-device, ensuring no transmission of raw facial data.
+    \item \textbf{UF-J (Privacy Control):} All camera frame processing is performed on-device. Only anonymized alert metadata (event type, timestamp) is transmitted to Firestore; no raw video or facial biometric data leaves the device.
+
+    \item \textbf{UF-K (Sunglasses / Occlusion Detection):} Implemented via the \texttt{SunglassesClassifier} TFLite model. Drowsiness detection is suppressed when sunglasses are confirmed; the driver is notified that eye-based monitoring is paused while head-pose monitoring continues.
 \end{itemize}
 
-All functional requirements are successfully implemented and validated through both automated and manual testing.
+All functional requirements (UF-A through UF-K) are implemented and validated through automated unit tests, CI pipeline execution, and manual device testing.
 
 % -----------------------------------------------------------------------------
 \section{Meeting Non-Functional Requirements} % 8.5
@@ -1100,13 +1221,17 @@ While horizontal distraction (yaw) is well-handled, the system currently fails t
 \textbf{Issue:} It is currently difficult to tune thresholds for different facial structures without seeing the raw values.\\
 \textbf{Planned action:} Create a "Developer Overlay" or log output that prints the calculated \texttt{eyeMean} and \texttt{yawBaseline} for the current user. This will allow the team to debug "sensitive" detectors and refine the \texttt{ALPHA} value for the EMA smoothing.
 
-\subsection{Cloud-based Alert Persistence (Firebase)}
-\textbf{Issue:} Alert history is currently volatile and lost once the app is closed.\\
-\textbf{Planned action:} Integrate Firebase Firestore to save a permanent "Alert History" for each authenticated user. Each entry will include the alert type (Drowsy/Distracted), timestamp, and the specific threshold that triggered it.
+\subsection{Cloud-based Alert Persistence (Firebase) — \textit{Resolved}}
+\textbf{Status:} Implemented. Firebase Firestore now persists each completed session as a \texttt{Trip} document scoped to the authenticated user. The History tab displays all past trips with expandable per-event detail. Alert types recorded include \texttt{DROWSINESS}, \texttt{DISTRACTION}, \texttt{PRESENCE\_CHECK}, and \texttt{PHONE\_UPSIDE\_DOWN}. \textbf{Remaining gap:} Individual alert entries do not yet store the specific threshold value that triggered the event; this can be added to the \texttt{TripAlert} data model in a future iteration.
 
-\subsection{Cognitive Checks for Vision Failure}
-\textbf{Issue:} If the AI model cannot detect the eyes (e.g., due to heavy sunglasses or poor lighting), the system currently remains silent.\\
-\textbf{Planned action:} Implement a "Cognitive Check" or fallback mode. If landmarks are lost for more than $5$ seconds, the app will trigger an audio prompt asking the user to confirm alertness, bypassing the need for vision-based detection in difficult lighting conditions.
+\subsection{Cognitive Checks for Vision Failure — \textit{Partially Addressed}}
+\textbf{Original issue:} If the AI model cannot detect the eyes (e.g., due to heavy sunglasses or poor lighting), the system remained silent.\\
+\textbf{Current status:} Two mechanisms now address this:
+\begin{enumerate}
+    \item \textbf{Sunglasses Detection (SF-13):} A TFLite binary classifier detects sunglasses in real time and suppresses drowsiness while notifying the driver that eye-based monitoring is paused.
+    \item \textbf{Presence / Liveness Check (SF-14):} When eye landmarks are occluded for an extended period and head motion is static, the system issues a presence-check prompt after $10{,}000$~ms.
+\end{enumerate}
+\textbf{Remaining gap:} General low-lighting landmark failure (not sunglasses) can still cause silent monitoring gaps. A dedicated audio fallback for prolonged ML Kit landmark loss ($>5$ seconds) is a candidate for a future sprint.
 
 \subsection{Process Cadence and Pull Request Review}
 \textbf{Issue:} Sprint goals occasionally slip when bug-fixing (like the recalibration issue) takes longer than expected.\\
@@ -1120,21 +1245,7 @@ While horizontal distraction (yaw) is well-handled, the system currently fails t
 % ---------- 10.1 Instructions for System Development ----------
 \section{Instructions for System Development}
 
-\subsection{Repository Layout}
-The ALVION project is organized as a modern Android Gradle project with a focus on modular feature development:
-\begin{itemize}
-    \item \texttt{app/}: The primary Android application module (Kotlin).
-    \begin{itemize}
-        \item \texttt{src/main/java/.../core/}: Shared UI themes and core components.
-        \item \texttt{src/main/java/.../feature/}: Feature-specific code (Auth, Home, Profile, Intro).
-        \item \texttt{src/test/java/}: Unit tests for safety logic (e.g., \texttt{FaceLogicTest.kt}).
-    \end{itemize}
-    \item \texttt{doc/}: Technical documentation, design assets, and LaTeX source files.
-    \item \texttt{.github/workflows/}: CI/CD configuration via \texttt{ALVION-CI.yml}.
-    \item \texttt{gradle/}: Contains the Gradle wrapper and \texttt{libs.versions.toml} for dependency management.
-\end{itemize}
-
-\subsection{Prerequisites}
+\subsection{How to Set Up Development Environment}
 To contribute to ALVION development, the following environment is required:
 \begin{itemize}
     \item \textbf{IDE:} Android Studio Koala (2024.1.1) or newer.
@@ -1144,61 +1255,53 @@ To contribute to ALVION development, the following environment is required:
     \item \textbf{Firebase:} Access to the \texttt{alvion-ai} project console to obtain the \texttt{google-services.json} file.
 \end{itemize}
 
-\subsection{Clone and First Build}
-\begin{verbatim}
-git clone https://github.com/alvion-ai/Alvion.git
-cd Alvion
-# Ensure google-services.json is placed in app/
-./gradlew clean assembleDebug
-\end{verbatim}
-
-\subsection{CI/CD and Quality Gates}
-Development follows a strict PR-based workflow enforced by the \texttt{ALVION-CI} pipeline:
-\begin{itemize}
-    \item \textbf{Static Analysis:} Run \texttt{./gradlew ktlintCheck} and \texttt{./gradlew lintDebug} to verify code style and Android best practices.
-    \item \textbf{Logic Verification:} Run \texttt{./gradlew testDebugUnitTest} to execute the \texttt{FaceLogicTest} suite.
-    \item \textbf{Pull Requests:} All merges to \texttt{main} require a passing CI build and a successful Copilot/peer review.
-\end{itemize}
-
-% ---------- 10.2 How to Set Up Development Environment ----------
-\section{How to Set Up Development Environment}
+Setup steps:
 \begin{enumerate}
     \item Install Android Studio Koala+ and configure SDK 35.
-    \item Clone the repository from \texttt{https://github.com/alvion-ai/Alvion.git}.
+    \item Clone the repository: \texttt{git clone https://github.com/alvion-ai/Alvion.git}
+    \item Place the \texttt{google-services.json} file in the \texttt{app/} directory.
     \item In Android Studio, go to \texttt{File -> Project Structure} and ensure JDK 17 is selected.
-    \item Enable the "Developer Debug" mode in the app settings to print real-time \texttt{eyeScoreEma} and \texttt{yawDelta} values to Logcat for threshold debugging.
+    \item Run \texttt{./gradlew clean assembleDebug} to verify the build.
 \end{enumerate}
 
-% ---------- 10.3 Notes on System Further Extension ----------
-\section{Notes on System Further Extension}
-The following areas are identified for immediate further development to improve system robustness:
+\subsection{Notes on System Further Extension}
+The following areas are identified for further development to improve system robustness:
 \begin{itemize}
-    \item \textbf{Vertical Distraction (Pitch):} Update \texttt{FaceStateEvaluator.evaluate()} to incorporate \texttt{headEulerAngleX} checks. This will allow the system to detect when the user is looking up or down (e.g., at a sun visor or floor console).
-    \item \textbf{Recalibration State Management:} Refine the reset logic in \texttt{startCalibration()} to ensure that stale "RunningStats" from previous sessions are fully purged, preventing threshold drift.
-    \item \textbf{Persistent Alert History:} Implement a Firestore-backed repository to save \texttt{AlertEvent} records (type, timestamp, duration) so users can track their fatigue trends over multiple days.
-    \item \textbf{Cognitive Fallback Mode:} Develop a voice-activated prompt that triggers if the camera loses landmark tracking for >5 seconds, ensuring safety continues even in blind-spot conditions.
+    \item \textbf{Vertical Distraction (Pitch):} Update \texttt{FaceStateEvaluator.evaluate()} to incorporate \texttt{headEulerAngleX} checks to detect looking up or down (e.g., at a sun visor or floor console).
+    \item \textbf{Recalibration State Management:} Refine the reset logic in \texttt{startCalibration()} to ensure stale \texttt{RunningStats} from previous sessions are fully purged, preventing threshold drift.
+    \item \textbf{Cognitive Fallback Mode:} Develop a voice-activated prompt that triggers if the camera loses landmark tracking for more than 5 seconds.
+    \item \textbf{CI/CD Extensions:} Run \texttt{./gradlew ktlintCheck} and \texttt{./gradlew testDebugUnitTest} in any extended CI pipeline to guard against regressions.
 \end{itemize}
 
-% ---------- 10.4 Instructions for System Deployment ----------
+% ---------- 10.2 Instructions for System Deployment ----------
 \section{Instructions for System Deployment}
+
+\subsection{Platform Requirements}
+\begin{itemize}
+    \item Android 13 (API 33) or higher.
+    \item Front-facing camera with autofocus support.
+    \item Google Play Services (for Firebase and Fused Location Provider).
+    \item Minimum 3 GB RAM recommended for sustained ML inference.
+\end{itemize}
+
 \subsection{System Installation}
 \begin{enumerate}
     \item Build the release APK via \texttt{./gradlew assembleRelease}.
-    \item Deploy the APK to the target device via ADB or a secure download link.
-    \item Ensure "Unknown Sources" is enabled if installing directly from the APK file.
+    \item Deploy the APK to the target device via ADB: \texttt{adb install app-release.apk}.
+    \item Alternatively, distribute through a secure download link; enable "Install Unknown Apps" in device settings if sideloading.
+    \item On first launch, grant Camera, Location, and Notification permissions when prompted.
 \end{enumerate}
 
-% ---------- 10.5 Instructions for System End Users ----------
+% ---------- 10.3 Instructions for System End Users ----------
 \section{Instructions for System End Users}
-\subsection{Quick Start}
 \begin{enumerate}
-    \item \textbf{Login:} Authenticate using your ALVION account.
-    \item \textbf{Calibration:} Follow the on-screen prompts to look "Forward", "Left", and "Right". \textit{Note: The system will use Mirror Symmetry to assist if you only calibrate one side.}
-    \item \textbf{Monitor:} Tap "Start Monitoring". Ensure the phone is mounted at eye level.
+    \item \textbf{Login:} Authenticate using your ALVION account (email/password via Firebase).
+    \item \textbf{Calibration:} Follow the on-screen prompts to look "Forward", "Left", and "Right". The system uses mirror symmetry to assist if only one side is calibrated.
+    \item \textbf{Monitor:} Tap "Start Monitoring". Ensure the phone is mounted at eye level facing the driver.
+    \item \textbf{Alerts:} If drowsiness or distraction is detected, an audible alert and vibration will trigger. Acknowledge by returning your gaze forward.
+    \item \textbf{History:} After ending a session, tap the History tab to review trip details and detection events.
+    \item \textbf{Privacy:} All facial analysis is performed locally. No video or face-prints are saved; only anonymized alert counts are synced to your profile.
 \end{enumerate}
-
-\subsection{Privacy}
-ALVION processes all facial video frames in volatile memory. No video or identifiable face-prints are saved to the device or the cloud; only anonymized alert counts are synced to your profile history.
 
 \clearpage
 
@@ -1208,9 +1311,11 @@ The ALVION project has successfully transitioned from a theoretical concept to a
 
 \section{Achievement}
 \begin{itemize}
-    \item \textbf{Heuristic Accuracy:} Implemented a logic engine capable of $1800$ms drowsiness detection and tiered distraction timeouts based on subject-specific calibration.
+    \item \textbf{Heuristic Accuracy:} Implemented a logic engine with a $1{,}200$\,ms drowsiness dwell timer and tiered distraction timeouts ($4{,}000$\,ms mirror / $2{,}000$\,ms beyond-mirror) based on subject-specific calibration.
+    \item \textbf{Sunglasses / Occlusion Resilience:} Deployed a custom TFLite binary classifier that detects sunglasses in real time and gracefully suppresses eye-based drowsiness detection while keeping head-pose distraction monitoring active.
+    \item \textbf{Persistent Trip History:} Fully integrated Firebase Firestore to save completed sessions as structured \texttt{Trip} documents, surfaced in a dedicated History tab with per-event timestamps and expandable detail cards.
+    \item \textbf{Contextual Safety Signals:} Added real-time GPS speed display, phone upside-down detection via accelerometer, face proximity guard, and a presence/liveness check — all surfaced through the same alert and logging pipeline.
     \item \textbf{Automated Pipeline:} Established a robust CI/CD workflow that guards the codebase against logic regressions and code-style drift.
-    \item \textbf{Cloud Integration:} Successfully integrated Firebase for secure authentication and alert history, providing a complete "product" experience for the end user.
 \end{itemize}
 
 \section{Lessons Learned}
