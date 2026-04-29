@@ -1,5 +1,6 @@
 package com.qualcomm.alvion
 
+import android.media.AudioManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,10 @@ import com.qualcomm.alvion.feature.shell.AppShell
 class RootActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Link hardware volume buttons to the Media stream
+        volumeControlStream = AudioManager.STREAM_MUSIC
+
         enableEdgeToEdge()
         setContent {
             val context = LocalContext.current
