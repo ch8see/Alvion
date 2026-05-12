@@ -106,7 +106,7 @@
   pages=1,                       % just the first page of the PDF
   pagecommand={\thispagestyle{empty}}, % ensure no headers/footers/bookmarks on cover
   fitpaper=true,                 % scale to full page
-]{assets/CSU-SM-CSE-39-2026-SE-001-Team-009.pdf}
+]{assets/CSU-SM-CSE-39-2026-SE-001-Team-009-V5.pdf}
 
 \clearpage
 
@@ -143,7 +143,7 @@ This document outlines the project’s objectives, assumptions, and boundaries s
 3.0 & Feb 28, 2026 & Revised report to reflect updated user requirements and system development changes; confirmed system designs in Section~6; added/updated test case designs and execution reports; incorporated changed/new user requirements into refined system requirements and updated system design. \\[6pt]
 3.5 & Mar 20, 2026 & Revised based on instructor feedback. Added Requirements Traceability (Section~4.3) mapping UF-A--UF-J to components and test cases. Introduced Sections~8.4 and~8.5 for functional/non-functional requirement evaluation. Refined scope, use-case alignment, and system consistency. \\[6pt]
 4.0 & Apr 27, 2026 & Change-management revision. Corrected detection thresholds (drowsiness 1200\,ms, distraction 4000\,ms/2000\,ms). Added new requirements UF-K, SF-11--SF-15. Updated architecture, ERD, UI, and algorithm sections to document TFLite sunglasses detection, Firestore trip history, GPS speed, phone orientation monitoring, and presence check. Fixed structural gaps to conform to capstone report guidelines. \\[6pt]
-5.0 & --- & Pending --- reserved for future revisions. \\
+5.0 & May 11, 2026 & Final revision for capstone submission. Completed proofreading and language polish across all sections. Verified all chapters are present and consistently structured. Confirmed all eleven user functional requirements (UF-A through UF-K) are implemented and documented. No structural changes; this version represents the final submitted state of the report. \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -155,7 +155,7 @@ This document outlines the project’s objectives, assumptions, and boundaries s
 
 
 \section{Business Background}
-Driver monitoring is becoming a regulatory and industry standard for road safety. The European Union now mandates such systems in new vehicles beginning in 2024, and other markets are expected to follow. Automakers and regulators view these systems as essential for reducing human-error-related crashes, but adoption in existing vehicles remains limited because of cost, integration complexity, and consumer concerns over data privacy.
+Driver monitoring is becoming a regulatory and industry standard for road safety. The European Union now mandates such systems in new vehicles beginning in 2024 [6], and other markets are expected to follow. Automakers and regulators view these systems as essential for reducing human-error-related crashes, but adoption in existing vehicles remains limited because of cost, integration complexity, and consumer concerns over data privacy.
 Retrofit products, while available, often require expensive hardware installations or continuous cloud connectivity for processing. These barriers restrict adoption, especially in regions where consumers rely on older cars or are reluctant to share biometric data online. A smartphone-based solution reduces those barriers: most users already own compatible Android devices with capable cameras and neural-processing hardware.
 ALVION’s approach uses these resources to demonstrate how Qualcomm’s mobile AI platforms can perform effective, real-time driver-monitoring inference entirely on-device. This provides a testbed for cost-effective safety innovations and shows potential business alignment with regulatory trends. The project also establishes a baseline for future Qualcomm-enabled automotive safety research and gives developers a model for edge-based AI deployment that respects user privacy and reduces infrastructure costs.
 
@@ -165,7 +165,7 @@ ALVION’s approach uses these resources to demonstrate how Qualcomm’s mobile 
 Improving driver safety requires early detection of distraction and drowsiness in a manner that is both reliable and user-friendly. ALVION responds to several intertwined needs:
 
 \begin{itemize}
-    \item \textbf{Safety:} The system should protect both the driver and other road users by recognizing behavioral cues such as prolonged eyelid closure, yawning, or abnormal head pose patterns that precede dangerous inattention.
+    \item \textbf{Safety:} The system should protect both the driver and other road users by recognizing behavioral cues such as prolonged eyelid closure, yawning, or abnormal head pose patterns that precede dangerous inattention. Distraction-affected crashes alone caused 3{,}208 U.S. fatalities in 2024 [7].
     \item \textbf{Privacy-Aware Design:} Drivers are wary of surveillance systems that upload facial video to the cloud. ALVION is designed to keep \emph{core detection and inference on-device} and avoid transmitting raw camera footage, while still supporting standard app functionality such as user authentication (e.g., Firebase [3]).
     \item \textbf{Accessibility and Cost:} Full-scale automotive integrations are expensive. By leveraging common smartphone hardware, ALVION provides a low-cost entry point that can benefit drivers in older vehicles.
     \item \textbf{Responsiveness:} Alerts must reach the driver when they matter most. Real-time analysis enables immediate feedback that can help prevent incidents instead of only documenting them.
@@ -177,7 +177,7 @@ Improving driver safety requires early detection of distraction and drowsiness i
 ALVION’s objectives focus on producing a working, reproducible prototype that demonstrates the technical and practical viability of phone-based driver monitoring:
 
 \begin{itemize}
-  \item \textbf{Develop a proof-of-concept Android application} capable of detecting drowsiness and distraction using the front camera and a lightweight on-device model optimized for Snapdragon NPUs.
+  \item \textbf{Develop a proof-of-concept Android application} capable of detecting drowsiness and distraction using the front camera and a lightweight on-device model optimized for Snapdragon NPUs [13].
   \item \textbf{Implement configurable alert mechanisms} that combine audio, visual, and haptic feedback, allowing users to tune thresholds and notification styles for comfort and responsiveness.
   \item \textbf{Achieve efficient real-time performance} without dependence on cloud computing, ensuring low latency and minimal power usage consistent with mobile operation.
   \item \textbf{Document all design decisions, architecture, and testing methodology} in a reproducible form so that future development teams can extend or refine the system.
@@ -473,7 +473,7 @@ This section defines the technical constraints and quality standards the ALVION 
 \subsubsection{Product: Performance Requirements}
 \begin{itemize}
     \item \textbf{SP-05-01} — The inference pipeline shall maintain a minimum of 15 FPS and an alert latency of $\leq$200\,ms on supported Snapdragon devices.
-    \item \textbf{SP-05-02} — Average CPU utilization shall remain below 40\% by utilizing the Android Neural Networks API (NNAPI) for ML Kit hardware acceleration.
+    \item \textbf{SP-05-02} — Average CPU utilization shall remain below 40\% by utilizing the Android Neural Networks API (NNAPI) [12] for ML Kit hardware acceleration.
     \item \textbf{SP-07-01} — The system shall include thermal management logic that reduces inference frequency if the device temperature exceeds safe operating limits.
 \end{itemize}
 
@@ -549,7 +549,7 @@ We are building a phone-first prototype that runs entirely on the device. To ens
 \textbf{Why we use it.} It provides the most robust support for modern Android development, including built-in profiling tools to monitor CPU and thermal impact during long driving sessions.
 
 \subsection{Front end: Jetpack Compose (Material3)}
-\textbf{What it is.} Compose is Android’s modern declarative UI toolkit.
+\textbf{What it is.} Compose is Android’s modern declarative UI toolkit [8].
 \textbf{Why we use it.} It allows us to build responsive, high-performance UI overlays (e.g., the camera preview and alert badges) that react instantly to changes in the driver's attention state without the overhead of XML-based layouts.
 
 \subsection{Camera: CameraX (Preview + Analysis)}
@@ -565,16 +565,16 @@ We are building a phone-first prototype that runs entirely on the device. To ens
 \textbf{Why we use it.} Firebase Authentication handles secure login and account management. Firebase Firestore stores each completed trip as a structured document (alert types, timestamps, duration) scoped to the authenticated user, enabling persistent trip history across sessions without transmitting any raw facial data.
 
 \subsection{On-Device Custom Classifier: TFLite}
-\textbf{What it is.} The TensorFlow Lite runtime for Android.
+\textbf{What it is.} The TensorFlow Lite runtime for Android (now distributed as LiteRT) [10].
 \textbf{Why we use it.} ML Kit does not provide a sunglasses-detection signal. We trained and deployed a custom binary TFLite model (\texttt{sunglasses\_model.tflite}) that classifies $128 \times 128$ cropped face images as sunglasses / no-sunglasses. Running this classifier every 3 frames suppresses false drowsiness detections caused by eye occlusion from dark lenses.
 
 \subsection{Location: Fused Location Provider}
 \textbf{What it is.} Google Play Services' battery-efficient location API.
-\textbf{Why we use it.} We use the Fused Location Provider to stream GPS speed updates at 1-second intervals during active sessions, displayed in the live metrics grid. This context (speed = 0 vs. highway speed) helps drivers understand their monitoring state.
+\textbf{Why we use it.} We use the Fused Location Provider [11] to stream GPS speed updates at 1-second intervals during active sessions, displayed in the live metrics grid. This context (speed = 0 vs. highway speed) helps drivers understand their monitoring state.
 
 \subsection{Project Glue: Coroutines and Flow}
 \textbf{What it is.} Kotlin’s asynchronous programming primitives.
-\textbf{Why we use it.} We use \textbf{Coroutines} to keep the heavy ML analysis off the main UI thread. \textbf{Flow} allows us to stream detection events (e.g., a "Drowsy" signal) from the logic layer to the UI layer in real-time with minimal latency.
+\textbf{Why we use it.} We use \textbf{Coroutines} [9] to keep the heavy ML analysis off the main UI thread. \textbf{Flow} allows us to stream detection events (e.g., a "Drowsy" signal) from the logic layer to the UI layer in real-time with minimal latency.
 
 \subsection*{Tool roles at a glance}
 \begin{center}
@@ -618,9 +618,9 @@ A core innovation of the system is the multi-angle calibration routine, which es
 The detection engine processes the calibrated data using two parallel logic paths for Drowsiness and Distraction.
 
 \paragraph{Drowsiness (Sustained Eye Closure):}
-The system implements a \textbf{PERCLOS Proxy [4]} (Percentage of Eyelid Closure) using a duration-based trigger.
+The system implements a \textbf{PERCLOS Proxy [4, 5]} (Percentage of Eyelid Closure) using a duration-based trigger.
 \begin{enumerate}
-    \item \textbf{EMA Smoothing:} Raw eye-openness scores from ML Kit are processed using an \textit{Exponential Moving Average} ($\alpha = 0.45$) to filter out momentary blinks and sensor noise.
+    \item \textbf{EMA Smoothing:} Raw eye-openness scores from ML Kit are processed using an \textit{Exponential Moving Average} [14] ($\alpha = 0.45$) to filter out momentary blinks and sensor noise.
     \item \textbf{Dynamic Thresholding:} Instead of a fixed 0.5 threshold, the system uses the eye-openness stats gathered during calibration to set a custom "closed" threshold for each driver.
     \item \textbf{Temporal Trigger:} If the EMA eye-score remains below the threshold for more than $1{,}200$~ms, a "Drowsy" event is published to the alert manager.
 \end{enumerate}
@@ -1328,13 +1328,30 @@ We thank \textbf{Qualcomm} and the ALVION-AI organization for the resources and 
 
 % ========================= 12. REFERENCES =========================
 \chapter{References}
-
+{\sloppy
 \begin{enumerate}
     \item \label{google2024mlkit} Google Developers. (2024). \textit{ML Kit Face Detection Guide}. Retrieved from https://developers.google.com/ml-kit/vision/face-detection.
     \item \label{android2024camerax} Android Developers. (2024). \textit{CameraX Analysis and Lifecycle}. Retrieved from https://developer.android.com/media/camera/camerax.
     \item \label{firebase2024docs} Firebase Documentation. (2024). \textit{Firestore and Auth for Android}. Retrieved from https://firebase.google.com/docs/android/setup.
-    \item \label{dinges1998perclos} Dinges, D. F. \& Grace, R. (1998). \textit{PERCLOS: A Valid Psychophysiological Measure of Alertness}. FHWA Technical Brief. Retrieved from https://rosap.ntl.bts.gov/view/dot/113
+    \item \label{dinges1998perclos} Dinges, D. F. \& Grace, R. (1998). \textit{PERCLOS: A Valid Psychophysiological Measure of Alertness}. FHWA Technical Brief. Retrieved from https://rosap.ntl.bts.gov/view/dot/113.
+    \item \label{wierwille1994drowsiness} Wierwille, W. W., Wreggit, S. S., Kirn, C. L., Ellsworth, L. A., \& Fairbanks, R. J. (1994). \textit{Research on Vehicle-Based Driver Status/Performance Monitoring; Development, Validation, and Refinement of Algorithms for Detection of Driver Drowsiness}. National Highway Traffic Safety Administration, Report No. DOT HS 808 247.
+    \item \label{eu2019gsr} European Parliament and Council. (2019). \textit{Regulation (EU) 2019/2144 on type-approval requirements for motor vehicles and their trailers --- General Safety Regulation}. Official Journal of the European Union. Retrieved from https://eur-lex.europa.eu/eli/reg/2019/2144/oj.
+    \item \label{nhtsa2025distracted} National Highway Traffic Safety Administration. (2025). \textit{Distracted Driving in 2024} (Traffic Safety Facts Research Note, Report No. DOT HS 813 790). U.S. Department of Transportation. Retrieved from https://crashstats.nhtsa.dot.gov/Api/Public/ViewPublication/813790.
+    \item \label{android2024compose} Android Developers. (2024). \textit{Jetpack Compose --- Modern Android UI Toolkit}. Retrieved from https://developer.android.com/jetpack/compose.
+    \item \label{android2024coroutines} Android Developers. (2024). \textit{Kotlin Coroutines and Flow on Android}. Retrieved from https://developer.android.com/kotlin/coroutines.
+    \item \label{google2024litert} Google AI Edge. (2024). \textit{LiteRT (formerly TensorFlow Lite) --- On-Device Machine Learning}. Retrieved from https://ai.google.dev/edge/litert.
+    \item \label{android2024location} Android Developers. (2024). \textit{Fused Location Provider API --- Google Play Services Location}. Retrieved from https://developer.android.com/develop/sensors-and-location/location.
+    \item \label{android2024nnapi} Android Developers. (2024). \textit{Neural Networks API (NNAPI)}. Retrieved from https://developer.android.com/ndk/guides/neuralnetworks.
+    \item \label{qualcomm2024snapdragon} Qualcomm Technologies, Inc. (2024). \textit{Snapdragon Mobile Platforms --- AI Engine and Hexagon NPU}. Retrieved from https://www.qualcomm.com/products/mobile/snapdragon.
+    \item \label{hunter1986ewma} Hunter, J. S. (1986). The exponentially weighted moving average. \textit{Journal of Quality Technology}, 18(4), 203--210.
+    \item \label{murphychutorian2009headpose} Murphy-Chutorian, E., \& Trivedi, M. M. (2009). Head pose estimation in computer vision: A survey. \textit{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 31(4), 607--626. https://doi.org/10.1109/TPAMI.2008.106.
+    \item \label{sikander2019fatigue} Sikander, G., \& Anwar, S. (2019). Driver fatigue detection systems: A review. \textit{IEEE Transactions on Intelligent Transportation Systems}, 20(6), 2339--2352. https://doi.org/10.1109/TITS.2018.2868499.
+    \item \label{soukupova2016blink} Soukupov\'{a}, T., \& \v{C}ech, J. (2016). Real-time eye blink detection using facial landmarks. \textit{Proceedings of the 21st Computer Vision Winter Workshop}.
+    \item \label{android2024analysis} Android Developers. (2024). \textit{CameraX Image Analysis Use Case}. Retrieved from https://developer.android.com/media/camera/camerax/analyze.
+    \item \label{firebase2024firestore} Firebase. (2024). \textit{Cloud Firestore Documentation --- Data Model and Security Rules}. Retrieved from https://firebase.google.com/docs/firestore.
+    \item \label{iso25010} International Organization for Standardization. (2018). \textit{ISO/IEC 25010:2018 --- Systems and software Quality Requirements and Evaluation (SQuaRE) --- System and software quality models}.
 \end{enumerate}
+\par}
 
 
 
@@ -1472,8 +1489,8 @@ Pull requests and issue records show work on the ML Kit facial detection pipelin
 \hline
 
 Chase Tanner &
-Audio alert fixes, issue tracking, documentation-related tasks, and review participation. &
-Repository records show audio-related bug fixes, documentation issues, and participation in review/requested-review workflows. \\
+Contributed to end-to-end testing, ML Kit model development including calibration, and bug discovery. Additionally handled audio alert fixes, issue tracking, documentation-related tasks, and review participation. &
+Repository records show ML Kit model development and calibration, bug discovery, audio fixes, documentation, and participation in review/requested-review workflows. \\
 \hline
 
 \end{longtable}
