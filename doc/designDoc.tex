@@ -1264,6 +1264,16 @@ Setup steps:
     \item Run \texttt{./gradlew clean assembleDebug} to verify the build.
 \end{enumerate}
 
+\subsection{How to Set Up Firebase for ALVION}
+To connect Firebase to the ALVION app, follow these simple steps:
+\begin{enumerate}
+    \item Open the Firebase console and create or select the \texttt{alvion-ai} Android project.
+    \item Add a new Android app in Firebase using the package name from \texttt{app/src/main/AndroidManifest.xml}.
+    \item Download the generated \texttt{google-services.json} file and place it in the app module root: \texttt{app/google-services.json}.
+    \item Verify the Firebase SDK is enabled in the project by confirming the \texttt{com.google.gms:google-services} plugin is applied in \texttt{app/build.gradle.kts}.
+    \item Sync the project in Android Studio, then run the app on a device to confirm Firebase initialization and authentication work.
+\end{enumerate}
+
 \subsection{Notes on System Further Extension}
 The following areas are identified for further development to improve system robustness:
 \begin{itemize}
